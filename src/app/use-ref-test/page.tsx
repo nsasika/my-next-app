@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function UseRefTest() {
   const inputRef = useRef<HTMLInputElement>(null); // Ref for accessing the DOM element
@@ -14,8 +14,10 @@ export default function UseRefTest() {
     }
   };
 
-  // Increment render count on every render
-  renderCount.current += 1;
+  // Increment render count after the component renders
+  useEffect(() => {
+    renderCount.current += 1;
+  });
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
