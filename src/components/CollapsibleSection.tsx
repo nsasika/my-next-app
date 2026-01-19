@@ -1,5 +1,6 @@
 'use client'
 import Link from "next/link";
+import React from "react";
 import { useState } from "react";
 
 const CollapsibleSection =({
@@ -21,7 +22,7 @@ const CollapsibleSection =({
         </h3>
         {isOpen && (
           <ul className="space-y-1 pl-4">
-            {links.map((link) => (
+            {links?.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="hover:underline">
                   {link.label}
@@ -34,4 +35,4 @@ const CollapsibleSection =({
     );
   }
 
-  export default CollapsibleSection;
+  export default React.memo(CollapsibleSection);

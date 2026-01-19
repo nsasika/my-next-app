@@ -22,7 +22,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <div className="flex min-h-screen">
-              <Sidebar />
+              <Sidebar /> 
               <main className="flex-1 p-8 bg-gray-100">{children}</main>
             </div>
           </ThemeProvider>
