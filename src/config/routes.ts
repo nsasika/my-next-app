@@ -12,5 +12,11 @@ export const ROUTES = [
       { href: '/react18/batching', label: 'Automatic Batching' },
       { href: '/react18/transitions', label: 'Transitions (useTransition)' },
     ],
+  },
+  {
+    title:"About Me",
+    links:[
+      {href:"/about", label:"Nalin Padmasiri"}
+    ]   
   }
 ];
