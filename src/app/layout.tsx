@@ -3,8 +3,8 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar"; // Extracted Sidebar to its own component
 import { roboto, geistSans, geistMono } from "@/styles/fonts"; // Import fonts
+import { Sidebar } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",

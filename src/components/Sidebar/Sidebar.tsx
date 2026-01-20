@@ -1,13 +1,14 @@
 "use client";
-import CollapsibleSection from "@/components/CollapsibleSection";
+import CollapsibleSection from "@/components/Sidebar/CollapsibleSection";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useMemo, useCallback } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { ROUTES } from "@/config/routes";
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -46,27 +47,13 @@ const Sidebar = () => {
             <h2 className="text-xl font-bold mb-4">{title}</h2>
           </div>
           <ul className="space-y-2">
-            <CollapsibleSection
-              title="Hooks"
-              links={[
-                { href: "/use-ref-test", label: "useRef Test" },
-                { href: "/use-memo-test", label: "useMemo Test" },
-              ]}
-            />
-            <CollapsibleSection
-              title="Components"
-              links={[
-                { href: "/button-test", label: "Button Test" },
-                { href: "/card-test", label: "Card Test" },
-              ]}
-            />
-            <CollapsibleSection
-              title="Utilities"
-              links={[
-                { href: "/utility-one", label: "Utility One" },
-                { href: "/utility-two", label: "Utility Two" },
-              ]}
-            />
+            {ROUTES.map((section) => (
+              <CollapsibleSection
+                key={section.title}
+                title={section.title}
+                links={section.links}
+              />
+            ))}
           </ul>
         </div>
       )}
