@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import "./globals.css";
 import { roboto, geistSans, geistMono } from "@/styles/fonts"; // Import fonts
-import { Sidebar } from "@/components/Sidebar";
+import { Sidebar } from "@/components";
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",

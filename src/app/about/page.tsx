@@ -1,14 +1,12 @@
-const AboutMePage = () => {
+import Avatar from '@mui/material/Avatar';
+
+const AboutMePage: React.FC = () => {
     return (
       <div className="max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-4">About Me</h1>
         <div className="flex flex-col items-center mb-6">
           {/* Profile Image */}
-          <img
-            src="profilepic.png" // Replace with your LinkedIn profile photo URL
-            alt="Nalin Padmasiri"
-            className="w-40 h-40 rounded-full shadow-lg mb-4"
-          />
+          <Avatar alt="Nalin Padmasiri" src="profilepic.png" sx={{ width: 160, height: 160, mb: 4 }} />
           <p className="text-lg text-center">
             Hi, I'm <strong>Nalin Padmasiri</strong>, a passionate software engineer with over <strong>9 years of experience</strong> in building modern web applications and scalable software solutions.
           </p>

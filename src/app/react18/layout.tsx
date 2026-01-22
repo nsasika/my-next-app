@@ -5,7 +5,7 @@ export default function React18Layout({
   }) {
     return (
       <div>
-        <h1>React 18 Features Layout</h1>
+        <h1>React 18 Features</h1>
         <div>{children}</div>
       </div>
     );
