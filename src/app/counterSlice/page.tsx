@@ -33,7 +33,7 @@ const CounterSlicePage = () => {
           title="Decrement by 1"
           onClick={() => dispatch(decrement())}
         />
-        <CustomBtn id="incrementByAmount" title="Increment By Amount" onClick={handleOnClick} />
+        <CustomBtn title="Increment By Amount" onClick={handleOnClick} />
         <CustomBtn title="Reset" onClick={() => dispatch(reset())} />
       </div>
     </>
