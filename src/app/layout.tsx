@@ -5,6 +5,7 @@ import theme from "../theme";
 import "./globals.css";
 import { roboto, geistSans, geistMono } from "@/styles/fonts"; // Import fonts
 import { Sidebar } from "@/components";
+import StoreProvider from "@/lib/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={roboto.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <StoreProvider>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <div className="flex min-h-screen">
@@ -33,6 +35,7 @@ export default function RootLayout({
             </div>
           </ThemeProvider>
         </AppRouterCacheProvider>
+        </StoreProvider>
       </body>
     </html>
   );

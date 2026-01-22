@@ -3,12 +3,12 @@ import Button from '@mui/material/Button';
 
 type CustonBtnProps = {
   title: string;
-  variant: 'text' | 'outlined' | 'contained';
-  onClick?: () => void;
+  variant?: 'text' | 'outlined' | 'contained';
+  onClick: () => void;
 };
 
 const CustomBtn = (props: CustonBtnProps): JSX.Element => {
-  const { title, variant, onClick } = props;
+  const { title, variant = 'text', onClick } = props;
   return <Button variant={variant} onClick={onClick}>{title}</Button>;
 };
 

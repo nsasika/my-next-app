@@ -14,6 +14,12 @@ export const ROUTES = [
     ],
   },
   {
+    title:"Redux Toolkit",
+    links:[
+      {href:"/counterSlice", label:"Counter Example"}
+    ]   
+  },
+  {
     title:"About Me",
     links:[
       {href:"/about", label:"Nalin Padmasiri"}
