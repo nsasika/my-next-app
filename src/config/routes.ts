@@ -16,7 +16,9 @@ export const ROUTES = [
   {
     title:"Redux Toolkit",
     links:[
-      {href:"/counterSlice", label:"Counter Example"}
+      {href:"/counterSlice", label:"Counter Example"},
+      {href:"/redux-thunk", label:"Redux Thunk Example"},
+      {href:"/redux-saga", label:"Redux Saga Example"}
     ]   
   },
   {

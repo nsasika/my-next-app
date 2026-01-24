@@ -1,7 +1,7 @@
 "use client";
 import CollapsibleSection from "@/components/Sidebar/CollapsibleSection";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useMemo, useCallback } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
@@ -23,6 +23,12 @@ const Sidebar: React.FC = () => {
       router.push("/");
     }
   }, [pathname, router]);
+
+  useEffect(() => {
+    if(pathname !== "/" && !isOpen){
+      router.push("/");
+    }
+  }, [pathname]);
 
   return (
     <nav className="w-64 bg-gray-800 text-white flex flex-col p-4">
