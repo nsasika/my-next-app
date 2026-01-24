@@ -17,59 +17,69 @@ const initialState: UserState = {
   loading: false,
 };
 
-export const fetchUsers= createAsyncThunk<User[]>('user/fetchUsers', async ()=> {
-  try{
-    const res = await axios.get('https://jsonplaceholder.typicode.com/users');
-    return await res.data.map((user: any) => ({
-      id: user.id,
-      name: user.name,
-    }));
-  }catch(error: any){
-  throw new Error(error.response?.data?.message || 'Failed to fetch users');
-  }
-});
+export const fetchUsers = createAsyncThunk<User[]>(
+  'user/fetchUsers',
+  async () => {
+    try {
+      const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+      return await res.data.map((user: any) => ({
+        id: user.id,
+        name: user.name,
+      }));
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch users');
+    }
+  },
+);
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    fetchUsersSagaRequest:(state)=>{
+    fetchUsersSagaRequest: (state) => {
       state.loading = true;
-      state.error= undefined;
+      state.error = undefined;
     },
-    fetchUsersSagaSuccess:(state, action)=>{
+    fetchUsersSagaSuccess: (state, action) => {
       state.loading = false;
       state.users = action.payload;
     },
-    fetchUsersSagaFailure:(state, action)=>{
+    fetchUsersSagaFailure: (state, action) => {
       state.loading = false;
-      state.error= action.payload;
+      state.error = action.payload;
     },
-    resetUsers: (state)=>{
-      state.users=[];
+    resetUsers: (state) => {
+      state.users = [];
       state.loading = false;
-      state.error=undefined;
-    }
+      state.error = undefined;
+    },
+    userLogEvent: (_state, action) => {
+      // This reducer can be used to log user events
+      console.log('User Event:', action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchUsers.pending,(state)=>{
+      .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
-        state.error= undefined;
-    })
-    .addCase(fetchUsers.fulfilled,(state, action)=>{
+        state.error = undefined;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload;
-
-    })
-    .addCase(fetchUsers.rejected,(state, action)=>{
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
-        state.error= action.error.message;
-    });
+        state.error = action.error.message;
+      });
   },
 });
 
-export const { resetUsers, fetchUsersSagaRequest, fetchUsersSagaSuccess, fetchUsersSagaFailure } = usersSlice.actions;
+export const {
+  resetUsers,
+  fetchUsersSagaRequest,
+  fetchUsersSagaSuccess,
+  fetchUsersSagaFailure,
+  userLogEvent,
+} = usersSlice.actions;
 export default usersSlice.reducer;
-
-

@@ -1,7 +1,7 @@
 import { all, fork } from "redux-saga/effects";
-import { watchFetchUsersSaga } from "./user/usersSagas";
+import { clientsSaga } from "../features/client/sagas";
+import { usersSaga } from "../features/user/sagas";
 
 export default function* rootSaga(){
-    console.log('rootSaga started');
-    yield all([fork(watchFetchUsersSaga)]);
+    yield all([fork(usersSaga), fork(clientsSaga)]);
 }

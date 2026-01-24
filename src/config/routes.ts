@@ -22,6 +22,14 @@ export const ROUTES = [
     ]   
   },
   {
+    title:"RTK SAGA",
+    links:[
+      {href:"/practice/takeEvery", label:"Take Every"},
+      {href:"/practice/takeLatest", label:"Take Latest"},
+      {href:"/practice/debounce", label:"Debounce"}
+    ]   
+  },
+  {
     title:"About Me",
     links:[
       {href:"/about", label:"Nalin Padmasiri"}
