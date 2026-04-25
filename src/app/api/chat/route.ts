@@ -55,10 +55,15 @@ export async function POST(req: Request) {
   }
 
   try {
+    // In AI SDK v6, convertToModelMessages may return a Promise (it was
+    // synchronous in v5). Awaiting it resolves the "expected array, received
+    // Promise" zod error from streamText.
+    const modelMessages = await convertToModelMessages(messages);
+
     const result = streamText({
       model: google(process.env.GEMINI_MODEL ?? 'gemini-2.0-flash'),
       system: SYSTEM_PROMPT,
-      messages: convertToModelMessages(messages),
+      messages: modelMessages,
       // Low temperature for support-style content — we want consistent,
       // factual answers more than creative variation.
       temperature: 0.3,
