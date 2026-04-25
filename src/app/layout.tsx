@@ -1,42 +1,34 @@
-import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
-import "./globals.css";
-import { roboto, geistSans, geistMono } from "@/styles/fonts"; // Import fonts
-import { Sidebar } from "@/components";
-import StoreProvider from "@/lib/StoreProvider";
+import type { Metadata } from 'next';
+import './globals.css';
+import { Toaster } from '@/components/ui/sonner';
+import { Geist } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: "Nalin's Academy",
-  description: "Let's learn Next.js and React together!",
-  authors: [{ name: "Nalin Padmasiri", url: "https://github.com/nsasika" }],
-  icons: {
-    icon: [
-      { url: "/nalinsacademy.png", type: "image/png" },
-    ],
-  },
+  title: 'AI Insurance Help Center',
+  description:
+    'Browse insurance topics and chat with an AI assistant for grounded, cited answers.',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
-    <html lang="en" className={roboto.variable}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <StoreProvider>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <div className="flex min-h-screen">
-              <Sidebar /> 
-              <main className="flex-1 p-8 bg-gray-100">{children}</main>
-            </div>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-        </StoreProvider>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn('font-sans', geist.variable)}
+    >
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        {children}
+        <Toaster />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
