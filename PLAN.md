@@ -13,11 +13,14 @@ A Next.js help center for a fictional insurance company combining:
 | Styling | Tailwind + shadcn/ui | Brief allows; fastest path to polished UI |
 | LLM | Google Gemini (free tier) | Generous free tier, easy auth, good for RAG |
 | Embeddings | Gemini `text-embedding-004` | Same provider, no extra account |
-| Vector store | In-memory cosine search over a JSON index | Demo dataset is small (~30–60 docs); zero infra. Can swap to Chroma later if asked |
-| Content store | Static JSON / MD files in `content/` | No DB needed for demo dataset |
+| Vector DB | [Vectra](https://www.npmjs.com/package/vectra) — file-based vector index | Real named vector DB. Pure JS, no external service, persists to disk. Right-sized for the 25-doc corpus; cosine search built in |
+| Document store | Markdown files in `content/articles/` + Vectra metadata | Articles are version-controlled source of truth. Vectra stores the full chunk text as metadata alongside vectors, so retrieval returns documents + scores in one query |
 | State (chat) | React state + `useChat` from `ai/react` (Vercel AI SDK) | Streaming, message history, easy retries |
 
-**Tradeoff to call out in README:** Skipped a real vector DB (Chroma/Pinecone) because the demo corpus is small enough that in-memory cosine is faster, has zero ops cost, and the abstraction (`retrieve(query, k)`) makes swapping trivial later.
+**Tradeoffs to call out in README:**
+- **Vector DB choice (Vectra over Pinecone/Supabase):** Vectra is a lightweight, file-based vector DB that fits a 25-document corpus better than cloud-hosted alternatives. No external service to depend on, zero network latency on retrieval, persists across deploys via the committed index. The retrieval abstraction (`retrieve(query, k)`) makes swapping in a heavier DB trivial if the corpus grows.
+- **Document store:** Markdown files in `content/articles/` are the source of truth (version-controlled, easy to inspect). Vectra metadata holds the chunk text needed for grounding context, so the vector store doubles as the retrieved-document store.
+- **Dataset choice (synthetic over crawled):** The brief allows either. Synthetic guarantees coverage of every sample question and avoids scraper brittleness; the generator script is committed so the corpus is reproducible and extensible.
 
 ## Architecture
 
@@ -84,9 +87,10 @@ scripts/
 - This proves AI integration works before adding RAG complexity
 - Commit on `assignment/task-2-chat-mvp`
 
-### Task 3 — Add RAG (3–4h)
-- `scripts/ingest.ts`: read all `content/articles/*.md`, chunk (~500 tokens), embed with Gemini, write `data/index.json`
-- `lib/rag/retrieve.ts`: load index on cold start, cosine top-K (K=4)
+### Task 3 — Add RAG with Vectra (3–4h)
+- Add `vectra` dependency
+- `scripts/ingest.ts`: read `content/articles/*.md`, chunk (~500 tokens), embed via Gemini `text-embedding-004`, upsert into Vectra index at `data/vectra-index/`
+- `lib/rag/retrieve.ts`: open the Vectra index on cold start, query top-K (K=4) with metadata
 - Update `/api/chat`: retrieve before generation, inject context with explicit "cite the article slug" instruction, return sources alongside the response
 - UI: render source citations under each AI message as clickable chips → article page
 - Commit on `assignment/task-3-rag`
