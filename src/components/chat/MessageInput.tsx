@@ -1,6 +1,6 @@
 'use client';
 
-import type { FormEvent, KeyboardEvent } from 'react';
+import { useEffect, useRef, type FormEvent, type KeyboardEvent } from 'react';
 import { Send, Square } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,16 @@ const MessageInput = ({
   onStop,
   disabled,
 }: Props) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-grow the textarea to fit content, up to max-h-32
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [value]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (disabled || !value.trim()) return;
@@ -45,6 +55,7 @@ const MessageInput = ({
       className="flex items-end gap-2 rounded-lg border bg-background p-2 focus-within:ring-2 focus-within:ring-ring"
     >
       <textarea
+        ref={textareaRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -53,7 +64,7 @@ const MessageInput = ({
         className={cn(
           'flex-1 resize-none border-0 bg-transparent px-2 py-1.5 text-sm',
           'placeholder:text-muted-foreground focus:outline-none',
-          'min-h-[2.25rem] max-h-32',
+          'min-h-[2.25rem] max-h-32 overflow-y-auto',
         )}
         aria-label="Message input"
       />
