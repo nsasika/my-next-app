@@ -1,105 +1,99 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState, useTransition, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Search,
-  ArrowLeft,
-  ChevronRight,
-  Sparkles,
-  Loader2,
-} from 'lucide-react';
+import { Search, ArrowLeft, ChevronRight, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ArticleMeta } from '@/lib/content/loader';
 
-const SearchResults = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const q = searchParams.get('q') ?? '';
+const DEBOUNCE_MS = 300;
+
+const useSearch = (initial: string) => {
+  const [query, setQuery] = useState(initial);
   const [results, setResults] = useState<ArticleMeta[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState(q);
+  const [isPending, startTransition] = useTransition();
+  const [fetching, setFetching] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const runSearch = (q: string) => {
+    if (!q.trim()) { setResults([]); return; }
+    setFetching(true);
+    startTransition(() => {
+      fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        .then((r) => r.json())
+        .then((data: { results: ArticleMeta[] }) => setResults(data.results))
+        .catch(() => setResults([]))
+        .finally(() => setFetching(false));
+    });
+  };
+
+  const handleChange = (value: string) => {
+    setQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => runSearch(value), DEBOUNCE_MS);
+  };
 
   useEffect(() => {
-    if (!q.trim()) return;
-    setLoading(true);
-    fetch(`/api/search?q=${encodeURIComponent(q)}`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Search failed: ${r.status}`);
-        return r.json();
-      })
-      .then((data: { results: ArticleMeta[] }) => setResults(data.results))
-      .catch(() => setResults([]))
-      .finally(() => setLoading(false));
-  }, [q]);
+    if (initial.trim()) runSearch(initial);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const input = form.elements.namedItem('q') as HTMLInputElement;
-    const val = input.value.trim();
-    if (!val) return;
-    router.push(`/search?q=${encodeURIComponent(val)}`);
-  };
+  return { query, results, loading: isPending || fetching, handleChange };
+};
+
+const SearchResults = () => {
+  const searchParams = useSearchParams();
+  const initialQ = searchParams.get('q') ?? '';
+  const { query, results, loading, handleChange } = useSearch(initialQ);
+  const isEmpty = !loading && query.trim() && results.length === 0;
 
   return (
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10">
         <div className="mb-6 flex items-center gap-3">
           <Button asChild variant="ghost" size="icon">
-            <Link href="/" aria-label="Back to home">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
+            <Link href="/" aria-label="Back to home"><ArrowLeft className="h-4 w-4" /></Link>
           </Button>
           <h1 className="text-xl font-semibold">Search</h1>
         </div>
 
-        {/* Search bar */}
-        <form onSubmit={handleSearch} className="mb-8">
-          <div className="relative flex items-center">
-            <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
-            <input
-              name="q"
-              type="search"
-              defaultValue={q}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search help articles…"
-              className="w-full rounded-lg border bg-background py-3 pl-9 pr-24 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-            <Button type="submit" size="sm" className="absolute right-1.5">
-              Search
-            </Button>
-          </div>
-        </form>
+        <div className="relative mb-8 flex items-center">
+          <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+          {loading && <Loader2 className="absolute right-3 h-4 w-4 animate-spin text-muted-foreground" />}
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => handleChange(e.target.value)}
+            placeholder="Search help articles…"
+            autoFocus
+            className="w-full rounded-lg border bg-background py-3 pl-9 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
 
-        {/* Results */}
-        {loading && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground py-8 justify-center">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Searching…
-          </div>
+        {!query.trim() && (
+          <p className="text-center text-sm text-muted-foreground py-12">
+            Start typing to search across all help articles.
+          </p>
         )}
 
-        {!loading && q && results.length === 0 && (
+        {isEmpty && (
           <div className="py-12 text-center space-y-4">
-            <p className="text-muted-foreground">
-              No articles found for &ldquo;{q}&rdquo;
-            </p>
+            <p className="text-muted-foreground">No articles found for &ldquo;{query}&rdquo;</p>
             <Button asChild>
-              <Link href={`/chat?q=${encodeURIComponent(q)}`}>
-                <Sparkles className="mr-2 h-4 w-4" />
-                Ask the AI assistant instead
+              <Link href={`/chat?q=${encodeURIComponent(query)}`}>
+                <Sparkles className="mr-2 h-4 w-4" />Ask the AI assistant instead
               </Link>
             </Button>
           </div>
         )}
 
-        {!loading && results.length > 0 && (
+        {results.length > 0 && (
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground mb-4">
-              {results.length} result{results.length !== 1 ? 's' : ''} for
-              &ldquo;{q}&rdquo;
+              {results.length} result{results.length !== 1 ? 's' : ''}
+              {query.trim() && <> for &ldquo;{query}&rdquo;</>}
             </p>
             {results.map((article) => (
               <Link
@@ -109,30 +103,19 @@ const SearchResults = () => {
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h2 className="font-medium group-hover:text-primary transition-colors">
-                      {article.title}
-                    </h2>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] capitalize text-muted-foreground">
-                      {article.category}
-                    </span>
+                    <h2 className="font-medium group-hover:text-primary transition-colors">{article.title}</h2>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] capitalize text-muted-foreground">{article.category}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-snug">
-                    {article.summary}
-                  </p>
+                  <p className="text-sm text-muted-foreground leading-snug">{article.summary}</p>
                 </div>
                 <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
               </Link>
             ))}
-
-            {/* AI fallback */}
             <div className="mt-6 rounded-lg border bg-primary/5 px-4 py-3 flex items-center justify-between gap-3">
-              <p className="text-sm text-muted-foreground">
-                Want a more detailed answer?
-              </p>
+              <p className="text-sm text-muted-foreground">Want a more detailed answer?</p>
               <Button asChild size="sm">
-                <Link href={`/chat?q=${encodeURIComponent(query || q)}`}>
-                  <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-                  Ask AI
+                <Link href={`/chat?q=${encodeURIComponent(query)}`}>
+                  <Sparkles className="mr-1.5 h-3.5 w-3.5" />Ask AI
                 </Link>
               </Button>
             </div>
@@ -144,9 +127,7 @@ const SearchResults = () => {
 };
 
 const SearchPage = () => (
-  <Suspense>
-    <SearchResults />
-  </Suspense>
+  <Suspense><SearchResults /></Suspense>
 );
 
 export default SearchPage;
