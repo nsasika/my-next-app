@@ -104,9 +104,10 @@ Rules for grounding:
       model: google(process.env.GEMINI_MODEL ?? 'gemini-2.0-flash'),
       system: `${SYSTEM_PROMPT}\n\n${retrievalPrompt}`,
       messages: modelMessages,
-      // Low temperature for support-style content — we want consistent,
-      // factual answers more than creative variation.
       temperature: 0.3,
+      // Disable SDK retries — on rate-limit the SDK retries immediately with
+      // no delay, burning quota. The client shows a countdown and retries instead.
+      maxRetries: 0,
     });
 
     return result.toUIMessageStreamResponse<ChatMessage>({
