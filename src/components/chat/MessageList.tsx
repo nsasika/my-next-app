@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { AlertCircle, Clock, RotateCw, ShieldAlert, Sparkles } from 'lucide-react';
+import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -160,7 +160,7 @@ const QuotaExhaustedBanner = () => (
     className="rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm"
   >
     <div className="flex items-start gap-3">
-      <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
       <div className="space-y-1">
         <p className="font-semibold text-destructive">Daily AI quota reached</p>
         <p className="text-muted-foreground leading-snug">
@@ -195,7 +195,7 @@ const RateLimitBanner = ({ error, onRetry }: { error: Error; onRetry: () => void
       role="alert"
       className="flex items-center gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-300"
     >
-      <Clock className="h-4 w-4 shrink-0" />
+      <AlertCircle className="h-4 w-4 shrink-0" />
       <span className="flex-1">
         Too many requests — auto-retrying in <strong>{seconds}s</strong>…
       </span>
