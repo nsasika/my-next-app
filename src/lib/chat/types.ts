@@ -8,6 +8,7 @@ import type { UIMessage } from 'ai';
 export type ChatSource = {
   slug: string;
   title: string;
+  category: string;
 };
 
 export type ChatMessageMetadata = {

@@ -19,8 +19,6 @@ type Props = {
   onSuggestion: (text: string) => void;
 };
 
-// Sourced from the brief's sample questions so reviewers can replay the
-// expected UX in one click.
 const SAMPLE_QUESTIONS = [
   'What does deductible mean in my policy?',
   'How do I submit a car accident claim?',
@@ -28,19 +26,62 @@ const SAMPLE_QUESTIONS = [
   'What is the difference between term and whole life insurance?',
 ];
 
-const MessageList = ({
-  messages,
-  status,
-  error,
-  onRetry,
-  onSuggestion,
-}: Props) => {
+const CATEGORY_FOLLOWUPS: Record<string, string[]> = {
+  claims: [
+    'How long does it take to process a claim?',
+    'What documents do I need to file a claim?',
+    'How do I track my claim status?',
+    'What happens if my claim is denied?',
+  ],
+  coverage: [
+    'What is a deductible?',
+    'How do coverage limits work?',
+    'What is the difference between comprehensive and collision coverage?',
+    'What is liability coverage?',
+  ],
+  billing: [
+    'How do I set up autopay?',
+    'What happens if I miss a payment?',
+    'How do I update my payment method?',
+  ],
+  health: [
+    'What is the difference between HMO and PPO?',
+    'What preventive care is covered at no cost?',
+    'How do in-network and out-of-network providers differ?',
+  ],
+  auto: [
+    'Does my auto policy cover rental cars?',
+    'How does adding a teen driver affect my premium?',
+    'What does roadside assistance cover?',
+  ],
+  travel: [
+    'When does trip cancellation insurance pay out?',
+    'What happens if my luggage is delayed rather than lost?',
+  ],
+  life: [
+    'How do I name or update a beneficiary?',
+    'What is the difference between term and whole life insurance?',
+  ],
+  home: [
+    'Is flood damage covered under my homeowners policy?',
+    'How does personal property coverage work?',
+  ],
+};
+
+const getFollowUps = (category: string): string[] =>
+  (CATEGORY_FOLLOWUPS[category] ?? []).slice(0, 3);
+
+const MessageList = ({ messages, status, error, onRetry, onSuggestion }: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Keep the latest content visible during streaming.
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, status]);
+
+  const lastAssistantIdx = [...messages]
+    .map((m, i) => ({ m, i }))
+    .filter(({ m }) => m.role === 'assistant')
+    .at(-1)?.i ?? -1;
 
   if (messages.length === 0) {
     return (
@@ -53,8 +94,19 @@ const MessageList = ({
   return (
     <div className="flex-1 overflow-y-auto rounded-lg border bg-muted/30 p-3 sm:p-4">
       <div className="space-y-4">
-        {messages.map((m) => (
-          <MessageBubble key={m.id} message={m} />
+        {messages.map((m, i) => (
+          <div key={m.id}>
+            <MessageBubble message={m} />
+            {/* Follow-up chips only after the last completed assistant message */}
+            {m.role === 'assistant' &&
+              i === lastAssistantIdx &&
+              status === 'ready' && (
+                <FollowUpChips
+                  sources={m.metadata?.sources ?? []}
+                  onSuggestion={onSuggestion}
+                />
+              )}
+          </div>
         ))}
 
         {status === 'submitted' && <ThinkingBubble />}
@@ -65,9 +117,7 @@ const MessageList = ({
             className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
-            <span className="flex-1">
-              {error.message || 'Something went wrong.'}
-            </span>
+            <span className="flex-1">{error.message || 'Something went wrong.'}</span>
             <Button size="sm" variant="outline" onClick={onRetry}>
               <RotateCw className="mr-1 h-3 w-3" /> Retry
             </Button>
@@ -84,8 +134,6 @@ const MessageList = ({
 
 const MessageBubble = ({ message }: { message: ChatMessage }) => {
   const isUser = message.role === 'user';
-  // UIMessage.parts is an array; we only render text parts here. Tool-call
-  // parts (if added later) would be rendered by an extended switch.
   const text = message.parts
     .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
     .map((p) => p.text)
@@ -97,9 +145,7 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
       <div
         className={cn(
           'max-w-[85%] rounded-lg px-4 py-2.5 text-sm sm:px-4 sm:py-3',
-          isUser
-            ? 'bg-primary text-primary-foreground'
-            : 'border bg-background',
+          isUser ? 'bg-primary text-primary-foreground' : 'border bg-background',
         )}
       >
         {isUser ? (
@@ -134,6 +180,38 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
   );
 };
 
+const FollowUpChips = ({
+  sources,
+  onSuggestion,
+}: {
+  sources: ChatMessage['metadata'] extends undefined ? never : NonNullable<ChatMessage['metadata']>['sources'];
+  onSuggestion: (text: string) => void;
+}) => {
+  const category = sources?.[0]?.category ?? '';
+  const suggestions = getFollowUps(category);
+  if (!suggestions.length) return null;
+
+  return (
+    <div className="mt-2 pl-1">
+      <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        Follow-up questions
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {suggestions.map((q) => (
+          <button
+            key={q}
+            type="button"
+            onClick={() => onSuggestion(q)}
+            className="rounded-full border bg-background px-3 py-1 text-xs transition hover:border-primary/60 hover:bg-accent"
+          >
+            {q}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const ThinkingBubble = () => (
   <div className="flex justify-start">
     <div className="rounded-lg border bg-background px-4 py-3 text-sm text-muted-foreground">
@@ -145,8 +223,6 @@ const ThinkingBubble = () => (
   </div>
 );
 
-// Custom markdown renderer that doesn't depend on @tailwindcss/typography.
-// Keeps the dep footprint small and styling local to chat bubbles.
 const MarkdownContent = ({ children }: { children: string }) => (
   <div className="space-y-2 text-sm leading-relaxed">
     <ReactMarkdown
@@ -169,9 +245,7 @@ const MarkdownContent = ({ children }: { children: string }) => (
         h3: ({ children }) => (
           <h3 className="mt-2 text-sm font-semibold">{children}</h3>
         ),
-        strong: ({ children }) => (
-          <strong className="font-semibold">{children}</strong>
-        ),
+        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
         em: ({ children }) => <em className="italic">{children}</em>,
         a: ({ href, children }) => (
           <a
@@ -204,9 +278,7 @@ const MarkdownContent = ({ children }: { children: string }) => (
           </div>
         ),
         th: ({ children }) => (
-          <th className="border-b px-2 py-1 text-left font-semibold">
-            {children}
-          </th>
+          <th className="border-b px-2 py-1 text-left font-semibold">{children}</th>
         ),
         td: ({ children }) => <td className="border-b px-2 py-1">{children}</td>,
       }}
@@ -216,17 +288,11 @@ const MarkdownContent = ({ children }: { children: string }) => (
   </div>
 );
 
-const EmptyState = ({
-  onSuggestion,
-}: {
-  onSuggestion: (text: string) => void;
-}) => (
+const EmptyState = ({ onSuggestion }: { onSuggestion: (text: string) => void }) => (
   <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
     <div className="space-y-2">
       <Sparkles className="mx-auto h-6 w-6 text-primary" />
-      <h2 className="text-base font-semibold">
-        Hi, I&apos;m your insurance assistant
-      </h2>
+      <h2 className="text-base font-semibold">Hi, I&apos;m your insurance assistant</h2>
       <p className="text-sm text-muted-foreground">
         Pick a starter question or type your own below.
       </p>
