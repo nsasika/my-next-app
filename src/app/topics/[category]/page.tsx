@@ -1,34 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Shield,
-  FileText,
-  CreditCard,
-  Heart,
-  Car,
-  Plane,
-  Users,
-  Home,
-  ChevronRight,
-  ArrowLeft,
-  Sparkles,
-} from 'lucide-react';
+import { ChevronRight, ArrowLeft, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getArticlesByCategory, getCategories } from '@/lib/content/loader';
-
-const CATEGORY_META: Record<
-  string,
-  { label: string; icon: React.ElementType; description: string }
-> = {
-  claims: { label: 'Claims', icon: FileText, description: 'File, track, and dispute insurance claims' },
-  coverage: { label: 'Coverage', icon: Shield, description: 'Understand what your policy covers' },
-  billing: { label: 'Billing', icon: CreditCard, description: 'Payments, autopay, and grace periods' },
-  health: { label: 'Health', icon: Heart, description: 'Plans, networks, and preventive care' },
-  auto: { label: 'Auto', icon: Car, description: 'Car insurance, teens, and roadside help' },
-  travel: { label: 'Travel', icon: Plane, description: 'Luggage, cancellation, and trip coverage' },
-  life: { label: 'Life', icon: Users, description: 'Term, whole life, and beneficiaries' },
-  home: { label: 'Home', icon: Home, description: 'Property coverage and water damage' },
-};
+import { CATEGORY_META } from '@/lib/content/categories';
 
 export const generateStaticParams = () =>
   getCategories().map(({ category }) => ({ category }));
@@ -59,7 +34,9 @@ const CategoryPage = async ({ params }: Props) => {
             </div>
             <div>
               <h1 className="text-2xl font-semibold">{meta.label}</h1>
-              <p className="text-sm text-muted-foreground">{meta.description}</p>
+              <p className="text-sm text-muted-foreground">
+                {meta.description}
+              </p>
             </div>
           </div>
         </div>
@@ -91,7 +68,9 @@ const CategoryPage = async ({ params }: Props) => {
             Didn&apos;t find what you&apos;re looking for?
           </p>
           <Button asChild>
-            <Link href={`/chat?q=I have a question about ${meta.label.toLowerCase()} insurance`}>
+            <Link
+              href={`/chat?q=I have a question about ${meta.label.toLowerCase()} insurance`}
+            >
               <Sparkles className="mr-2 h-4 w-4" />
               Ask the AI assistant
             </Link>

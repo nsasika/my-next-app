@@ -7,7 +7,7 @@
  *  - One vector per article. The corpus is small (25 docs) and each article is
  *    short enough that whole-article embeddings preserve more semantic context
  *    than aggressive chunking.
- *  - Embeddings come from Gemini `text-embedding-004` via the public REST API.
+ *  - Embeddings come from Gemini `gemini-embedding-001` via the public REST API.
  *    Using fetch keeps the script free of build-time deps on the AI SDK.
  *  - The full markdown body is stored in vector metadata so retrieve.ts can
  *    return grounding text in a single round trip.

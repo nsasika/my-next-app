@@ -1,64 +1,8 @@
 import Link from 'next/link';
-import {
-  Shield,
-  FileText,
-  CreditCard,
-  Heart,
-  Car,
-  Plane,
-  Users,
-  Home,
-  Search,
-  Sparkles,
-} from 'lucide-react';
+import { Shield, Search, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getCategories } from '@/lib/content/loader';
-
-const CATEGORY_META: Record<
-  string,
-  { label: string; icon: React.ElementType; description: string }
-> = {
-  claims: {
-    label: 'Claims',
-    icon: FileText,
-    description: 'File, track, and dispute insurance claims',
-  },
-  coverage: {
-    label: 'Coverage',
-    icon: Shield,
-    description: 'Understand what your policy covers',
-  },
-  billing: {
-    label: 'Billing',
-    icon: CreditCard,
-    description: 'Payments, autopay, and grace periods',
-  },
-  health: {
-    label: 'Health',
-    icon: Heart,
-    description: 'Plans, networks, and preventive care',
-  },
-  auto: {
-    label: 'Auto',
-    icon: Car,
-    description: 'Car insurance, teens, and roadside help',
-  },
-  travel: {
-    label: 'Travel',
-    icon: Plane,
-    description: 'Luggage, cancellation, and trip coverage',
-  },
-  life: {
-    label: 'Life',
-    icon: Users,
-    description: 'Term, whole life, and beneficiaries',
-  },
-  home: {
-    label: 'Home',
-    icon: Home,
-    description: 'Property coverage and water damage',
-  },
-};
+import { CATEGORY_META } from '@/lib/content/categories';
 
 const HomePage = () => {
   const categories = getCategories();
@@ -92,11 +36,7 @@ const HomePage = () => {
                 placeholder="Search help articles…"
                 className="w-full rounded-lg border bg-background py-3 pl-9 pr-24 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
-              <Button
-                type="submit"
-                size="sm"
-                className="absolute right-1.5"
-              >
+              <Button type="submit" size="sm" className="absolute right-1.5">
                 Search
               </Button>
             </div>
