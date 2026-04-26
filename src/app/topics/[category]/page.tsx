@@ -8,10 +8,10 @@ import { CATEGORY_META } from '@/lib/content/categories';
 export const generateStaticParams = () =>
   getCategories().map(({ category }) => ({ category }));
 
-type Props = { params: { category: string } };
+type Props = { params: Promise<{ category: string }> };
 
 const CategoryPage = async ({ params }: Props) => {
-  const { category } = params;
+  const { category } = await params;
   const meta = CATEGORY_META[category];
   if (!meta) notFound();
 
