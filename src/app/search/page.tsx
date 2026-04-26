@@ -1,14 +1,21 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Search, ArrowLeft, ChevronRight, Sparkles, Loader2 } from 'lucide-react';
+import {
+  Search,
+  ArrowLeft,
+  ChevronRight,
+  Sparkles,
+  Loader2,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ArticleMeta } from '@/lib/content/loader';
 
 const SearchResults = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const q = searchParams.get('q') ?? '';
   const [results, setResults] = useState<ArticleMeta[]>([]);
   const [loading, setLoading] = useState(false);
@@ -18,8 +25,12 @@ const SearchResults = () => {
     if (!q.trim()) return;
     setLoading(true);
     fetch(`/api/search?q=${encodeURIComponent(q)}`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Search failed: ${r.status}`);
+        return r.json();
+      })
       .then((data: { results: ArticleMeta[] }) => setResults(data.results))
+      .catch(() => setResults([]))
       .finally(() => setLoading(false));
   }, [q]);
 
@@ -29,12 +40,7 @@ const SearchResults = () => {
     const input = form.elements.namedItem('q') as HTMLInputElement;
     const val = input.value.trim();
     if (!val) return;
-    window.history.pushState({}, '', `/search?q=${encodeURIComponent(val)}`);
-    setLoading(true);
-    fetch(`/api/search?q=${encodeURIComponent(val)}`)
-      .then((r) => r.json())
-      .then((data: { results: ArticleMeta[] }) => setResults(data.results))
-      .finally(() => setLoading(false));
+    router.push(`/search?q=${encodeURIComponent(val)}`);
   };
 
   return (
@@ -92,7 +98,8 @@ const SearchResults = () => {
         {!loading && results.length > 0 && (
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground mb-4">
-              {results.length} result{results.length !== 1 ? 's' : ''} for &ldquo;{q}&rdquo;
+              {results.length} result{results.length !== 1 ? 's' : ''} for
+              &ldquo;{q}&rdquo;
             </p>
             {results.map((article) => (
               <Link

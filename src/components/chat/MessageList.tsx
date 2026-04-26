@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
@@ -115,14 +116,14 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {sources.map((source) => (
-                    <a
+                    <Link
                       key={`${message.id}-${source.slug}`}
                       href={`/articles/${source.slug}`}
                       title={source.title}
                       className="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] transition hover:bg-accent"
                     >
                       {source.slug}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -208,7 +209,9 @@ const MarkdownContent = ({ children }: { children: string }) => (
             {children}
           </th>
         ),
-        td: ({ children }) => <td className="border-b px-2 py-1">{children}</td>,
+        td: ({ children }) => (
+          <td className="border-b px-2 py-1">{children}</td>
+        ),
       }}
     >
       {children}

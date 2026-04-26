@@ -13,7 +13,7 @@ A modern customer support portal for a fictional insurance company, combining st
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - A Google Gemini API key (free tier) — get one at [aistudio.google.com](https://aistudio.google.com)
 
 ### 1. Install dependencies

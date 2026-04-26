@@ -1,32 +1,8 @@
 import Link from 'next/link';
-import {
-  Shield,
-  FileText,
-  CreditCard,
-  Heart,
-  Car,
-  Plane,
-  Users,
-  Home,
-  ChevronRight,
-  ArrowLeft,
-} from 'lucide-react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getAllArticles, getCategories } from '@/lib/content/loader';
-
-const CATEGORY_META: Record<
-  string,
-  { label: string; icon: React.ElementType; description: string }
-> = {
-  claims: { label: 'Claims', icon: FileText, description: 'File, track, and dispute insurance claims' },
-  coverage: { label: 'Coverage', icon: Shield, description: 'Understand what your policy covers' },
-  billing: { label: 'Billing', icon: CreditCard, description: 'Payments, autopay, and grace periods' },
-  health: { label: 'Health', icon: Heart, description: 'Plans, networks, and preventive care' },
-  auto: { label: 'Auto', icon: Car, description: 'Car insurance, teens, and roadside help' },
-  travel: { label: 'Travel', icon: Plane, description: 'Luggage, cancellation, and trip coverage' },
-  life: { label: 'Life', icon: Users, description: 'Term, whole life, and beneficiaries' },
-  home: { label: 'Home', icon: Home, description: 'Property coverage and water damage' },
-};
+import { CATEGORY_META } from '@/lib/content/categories';
 
 const TopicsPage = () => {
   const categories = getCategories();
@@ -59,7 +35,10 @@ const TopicsPage = () => {
               .slice(0, 3);
 
             return (
-              <div key={category} className="rounded-xl border bg-card shadow-sm">
+              <div
+                key={category}
+                className="rounded-xl border bg-card shadow-sm"
+              >
                 <div className="flex items-center justify-between p-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="rounded-md bg-primary/10 p-2">
@@ -67,7 +46,9 @@ const TopicsPage = () => {
                     </div>
                     <div>
                       <h2 className="font-semibold">{meta.label}</h2>
-                      <p className="text-xs text-muted-foreground">{meta.description}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {meta.description}
+                      </p>
                     </div>
                   </div>
                   <Link
