@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { Shield, Search, Sparkles } from 'lucide-react';
+import { Shield, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getCategories } from '@/lib/content/loader';
 import { CATEGORY_META } from '@/lib/content/categories';
+import SearchForm from '@/components/SearchForm';
 
 const HomePage = () => {
   const categories = getCategories();
@@ -25,23 +26,7 @@ const HomePage = () => {
             Browse help topics or ask our AI assistant — answers are grounded in
             our help articles and always cite their sources.
           </p>
-
-          {/* Search bar → /search */}
-          <form action="/search" method="GET" className="mx-auto max-w-lg">
-            <div className="relative flex items-center">
-              <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
-              <input
-                name="q"
-                type="search"
-                placeholder="Search help articles…"
-                className="w-full rounded-lg border bg-background py-3 pl-9 pr-24 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              <Button type="submit" size="sm" className="absolute right-1.5">
-                Search
-              </Button>
-            </div>
-          </form>
-
+          <SearchForm />
           <div className="flex items-center justify-center gap-3 pt-1">
             <Button asChild size="lg">
               <Link href="/chat">
@@ -74,13 +59,11 @@ const HomePage = () => {
                   <div className="rounded-md bg-primary/10 p-1.5">
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
-                  <span className="font-medium text-sm group-hover:text-primary transition-colors">
+                  <span className="text-sm font-medium group-hover:text-primary transition-colors">
                     {meta.label}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">
-                  {meta.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-snug">{meta.description}</p>
                 <span className="text-xs text-muted-foreground">
                   {count} {count === 1 ? 'article' : 'articles'}
                 </span>
@@ -90,7 +73,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Sample questions strip */}
+      {/* Popular questions */}
       <section className="border-t bg-muted/20 px-6 py-10">
         <div className="mx-auto max-w-4xl space-y-4">
           <h2 className="text-xl font-semibold">Popular questions</h2>
