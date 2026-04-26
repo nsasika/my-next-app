@@ -1,88 +1,174 @@
 # AI Insurance Help Center
 
-A modern customer support portal for a fictional insurance company that combines structured browsing with a grounded AI assistant. Built as a take-home assignment.
+A modern customer support portal for a fictional insurance company, combining structured help-center browsing with an AI assistant grounded in the help content.
 
-> **Status:** in development. See [PLAN.md](./PLAN.md) for the full architecture, tradeoffs, and task plan. This README will be expanded for the final submission.
+## Features
 
-## What's working today
+- **Browse by category** — 8 insurance topic categories, 25 articles
+- **Search** — keyword search across titles and summaries with AI fallback
+- **AI chat assistant** — streaming answers grounded in help articles via RAG, with source citations
+- **Seamless handoff** — every article page has an "Ask AI about this" CTA; the chat header links back to topics; popular questions on the home page deep-link directly into the chat
 
-- Tailwind v4 + shadcn/ui scaffold
-- Synthetic insurance content corpus (25 markdown articles) under `content/articles/`
-- Streaming chat API at `POST /api/chat` backed by Google Gemini
+## Setup instructions
 
-## What's coming
-
-- Chat UI page (`/chat`) — in progress (Task 2)
-- RAG retrieval grounding via [Vectra](https://www.npmjs.com/package/vectra) (Task 3)
-- Browsing UI: categories, articles, search (Task 4)
-- Polish: responsive, follow-ups, chat persistence (Task 5)
-- Final README, architecture diagram, demo video (Task 6)
-
-## Quick start (local)
-
-```bash
-# 1. Install deps
-npm install
-
-# 2. Configure environment
-cp .env.example .env.local
-# then edit .env.local and add your Gemini API key
-# get one at: https://aistudio.google.com/app/apikey
-
-# 3. Run dev server
-npm run dev
-
-# Open http://localhost:3000
-```
-
-You'll need:
+### Prerequisites
 
 - Node.js 20+
-- A free Google Gemini API key (no card required)
+- A Google Gemini API key (free tier) — get one at [aistudio.google.com](https://aistudio.google.com)
 
-## Tech stack
+### 1. Install dependencies
 
-| Layer | Choice |
-|---|---|
-| Framework | Next.js 16 (App Router, TypeScript) |
-| Styling | Tailwind CSS v4 + shadcn/ui |
-| LLM | Google Gemini (free tier) via `@ai-sdk/google` |
-| Embeddings | Gemini `text-embedding-004` (planned) |
-| Vector DB | [Vectra](https://www.npmjs.com/package/vectra) — file-based, in-process (planned) |
-| Document store | Markdown files in `content/articles/` (version-controlled source of truth) |
-| AI SDK | Vercel AI SDK v6 (`ai`, `@ai-sdk/google`, `@ai-sdk/react`) |
+```bash
+cd my-next-app
+npm install
+```
 
-## Project structure
+### 2. Configure environment
+
+```bash
+cp .env.example .env.local
+```
+
+Open `.env.local` and set:
+
+```
+GOOGLE_GENERATIVE_AI_API_KEY=your_key_here
+```
+
+### 3. Build the vector index
+
+This embeds the 25 help articles into a local Vectra index so the AI can retrieve relevant context before answering.
+
+```bash
+npm run ingest
+```
+
+Expected output: `✓ <slug>` for each article, then `Index written to data/vectra-index`.
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Production build
+
+```bash
+npm run build && npm start
+```
+
+---
+
+## Environment variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Yes | Gemini API key for chat + embeddings |
+| `GEMINI_MODEL` | No | Chat model (default: `gemini-2.0-flash`) |
+| `GEMINI_EMBEDDING_MODEL` | No | Embedding model (default: `gemini-embedding-001`) |
+
+---
+
+## AI provider
+
+**Google Gemini (free tier)**
+
+- **Chat:** `gemini-2.0-flash` via `@ai-sdk/google` + Vercel AI SDK (streaming)
+- **Embeddings:** `gemini-embedding-001` via the REST API (used at ingest time and at query time for RAG)
+
+Gemini was chosen because the free tier is generous (no credit card required for development), the `@ai-sdk/google` integration handles streaming natively, and `gemini-2.0-flash` has good instruction-following for structured support responses.
+
+---
+
+## Architecture
+
+```
+Browser
+├── /                      → Home: search bar + category grid + popular questions
+├── /topics                → All categories overview
+├── /topics/[category]     → Article list per category
+├── /articles/[slug]       → Full article + "Ask AI about this" CTA
+├── /search                → Keyword search results with AI fallback
+└── /chat                  → Full-screen streaming AI chat
+                                │
+                                ▼
+                          POST /api/chat
+                          GET  /api/search
+```
+
+### RAG pipeline
+
+```
+User message
+  → embed with gemini-embedding-001 (RETRIEVAL_QUERY task)
+  → query Vectra LocalIndex (cosine top-4)
+  → inject retrieved article snippets + citation rules into system prompt
+  → stream from gemini-2.0-flash
+  → attach source slugs as message metadata
+  → client renders clickable source chips → article pages
+```
+
+### Key files
 
 ```
 src/
   app/
-    api/chat/route.ts     # streaming chat endpoint (Gemini)
-    layout.tsx            # root layout (font, theme, toaster)
-    page.tsx              # home (links to /chat and /topics)
-  components/ui/          # shadcn primitives
-  lib/                    # helpers (cn, future RAG utilities)
-content/articles/         # 25 synthetic insurance help articles
+    page.tsx                   # Home: search + categories + popular questions
+    topics/page.tsx            # All categories
+    topics/[category]/page.tsx # Articles by category
+    articles/[slug]/page.tsx   # Article detail + Ask AI CTA
+    search/page.tsx            # Keyword search UI (client component)
+    chat/page.tsx              # AI chat UI — supports ?q= prefill
+    api/chat/route.ts          # Streaming chat endpoint with RAG
+    api/search/route.ts        # Keyword search endpoint
+  components/
+    chat/MessageList.tsx       # Message bubbles, markdown, source chips, empty state
+    chat/MessageInput.tsx      # Textarea with send/stop
+    ui/                        # shadcn/ui components
+  lib/
+    rag/retrieve.ts            # Vectra query + Gemini embedding
+    content/loader.ts          # Reads content/articles/*.md via gray-matter
+    chat/types.ts              # ChatMessage type (UIMessage + metadata.sources)
+content/
+  articles/*.md                # 25 synthetic help articles with frontmatter
+data/
+  vectra-index/index.json      # Generated by npm run ingest
 scripts/
-  seed-articles.mjs       # regenerates content/articles/ from inline data
-data/                     # (planned) Vectra index lives here after Task 3
-PLAN.md                   # full architecture and task plan
+  ingest.mjs                   # Embeds articles and writes the Vectra index
 ```
 
-## Environment variables
+---
 
-| Name | Required | Purpose |
-|---|---|---|
-| `GOOGLE_GENERATIVE_AI_API_KEY` | yes | Gemini API key for chat and embeddings |
-| `GEMINI_MODEL` | no | Override the default chat model (`gemini-2.0-flash`) |
-| `GEMINI_EMBEDDING_MODEL` | no | Override the default embedding model (`text-embedding-004`) |
+## Tradeoffs and assumptions
 
-For Vercel deploys, set these in **Project Settings → Environment Variables** in addition to local `.env.local`.
+### Vector DB: Vectra (file-based) over Pinecone / Supabase
+Vectra is a lightweight, pure-JS, file-based vector index. For a 25-article corpus it has zero latency overhead (no network round-trip), no external account to set up, and persists to disk alongside the code. The retrieval abstraction makes swapping in a cloud vector DB trivial if the corpus grows.
 
-## Branching
+### Embeddings: Gemini REST API (not the AI SDK)
+The ingest script is a plain Node.js `.mjs` script (no Next.js runtime). Using the REST API directly keeps the script dependency-free and avoids edge-runtime compatibility issues.
 
-- `main` — unrelated existing work, untouched
-- `assignment-release` — production branch (auto-deployed on Vercel)
-- `assignment/task-N-*` — feature branches per task
+### Dataset: AI-synthetic over crawled
+Synthetic articles guarantee coverage of every sample question from the brief, avoid scraper brittleness, and make the corpus reproducible (committed to the repo). Content covers all 8 categories: claims, coverage, billing, health, auto, travel, life, and home.
 
-Each task lives on its own branch and merges into `assignment-release` when complete.
+### Auth / accounts: skipped
+The brief does not mention authentication. In production, users would log in to see their own policy details and personalised answers.
+
+### Chat history: in-memory only
+Chat state lives in React state via `useChat`. Server-side history persistence was skipped as out of scope for this demo.
+
+### One vector per article (no chunking)
+Each article is short enough (~300–600 words) that whole-article embeddings preserve sufficient semantic context. Chunking would improve precision for longer documents but adds ingestion complexity not warranted for a 25-doc corpus.
+
+---
+
+## Sample questions to test
+
+| Question | Expected behaviour |
+|---|---|
+| "How do I submit a car accident claim?" | Cites `how-to-submit-car-accident-claim` |
+| "What does deductible mean in my policy?" | Cites `what-is-a-deductible` |
+| "Am I covered if my luggage is lost during travel?" | Cites `lost-luggage-coverage` |
+| "How long does it take to process a claim?" | Cites `claim-processing-timeline` |
+| "What is the difference between term and whole life insurance?" | Cites `term-vs-whole-life` |
