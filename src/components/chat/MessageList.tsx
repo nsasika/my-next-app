@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import type { UIMessage } from 'ai';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { ChatMessage } from '@/lib/chat/types';
 
 type Status = 'submitted' | 'streaming' | 'ready' | 'error';
 
 type Props = {
-  messages: UIMessage[];
+  messages: ChatMessage[];
   status: Status;
   error: Error | undefined;
   onRetry: () => void;
@@ -82,7 +82,7 @@ const MessageList = ({
 
 // ---- subcomponents ----------------------------------------------------------
 
-const MessageBubble = ({ message }: { message: UIMessage }) => {
+const MessageBubble = ({ message }: { message: ChatMessage }) => {
   const isUser = message.role === 'user';
   // UIMessage.parts is an array; we only render text parts here. Tool-call
   // parts (if added later) would be rendered by an extended switch.
@@ -90,6 +90,7 @@ const MessageBubble = ({ message }: { message: UIMessage }) => {
     .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
     .map((p) => p.text)
     .join('');
+  const sources = message.metadata?.sources ?? [];
 
   return (
     <div className={cn('flex', isUser ? 'justify-end' : 'justify-start')}>
@@ -104,7 +105,29 @@ const MessageBubble = ({ message }: { message: UIMessage }) => {
         {isUser ? (
           <p className="whitespace-pre-wrap">{text}</p>
         ) : (
-          <MarkdownContent>{text}</MarkdownContent>
+          <div className="space-y-3">
+            <MarkdownContent>{text}</MarkdownContent>
+
+            {sources.length > 0 && (
+              <div className="space-y-1">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  Sources
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {sources.map((source) => (
+                    <a
+                      key={`${message.id}-${source.slug}`}
+                      href={`/articles/${source.slug}`}
+                      title={source.title}
+                      className="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] transition hover:bg-accent"
+                    >
+                      {source.slug}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
