@@ -4,7 +4,7 @@
  * Vectra-backed top-K retrieval for the chat endpoint.
  *
  * Design notes:
- *  - Embeddings come from Gemini `text-embedding-004` with `RETRIEVAL_QUERY`
+ *  - Embeddings come from Gemini `gemini-embedding-001` with `RETRIEVAL_QUERY`
  *    task-type so the query and document embeddings live in the same space.
  *  - The Vectra index is loaded lazily on the first call and cached for the
  *    process lifetime. In serverless this means a small cold-start hit per
