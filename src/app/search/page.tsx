@@ -15,15 +15,24 @@ const useSearch = (initial: string) => {
   const [isPending, startTransition] = useTransition();
   const [fetching, setFetching] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Abort controller for the in-flight fetch — cancels stale requests when a
+  // newer query fires before the previous one completes.
+  const abortRef = useRef<AbortController | null>(null);
 
   const runSearch = (q: string) => {
     if (!q.trim()) { setResults([]); return; }
+
+    // Cancel any in-flight request for an older query
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setFetching(true);
     startTransition(() => {
-      fetch(`/api/search?q=${encodeURIComponent(q)}`)
+      fetch(`/api/search?q=${encodeURIComponent(q)}`, { signal: controller.signal })
         .then((r) => r.json())
         .then((data: { results: ArticleMeta[] }) => setResults(data.results))
-        .catch(() => setResults([]))
+        .catch((err) => { if (err.name !== 'AbortError') setResults([]); })
         .finally(() => setFetching(false));
     });
   };
@@ -36,7 +45,10 @@ const useSearch = (initial: string) => {
 
   useEffect(() => {
     if (initial.trim()) runSearch(initial);
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      abortRef.current?.abort();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

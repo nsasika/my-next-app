@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, Suspense } from 'react';
+import { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, BookOpen, Trash2 } from 'lucide-react';
@@ -47,10 +47,11 @@ const ChatInner = () => {
   const [input, setInput] = useState('');
   const prefillSentRef = useRef(false);
 
+  // Memoize transport so useChat doesn't reset on every re-render
+  const transport = useMemo(() => new DefaultChatTransport({ api: '/api/chat' }), []);
+
   const { messages, setMessages, sendMessage, status, error, regenerate, stop } =
-    useChat<ChatMessage>({
-      transport: new DefaultChatTransport({ api: '/api/chat' }),
-    });
+    useChat<ChatMessage>({ transport });
 
   const isBusy = status === 'submitted' || status === 'streaming';
 
