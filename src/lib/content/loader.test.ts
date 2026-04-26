@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import fs from 'node:fs';
 import {
   getAllArticles,
   getArticle,
@@ -63,6 +64,47 @@ describe('getArticlesByCategory', () => {
 
   it('claims category has 5 articles', () => {
     expect(getArticlesByCategory('claims')).toHaveLength(5);
+  });
+});
+
+describe('parseArticle fallback branches', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('falls back slug to filename stem when slug missing from frontmatter', () => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue(['my-article.md'] as unknown as ReturnType<typeof fs.readdirSync>);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(
+      '---\ntitle: Test Title\ncategory: claims\nsummary: A summary\nupdated: 2024-01-01\n---\nBody text',
+    );
+    const articles = getAllArticles();
+    expect(articles[0].slug).toBe('my-article');
+  });
+
+  it('falls back title to empty string when title missing', () => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue(['x.md'] as unknown as ReturnType<typeof fs.readdirSync>);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('---\ncategory: claims\n---\nBody');
+    const articles = getAllArticles();
+    expect(articles[0].title).toBe('');
+  });
+
+  it('falls back category to "coverage" when category missing', () => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue(['x.md'] as unknown as ReturnType<typeof fs.readdirSync>);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('---\ntitle: T\n---\nBody');
+    const articles = getAllArticles();
+    expect(articles[0].category).toBe('coverage');
+  });
+
+  it('falls back summary to empty string when summary missing', () => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue(['x.md'] as unknown as ReturnType<typeof fs.readdirSync>);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('---\ntitle: T\ncategory: claims\n---\nBody');
+    const articles = getAllArticles();
+    expect(articles[0].summary).toBe('');
+  });
+
+  it('falls back updated to empty string when updated missing', () => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue(['x.md'] as unknown as ReturnType<typeof fs.readdirSync>);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('---\ntitle: T\ncategory: claims\nsummary: S\n---\nBody');
+    const articles = getAllArticles();
+    expect(articles[0].updated).toBe('');
   });
 });
 
