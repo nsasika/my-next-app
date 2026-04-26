@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
+import { AlertCircle, Clock, RotateCw, ShieldAlert, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -113,20 +113,95 @@ const MessageList = ({ messages, status, error, onRetry, onSuggestion }: Props) 
         {status === 'submitted' && <ThinkingBubble />}
 
         {error && (
-          <div
-            role="alert"
-            className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
-          >
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <span className="flex-1">{error.message || 'Something went wrong.'}</span>
-            <Button size="sm" variant="outline" onClick={onRetry}>
-              <RotateCw className="mr-1 h-3 w-3" /> Retry
-            </Button>
-          </div>
+          isQuotaExhaustedError(error) ? (
+            <QuotaExhaustedBanner />
+          ) : isRateLimitError(error) ? (
+            <RateLimitBanner error={error} onRetry={onRetry} />
+          ) : (
+            <div
+              role="alert"
+              className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+            >
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span className="flex-1">{error.message || 'Something went wrong.'}</span>
+              <Button size="sm" variant="outline" onClick={onRetry}>
+                <RotateCw className="mr-1 h-3 w-3" /> Retry
+              </Button>
+            </div>
+          )
         )}
 
         <div ref={bottomRef} />
       </div>
+    </div>
+  );
+};
+
+// ---- error helpers ----------------------------------------------------------
+
+const isQuotaExhaustedError = (err: Error) => {
+  const msg = err.message.toLowerCase();
+  return msg.includes('limit: 0') || msg.includes('quota exceeded') || msg.includes('exceeded your current quota');
+};
+
+const isRateLimitError = (err: Error) => {
+  const msg = err.message.toLowerCase();
+  return msg.includes('429') || msg.includes('rate') || (msg.includes('quota') && !isQuotaExhaustedError(err));
+};
+
+const parseRetrySeconds = (err: Error): number => {
+  const match = err.message.match(/retry in ([\d.]+)s/i);
+  return match ? Math.ceil(parseFloat(match[1])) : 35;
+};
+
+const QuotaExhaustedBanner = () => (
+  <div
+    role="alert"
+    className="rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm"
+  >
+    <div className="flex items-start gap-3">
+      <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+      <div className="space-y-1">
+        <p className="font-semibold text-destructive">Daily AI quota reached</p>
+        <p className="text-muted-foreground leading-snug">
+          The free-tier request limit for today has been exhausted. The quota resets at midnight
+          Pacific Time. In the meantime you can still{' '}
+          <Link href="/topics" className="underline underline-offset-2 hover:text-foreground">
+            browse help articles
+          </Link>{' '}
+          or{' '}
+          <Link href="/search" className="underline underline-offset-2 hover:text-foreground">
+            search topics
+          </Link>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
+const RateLimitBanner = ({ error, onRetry }: { error: Error; onRetry: () => void }) => {
+  const total = parseRetrySeconds(error);
+  const [seconds, setSeconds] = useState(total);
+
+  useEffect(() => {
+    if (seconds <= 0) { onRetry(); return; }
+    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [seconds, onRetry]);
+
+  return (
+    <div
+      role="alert"
+      className="flex items-center gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-300"
+    >
+      <Clock className="h-4 w-4 shrink-0" />
+      <span className="flex-1">
+        Too many requests — auto-retrying in <strong>{seconds}s</strong>…
+      </span>
+      <Button size="sm" variant="outline" onClick={onRetry}>
+        Retry now
+      </Button>
     </div>
   );
 };
