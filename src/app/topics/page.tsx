@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ChevronRight } from 'lucide-react';
 import { getAllArticles, getCategories } from '@/lib/content/loader';
 import { CATEGORY_META } from '@/lib/content/categories';
+import BackButton from '@/components/BackButton';
 
 const TopicsPage = () => {
   const categories = getCategories();
@@ -12,11 +12,7 @@ const TopicsPage = () => {
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-4xl px-6 py-10">
         <div className="mb-8 flex items-center gap-3">
-          <Button asChild variant="ghost" size="icon">
-            <Link href="/" aria-label="Back to home">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </Button>
+          <BackButton href="/" label="Back to home" />
           <div>
             <h1 className="text-2xl font-semibold">All Topics</h1>
             <p className="text-sm text-muted-foreground">
@@ -30,15 +26,10 @@ const TopicsPage = () => {
             const meta = CATEGORY_META[category];
             if (!meta) return null;
             const Icon = meta.icon;
-            const categoryArticles = articles
-              .filter((a) => a.category === category)
-              .slice(0, 3);
+            const categoryArticles = articles.filter((a) => a.category === category).slice(0, 3);
 
             return (
-              <div
-                key={category}
-                className="rounded-xl border bg-card shadow-sm"
-              >
+              <div key={category} className="rounded-xl border bg-card shadow-sm">
                 <div className="flex items-center justify-between p-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="rounded-md bg-primary/10 p-2">
@@ -46,9 +37,7 @@ const TopicsPage = () => {
                     </div>
                     <div>
                       <h2 className="font-semibold">{meta.label}</h2>
-                      <p className="text-xs text-muted-foreground">
-                        {meta.description}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{meta.description}</p>
                     </div>
                   </div>
                   <Link
@@ -58,16 +47,15 @@ const TopicsPage = () => {
                     See all {count} <ChevronRight className="h-3 w-3" />
                   </Link>
                 </div>
-
                 <div className="border-t px-4 pb-3">
                   {categoryArticles.map((article) => (
                     <Link
                       key={article.slug}
                       href={`/articles/${article.slug}`}
-                      className="flex items-center justify-between py-2.5 text-sm hover:text-primary transition-colors group border-b last:border-0"
+                      className="group flex items-center justify-between border-b py-2.5 text-sm last:border-0 transition-colors hover:text-primary"
                     >
                       <span>{article.title}</span>
-                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                      <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
                     </Link>
                   ))}
                 </div>

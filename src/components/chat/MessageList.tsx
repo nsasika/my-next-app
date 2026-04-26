@@ -2,12 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 import type { ChatMessage, ChatMessageMetadata } from '@/lib/chat/types';
 
 type Status = 'submitted' | 'streaming' | 'ready' | 'error';
@@ -228,7 +227,7 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
           <p className="whitespace-pre-wrap">{text}</p>
         ) : (
           <div className="space-y-3">
-            <MarkdownContent>{text}</MarkdownContent>
+            <MarkdownRenderer variant="chat">{text}</MarkdownRenderer>
 
             {sources.length > 0 && (
               <div className="space-y-1">
@@ -296,73 +295,6 @@ const ThinkingBubble = () => (
         Thinking…
       </span>
     </div>
-  </div>
-);
-
-const MarkdownContent = ({ children }: { children: string }) => (
-  <div className="space-y-2 text-sm leading-relaxed">
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={{
-        p: ({ children }) => <p>{children}</p>,
-        ul: ({ children }) => (
-          <ul className="my-1 list-disc space-y-1 pl-5">{children}</ul>
-        ),
-        ol: ({ children }) => (
-          <ol className="my-1 list-decimal space-y-1 pl-5">{children}</ol>
-        ),
-        li: ({ children }) => <li className="leading-snug">{children}</li>,
-        h1: ({ children }) => (
-          <h1 className="mt-2 text-base font-semibold">{children}</h1>
-        ),
-        h2: ({ children }) => (
-          <h2 className="mt-2 text-base font-semibold">{children}</h2>
-        ),
-        h3: ({ children }) => (
-          <h3 className="mt-2 text-sm font-semibold">{children}</h3>
-        ),
-        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-        em: ({ children }) => <em className="italic">{children}</em>,
-        a: ({ href, children }) => (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary underline underline-offset-2"
-          >
-            {children}
-          </a>
-        ),
-        code: ({ children, className }) => {
-          const isBlock = (className ?? '').startsWith('language-');
-          return isBlock ? (
-            <code className={className}>{children}</code>
-          ) : (
-            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
-              {children}
-            </code>
-          );
-        },
-        pre: ({ children }) => (
-          <pre className="my-2 overflow-x-auto rounded-md bg-muted p-3 text-xs">
-            {children}
-          </pre>
-        ),
-        table: ({ children }) => (
-          <div className="my-2 overflow-x-auto">
-            <table className="w-full text-xs">{children}</table>
-          </div>
-        ),
-        th: ({ children }) => (
-          <th className="border-b px-2 py-1 text-left font-semibold">{children}</th>
-        ),
-        td: ({ children }) => (
-          <td className="border-b px-2 py-1">{children}</td>
-        ),
-      }}
-    >
-      {children}
-    </ReactMarkdown>
   </div>
 );
 
