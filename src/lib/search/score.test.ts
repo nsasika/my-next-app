@@ -53,4 +53,18 @@ describe('scoreArticles', () => {
     const results = scoreArticles(articles, 'life insurance');
     expect(results.some((r) => r.slug === 'term-vs-whole-life')).toBe(true);
   });
+
+  it('matches prefix of a word — claim matches claims', () => {
+    const results = scoreArticles(articles, 'claim');
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.some((r) => r.category === 'claims')).toBe(true);
+  });
+
+  it('does not match mid-word substrings', () => {
+    // "aim" and "laim" appear inside "claim" but do not start a word
+    expect(scoreArticles(articles, 'aim')).toHaveLength(0);
+    expect(scoreArticles(articles, 'laim')).toHaveLength(0);
+    // "nalin" appears inside "journaling" but does not start a word
+    expect(scoreArticles(articles, 'nalin')).toHaveLength(0);
+  });
 });
