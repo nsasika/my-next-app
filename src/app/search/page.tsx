@@ -15,7 +15,6 @@ const useSearch = (initial: string) => {
   const [query, setQuery] = useState(initial);
   const [results, setResults] = useState<ArticleMeta[]>([]);
   const [isPending, startTransition] = useTransition();
-  const [fetching, setFetching] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -26,13 +25,16 @@ const useSearch = (initial: string) => {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    setFetching(true);
-    startTransition(() => {
-      fetch(`/api/search?q=${encodeURIComponent(q)}`, { signal: controller.signal })
-        .then((r) => r.json())
-        .then((data: { results: ArticleMeta[] }) => setResults(data.results))
-        .catch((err) => { if (err.name !== 'AbortError') setResults([]); })
-        .finally(() => setFetching(false));
+    // React 19 supports async startTransition — isPending stays true
+    // until the awaited fetch resolves, so no separate fetching state needed.
+    startTransition(async () => {
+      try {
+        const r = await fetch(`/api/search?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+        const data = (await r.json()) as { results: ArticleMeta[] };
+        setResults(data.results);
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') setResults([]);
+      }
     });
   };
 
@@ -51,7 +53,7 @@ const useSearch = (initial: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { query, results, loading: isPending || fetching, handleChange };
+  return { query, results, loading: isPending, handleChange };
 };
 
 const SearchResults = () => {
