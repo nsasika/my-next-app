@@ -8,7 +8,7 @@ import { AlertCircle, RotateCw, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { ChatMessage } from '@/lib/chat/types';
+import type { ChatMessage, ChatMessageMetadata } from '@/lib/chat/types';
 
 type Status = 'submitted' | 'streaming' | 'ready' | 'error';
 
@@ -185,7 +185,7 @@ const FollowUpChips = ({
   sources,
   onSuggestion,
 }: {
-  sources: ChatMessage['metadata'] extends undefined ? never : NonNullable<ChatMessage['metadata']>['sources'];
+  sources: ChatMessageMetadata['sources'];
   onSuggestion: (text: string) => void;
 }) => {
   const category = sources?.[0]?.category ?? '';

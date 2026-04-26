@@ -155,8 +155,8 @@ Synthetic articles guarantee coverage of every sample question from the brief, a
 ### Auth / accounts: skipped
 The brief does not mention authentication. In production, users would log in to see their own policy details and personalised answers.
 
-### Chat history: in-memory only
-Chat state lives in React state via `useChat`. Server-side history persistence was skipped as out of scope for this demo.
+### Chat history: browser-persisted on `/chat`, not persisted server-side
+Chat state is managed in React via `useChat`, and on the `/chat` route the conversation is also persisted in browser `localStorage` so it survives refreshes in that browser. Server-side chat history persistence was skipped as out of scope for this demo, so conversations are not stored on the server or shared across devices/browsers.
 
 ### One vector per article (no chunking)
 Each article is short enough (~300–600 words) that whole-article embeddings preserve sufficient semantic context. Chunking would improve precision for longer documents but adds ingestion complexity not warranted for a 25-doc corpus.
