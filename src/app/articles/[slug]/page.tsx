@@ -9,10 +9,10 @@ import { getArticle, getAllArticles } from '@/lib/content/loader';
 export const generateStaticParams = () =>
   getAllArticles().map((a) => ({ slug: a.slug }));
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: { slug: string } };
 
 const ArticlePage = async ({ params }: Props) => {
-  const { slug } = await params;
+  const { slug } = params;
   const article = getArticle(slug);
   if (!article) notFound();
 

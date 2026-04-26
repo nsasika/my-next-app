@@ -121,6 +121,7 @@ Rules for grounding:
           sources: retrieved.map((item) => ({
             slug: item.slug,
             title: item.title,
+            category: item.category,
           })),
         };
       },
