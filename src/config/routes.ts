@@ -4,6 +4,7 @@ export const ROUTES = [
     links: [
       { href: '/use-ref-test', label: 'useRef' },
       { href: '/use-memo-test', label: 'useMemo' },
+      { href: '/custom-hooks', label: 'custom Hooks' },
     ],
   },
   {
