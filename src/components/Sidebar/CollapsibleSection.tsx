@@ -6,10 +6,7 @@ import { useState } from "react";
 const CollapsibleSection =({
     title,
     links,
-  }: {
-    title: string;
-    links: { href: string; label: string }[];
-  }) =>{
+  }: RoutesType) =>{
     const [isOpen, setIsOpen] = useState(false);
   
     return (

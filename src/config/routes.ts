@@ -1,4 +1,4 @@
-export const ROUTES = [
+export const ROUTES: RoutesType[] = [
   {
     title: 'Hooks',
     links: [
@@ -29,6 +29,10 @@ export const ROUTES = [
       {href:"/practice/takeLatest", label:"Take Latest"},
       {href:"/practice/debounce", label:"Debounce"}
     ]   
+  },
+  {
+    title: "Performance Testing",
+    links: [{ href: "/performance", label: "Performance Testing" }],
   },
   {
     title:"About Me",
