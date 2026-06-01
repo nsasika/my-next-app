@@ -1,8 +1,8 @@
 "use client";
+
 import CollapsibleSection from "@/components/Sidebar/CollapsibleSection";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import { useMemo, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import React, { useMemo, useCallback } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -11,24 +11,24 @@ import { ROUTES } from "@/config/routes";
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isOpen, setIsOpen] = React.useState(false);
+
+  const [isOpen, setIsOpen] = React.useState(true);
 
   const title = useMemo(() => {
     return pathname === "/" ? "Home" : "Navigation";
   }, [pathname]);
 
-  const onClickMenuOpen = useCallback(() => {
+  const onClickMenuClose = useCallback(() => {
     setIsOpen(false);
-    if (pathname !== "/") {
-      router.push("/");
-    }
-  }, [pathname, router]);
+  }, []);
 
-  useEffect(() => {
-    if(pathname !== "/" && !isOpen){
-      router.push("/");
-    }
-  }, [pathname]);
+  const logout = useCallback(async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    router.push("/login");
+  }, [router]);
 
   return (
     <nav className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -46,12 +46,14 @@ const Sidebar: React.FC = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => onClickMenuOpen()}
+              onClick={onClickMenuClose}
             >
               <MenuOpenIcon />
             </Button>
+
             <h2 className="text-xl font-bold mb-4">{title}</h2>
           </div>
+
           <ul className="space-y-2">
             {ROUTES.map((section) => (
               <CollapsibleSection
@@ -61,6 +63,12 @@ const Sidebar: React.FC = () => {
               />
             ))}
           </ul>
+
+          <div className="mt-6">
+            <Button variant="contained" color="error" onClick={logout}>
+              Logout
+            </Button>
+          </div>
         </div>
       )}
     </nav>
