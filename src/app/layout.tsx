@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
-import "./globals.css";
-import { roboto, geistSans, geistMono } from "@/styles/fonts";
-import StoreProvider from "@/lib/StoreProvider";
-import AppLayoutClient from "@/components/AppLayoutClient";
+import type { Metadata } from 'next';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
+import './globals.css';
+import { roboto, geistSans, geistMono } from '@/styles/fonts';
+import StoreProvider from '@/lib/StoreProvider';
+import AppLayoutClient from '@/components/AppLayoutClient';
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",
   description: "Let's learn Next.js and React together!",
-  authors: [{ name: "Nalin Padmasiri", url: "https://github.com/nsasika" }],
+  authors: [{ name: 'Nalin Padmasiri', url: 'https://github.com/nsasika' }],
   icons: {
-    icon: [{ url: "/nalinsacademy.png", type: "image/png" }],
+    icon: [{ url: '/nalinsacademy.png', type: 'image/png' }],
   },
 };
 

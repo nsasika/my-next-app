@@ -1,4 +1,4 @@
-import CSRUsers from "./CSRUsers";
+import CSRUsers from './CSRUsers';
 
 export default function CSRPage() {
   return (

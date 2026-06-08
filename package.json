@@ -5,9 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "ci": "npm run lint && npm run type-check && npm run test:coverage && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier --check .",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix && prettier --write ."
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix && prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "check:local": "npm run precommit",
+    "precommit": "node scripts/pre-commit.mjs",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -18,10 +26,8 @@
     "@mui/material-nextjs": "^7.3.7",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.2",
-    "install": "^0.13.0",
     "jose": "^6.2.3",
-    "next": "16.1.1",
-    "npm": "^11.7.0",
+    "next": "^16.2.7",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-redux": "^9.2.0",
@@ -29,15 +35,24 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
+    "eslint-config-next": "^16.2.7",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "jsdom": "^29.1.1",
     "prettier": "^3.8.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
+  },
+  "overrides": {
+    "postcss": "8.5.15"
   }
 }

@@ -1,7 +1,7 @@
 'use client';
-import { userLogEvent } from "@/lib/features/user/usersSlice";
-import { useAppDispatch } from "@/lib/hooks";
-import { useEffect } from "react";
+import { userLogEvent } from '@/lib/features/user/usersSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { useEffect } from 'react';
 
 const TakeEveryPage = () => {
   const dispatch = useAppDispatch();
@@ -17,18 +17,21 @@ const TakeEveryPage = () => {
   };
 
   return (
-    <div style={{ padding: "16px", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ padding: '16px', fontFamily: 'Arial, sans-serif' }}>
       <h1>TakeEvery Example Page</h1>
-      <p>This page demonstrates the use of Redux Saga's <strong>takeEvery</strong> effect.</p>
+      <p>
+        This page demonstrates the use of Redux Saga&apos;s{' '}
+        <strong>takeEvery</strong> effect.
+      </p>
       <button
         onClick={handleButtonClick}
         style={{
-          padding: "8px 16px",
-          backgroundColor: "#007BFF",
-          color: "#fff",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
+          padding: '8px 16px',
+          backgroundColor: '#007BFF',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
         }}
       >
         Log Event

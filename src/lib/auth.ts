@@ -42,9 +42,9 @@ export async function verifyToken(token: string) {
 
     // Return only the user fields this app expects from the JWT payload.
     return {
-        id: payload.id as string,
-        email: payload.email as string,
-        role: payload.role as UserRole,
+      id: payload.id as string,
+      email: payload.email as string,
+      role: payload.role as UserRole,
     };
   } catch (error) {
     // Any invalid/expired token results in a null auth user.

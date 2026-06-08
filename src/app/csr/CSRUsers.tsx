@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 type User = {
   id: number;
@@ -13,7 +13,7 @@ export default function CSRUsers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch('https://jsonplaceholder.typicode.com/users')
       .then((res) => res.json())
       .then((data: User[]) => {
         setUsers(data);

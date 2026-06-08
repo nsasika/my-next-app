@@ -7,11 +7,12 @@ const publicRoutes = [
   '/interview-questions',
   '/login',
   '/api/auth/login',
+  '/api/auth/me',
   '/nalinsacademy.png',
   '/profilepic.png',
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPublicRoute = publicRoutes.some((route) => {

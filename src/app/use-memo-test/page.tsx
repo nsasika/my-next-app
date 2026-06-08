@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef } from 'react';
 
 export default function UseMemoTest() {
   const [count, setCount] = useState(0);
@@ -10,13 +10,13 @@ export default function UseMemoTest() {
 
   // Non-memoized calculation
   const nonMemoizedCalculation = () => {
-    console.log("Non-memoized calculation...");
+    console.log('Non-memoized calculation...');
     return count * 2;
   };
 
   // Memoized calculation
   const memoizedCalculation = useMemo(() => {
-    console.log("Memoized calculation...");
+    console.log('Memoized calculation...');
     return count * 2;
   }, [count]);
 

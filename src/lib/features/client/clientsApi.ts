@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 function fetchClientsApi(query: string) {
   // Use JSONPlaceholder API for testing

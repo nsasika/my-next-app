@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from 'react';
 
 export default function UseRefTest() {
   const inputRef = useRef<HTMLInputElement>(null); // Ref for accessing the DOM element
   const renderCount = useRef(0); // Ref for storing a mutable value
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
+  const [visibleRenderCount, setVisibleRenderCount] = useState(0);
 
   // Function to focus the input field
   const focusInput = () => {
@@ -17,7 +18,8 @@ export default function UseRefTest() {
   // Increment render count after the component renders
   useEffect(() => {
     renderCount.current += 1;
-  });
+    setVisibleRenderCount(renderCount.current);
+  }, [text]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -43,7 +45,7 @@ export default function UseRefTest() {
 
       {/* Display render count */}
       <p className="text-gray-700">
-        This component has rendered <strong>{renderCount.current}</strong> times.
+        This component has rendered <strong>{visibleRenderCount}</strong> times.
       </p>
     </div>
   );

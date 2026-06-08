@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 const ReduxSagaPage = () => {
   const dispatch = useAppDispatch();
-  const {loading, users, error} = useAppSelector((state)=> state.users);
+  const { loading, users, error } = useAppSelector((state) => state.users);
   return (
     <div style={{ padding: '16px', fontFamily: 'Arial, sans-serif' }}>
       <h1
@@ -83,9 +83,7 @@ const ReduxSagaPage = () => {
           <h3>Fetched Users:</h3>
           <ul>
             {users.map((user) => (
-              <li key={user.id}>
-                {user.name}
-              </li>
+              <li key={user.id}>{user.name}</li>
             ))}
           </ul>
         </div>

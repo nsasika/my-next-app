@@ -10,4 +10,4 @@ function* watchFetchUsersSaga() {
   yield takeLatest(fetchUsersSagaRequest.type, fetchUsersWorker);
 }
 
-export { watchFetchUsersSaga, watchUsersLogEventSaga};
+export { watchFetchUsersSaga, watchUsersLogEventSaga };

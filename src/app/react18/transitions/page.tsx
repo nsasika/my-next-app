@@ -116,32 +116,38 @@ export default function TransitionDemo() {
         quickly—this is the transition at work.
       </p>
       <p style={{ marginTop: 12, opacity: 0.75 }}>
-  <b>What does <code>isPending</code> really mean?</b>
-</p>
-<ul style={{ marginTop: 8, opacity: 0.75, paddingLeft: 20 }}>
-  <li>
-    <code>const [isPending, startTransition] = useTransition();</code>
-  </li>
-  <li>
-    <b>When <code>isPending === true</code>:</b> React is currently working on low-priority updates.
-  </li>
-  <li>
-    <b>What it does NOT do:</b>
-    <ul style={{ marginTop: 4, paddingLeft: 20 }}>
-      <li>It does NOT trigger concurrency.</li>
-      <li>It does NOT slow down rendering.</li>
-      <li>It does NOT block anything.</li>
-    </ul>
-  </li>
-  <li>
-    <b>What it is:</b> <code>isPending</code> is just a status flag that you can use to show:
-    <ul style={{ marginTop: 4, paddingLeft: 20 }}>
-      <li>A spinner.</li>
-      <li>An "Updating..." message.</li>
-      <li>A skeleton UI.</li>
-    </ul>
-  </li>
-</ul>
+        <b>
+          What does <code>isPending</code> really mean?
+        </b>
+      </p>
+      <ul style={{ marginTop: 8, opacity: 0.75, paddingLeft: 20 }}>
+        <li>
+          <code>const [isPending, startTransition] = useTransition();</code>
+        </li>
+        <li>
+          <b>
+            When <code>isPending === true</code>:
+          </b>{' '}
+          React is currently working on low-priority updates.
+        </li>
+        <li>
+          <b>What it does NOT do:</b>
+          <ul style={{ marginTop: 4, paddingLeft: 20 }}>
+            <li>It does NOT trigger concurrency.</li>
+            <li>It does NOT slow down rendering.</li>
+            <li>It does NOT block anything.</li>
+          </ul>
+        </li>
+        <li>
+          <b>What it is:</b> <code>isPending</code> is just a status flag that
+          you can use to show:
+          <ul style={{ marginTop: 4, paddingLeft: 20 }}>
+            <li>A spinner.</li>
+            <li>An &quot;Updating...&quot; message.</li>
+            <li>A skeleton UI.</li>
+          </ul>
+        </li>
+      </ul>
     </div>
   );
 }

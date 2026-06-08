@@ -1,4 +1,4 @@
-import { watchFetchUsersSaga, watchUsersLogEventSaga,  } from './watchers';
+import { watchFetchUsersSaga, watchUsersLogEventSaga } from './watchers';
 import { all, fork } from 'redux-saga/effects';
 
 export function* usersSaga() {

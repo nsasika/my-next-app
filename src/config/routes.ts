@@ -1,45 +1,65 @@
-export const ROUTES: RoutesType[] = [
+import { APP_PATHS, type NavItem, type SidebarSection } from './routes.type';
+
+export { APP_PATHS };
+
+export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
+  { href: APP_PATHS.home, label: 'Home' },
+  { href: APP_PATHS.interviewQuestions, label: 'Interview Questions' },
+  { href: APP_PATHS.interviewReactHooks, label: 'React Hooks' },
+  { href: APP_PATHS.about, label: 'About Nalin' },
+];
+
+export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
+  href: APP_PATHS.useRefTest,
+  label: 'Practical Examples',
+};
+
+export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
+  href: APP_PATHS.login,
+  label: 'Login',
+};
+
+export const SIDEBAR_ROUTES: SidebarSection[] = [
   {
     title: 'Hooks',
     links: [
-      { href: '/use-ref-test', label: 'useRef' },
-      { href: '/use-memo-test', label: 'useMemo' },
-      { href: '/custom-hooks', label: 'custom Hooks' },
+      { href: APP_PATHS.useRefTest, label: 'useRef' },
+      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
+      { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
     ],
   },
   {
     title: 'React 18 Changes',
     links: [
-      { href: '/react18/batching', label: 'Automatic Batching' },
-      { href: '/react18/transitions', label: 'Transitions (useTransition)' },
+      { href: APP_PATHS.react18Batching, label: 'Automatic Batching' },
+      {
+        href: APP_PATHS.react18Transitions,
+        label: 'Transitions (useTransition)',
+      },
     ],
   },
   {
     title: 'Redux Toolkit',
     links: [
-      { href: '/counterSlice', label: 'Counter Example' },
-      { href: '/redux-thunk', label: 'Redux Thunk Example' },
-      { href: '/redux-saga', label: 'Redux Saga Example' },
+      { href: APP_PATHS.counterSlice, label: 'Counter Example' },
+      { href: APP_PATHS.reduxThunk, label: 'Redux Thunk Example' },
+      { href: APP_PATHS.reduxSaga, label: 'Redux Saga Example' },
     ],
   },
   {
     title: 'RTK SAGA',
     links: [
-      { href: '/practice/takeEvery', label: 'Take Every' },
-      { href: '/practice/takeLatest', label: 'Take Latest' },
-      { href: '/practice/debounce', label: 'Debounce' },
+      { href: APP_PATHS.takeEvery, label: 'Take Every' },
+      { href: APP_PATHS.takeLatest, label: 'Take Latest' },
+      { href: APP_PATHS.debounce, label: 'Debounce' },
     ],
   },
   {
     title: 'Performance Testing',
     links: [
-      { href: '/performance', label: 'Performance Testing' },
-      { href: '/ssr', label: 'SSR rendering' },
-      { href: '/csr', label: 'CSR rendering' },
+      { href: APP_PATHS.performance, label: 'Performance Testing' },
+      { href: APP_PATHS.ssr, label: 'SSR rendering' },
+      { href: APP_PATHS.csr, label: 'CSR rendering' },
     ],
-  },
-  {
-    title: 'About Me',
-    links: [{ href: '/about', label: 'Nalin Padmasiri' }],
   },
 ];

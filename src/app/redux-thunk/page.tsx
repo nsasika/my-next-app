@@ -28,12 +28,12 @@ const ReduxThunkPage = () => {
         </li>
         <li>
           They are also useful for moderate asynchronous logic, such as one-shot
-          "fetch some async data and dispatch an action with the result"
-          requests.
+          &quot;fetch some async data and dispatch an action with the
+          result&quot; requests.
         </li>
         <li>
           Redux Toolkit includes the <code>createAsyncThunk</code> API for the
-          "request and dispatch" use case.
+          &quot;request and dispatch&quot; use case.
         </li>
         <li>For other use cases, you can write your own thunk functions.</li>
       </ul>
@@ -45,13 +45,13 @@ const ReduxThunkPage = () => {
           logic.
         </li>
         <li>
-          <strong>👎 Disadvantages:</strong> Can't respond to dispatched
-          actions; imperative; can't be cancelled.
+          <strong>👎 Disadvantages:</strong> Can&apos;t respond to dispatched
+          actions; imperative; can&apos;t be cancelled.
         </li>
       </ul>
       <div className="flex flex-row gap-2">
-      <CustomBtn title="Fetch Users" onClick={() => dispatch(fetchUsers())} />
-      <CustomBtn title="Reset Users" onClick={() => dispatch(resetUsers())} />
+        <CustomBtn title="Fetch Users" onClick={() => dispatch(fetchUsers())} />
+        <CustomBtn title="Reset Users" onClick={() => dispatch(resetUsers())} />
       </div>
 
       {loading && <p>Loading users...</p>}
