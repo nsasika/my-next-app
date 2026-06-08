@@ -1,12 +1,12 @@
 'use client';
 
 import CollapsibleSection from '@/components/Sidebar/CollapsibleSection';
-import { useRouter, usePathname } from 'next/navigation';
-import React, { useMemo, useCallback } from 'react';
+import { APP_PATHS, SIDEBAR_ROUTES } from '@/config/routes';
 import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import { ROUTES } from '@/config/routes';
+import Button from '@mui/material/Button';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useCallback, useMemo } from 'react';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(true);
 
   const title = useMemo(() => {
-    return pathname === '/' ? 'Home' : 'Navigation';
+    return pathname === APP_PATHS.home ? 'Home' : 'Navigation';
   }, [pathname]);
 
   const onClickMenuClose = useCallback(() => {
@@ -23,11 +23,11 @@ const Sidebar: React.FC = () => {
   }, []);
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth/logout', {
+    await fetch(APP_PATHS.authLogout, {
       method: 'POST',
     });
 
-    router.push('/login');
+    router.push(APP_PATHS.login);
   }, [router]);
 
   return (
@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
           </div>
 
           <ul className="space-y-2">
-            {ROUTES.map((section) => (
+            {SIDEBAR_ROUTES.map((section) => (
               <CollapsibleSection
                 key={section.title}
                 title={section.title}

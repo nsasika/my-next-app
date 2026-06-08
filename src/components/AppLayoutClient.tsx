@@ -1,9 +1,12 @@
 'use client';
 
+import { APP_PATHS } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import RecruiterNav from './RecruiterNav';
 import Sidebar from './Sidebar';
+
+const RECRUITER_PATH_PREFIXES = [APP_PATHS.interviewQuestions] as const;
 
 export default function AppLayoutClient({
   children,
@@ -12,11 +15,12 @@ export default function AppLayoutClient({
 }) {
   const pathname = usePathname();
 
-  const isLoginPage = pathname === '/login';
+  const isLoginPage = pathname === APP_PATHS.login;
+
   const isRecruiterPage =
-    pathname === '/' ||
-    pathname === '/about' ||
-    pathname.startsWith('/interview-questions');
+    pathname === APP_PATHS.home ||
+    pathname === APP_PATHS.about ||
+    RECRUITER_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   if (isLoginPage) {
     return <>{children}</>;

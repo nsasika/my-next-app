@@ -2,9 +2,13 @@
 import Link from 'next/link';
 import React from 'react';
 import { useState } from 'react';
-import type { RoutesType } from '@/config/routes.type';
 
-const CollapsibleSection = ({ title, links }: RoutesType) => {
+interface CollapsibleSectionProps {
+  title: string;
+  links?: Array<{ href: string; label: string }>;
+}
+
+const CollapsibleSection = ({ title, links }: CollapsibleSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

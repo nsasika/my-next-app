@@ -1,16 +1,15 @@
 'use client';
 
-import Link from 'next/link';
+import {
+  APP_PATHS,
+  RECRUITER_AUTH_NAV_ITEM,
+  RECRUITER_GUEST_NAV_ITEM,
+  RECRUITER_NAV_BASE_ITEMS,
+} from '@/config/routes';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-const baseNavItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Nalin' },
-  { href: '/interview-questions', label: 'Interview Questions' },
-  { href: '/interview-questions/react-hooks', label: 'React Hooks' },
-];
 
 export default function RecruiterNav() {
   const pathname = usePathname();
@@ -18,7 +17,7 @@ export default function RecruiterNav() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch(APP_PATHS.authMe, {
         cache: 'no-store',
         credentials: 'include',
       });
@@ -43,10 +42,8 @@ export default function RecruiterNav() {
 
   const navItems = useMemo(
     () => [
-      ...baseNavItems,
-      isAuthenticated
-        ? { href: '/use-ref-test', label: 'Practical Examples' }
-        : { href: '/login', label: 'Login' },
+      ...RECRUITER_NAV_BASE_ITEMS,
+      isAuthenticated ? RECRUITER_AUTH_NAV_ITEM : RECRUITER_GUEST_NAV_ITEM,
     ],
     [isAuthenticated],
   );
@@ -54,7 +51,10 @@ export default function RecruiterNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-        <Link href="/" className="group inline-flex items-center gap-3">
+        <Link
+          href={APP_PATHS.home}
+          className="group inline-flex items-center gap-3"
+        >
           <Image
             src="/nalinsacademy.png"
             alt="Nalin's Academy logo"
@@ -71,7 +71,7 @@ export default function RecruiterNav() {
         <div className="flex flex-wrap items-center gap-2">
           {navItems.map((item) => {
             const isActive =
-              item.href === '/'
+              item.href === APP_PATHS.home
                 ? pathname === item.href
                 : pathname.startsWith(item.href);
 
