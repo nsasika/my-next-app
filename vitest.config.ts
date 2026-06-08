@@ -13,6 +13,7 @@ export default defineConfig({
         'src/components/AboutProfile/index.tsx',
         'src/components/InfoCard/index.tsx',
         'src/components/ResumeDownload/index.tsx',
+        'src/components/StepList/index.tsx',
       ],
       thresholds: {
         statements: 80,
