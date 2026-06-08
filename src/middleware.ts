@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from './lib/auth';
 
 const publicRoutes = [
   '/',
@@ -10,7 +11,7 @@ const publicRoutes = [
   '/profilepic.png',
 ];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPublicRoute = publicRoutes.some((route) => {
@@ -22,12 +23,13 @@ export function middleware(request: NextRequest) {
   });
 
   const token = request.cookies.get('access_token')?.value;
+  const user = token ? await verifyToken(token) : null;
 
-  if (!token && !isPublicRoute) {
+  if (!user && !isPublicRoute) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (token && pathname === '/login') {
+  if (user && pathname === '/login') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
