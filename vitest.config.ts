@@ -8,7 +8,12 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['src/lib/features/**/*Slice.ts'],
+      include: [
+        'src/lib/features/**/*Slice.ts',
+        'src/components/AboutProfile/index.tsx',
+        'src/components/InfoCard/index.tsx',
+        'src/components/ResumeDownload/index.tsx',
+      ],
       thresholds: {
         statements: 80,
         branches: 80,

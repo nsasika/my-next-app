@@ -10,6 +10,7 @@ const publicRoutes = [
   '/api/auth/me',
   '/nalinsacademy.png',
   '/profilepic.png',
+  '/resume/',
 ];
 
 export async function proxy(request: NextRequest) {
