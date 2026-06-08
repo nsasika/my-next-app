@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from './lib/auth';
+import { verifyToken } from '@/lib/auth';
 
 const publicRoutes = [
   '/',
@@ -23,13 +23,21 @@ export async function middleware(request: NextRequest) {
   });
 
   const token = request.cookies.get('access_token')?.value;
-  const user = token ? await verifyToken(token) : null;
+  const verifiedUser = token ? await verifyToken(token) : null;
+  const isAuthenticated = Boolean(verifiedUser);
 
-  if (!user && !isPublicRoute) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (!isAuthenticated && !isPublicRoute) {
+    const response = NextResponse.redirect(new URL('/login', request.url));
+
+    // Clear invalid or expired tokens so route gating cannot be bypassed.
+    if (token) {
+      response.cookies.delete('access_token');
+    }
+
+    return response;
   }
 
-  if (user && pathname === '/login') {
+  if (isAuthenticated && pathname === '/login') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -37,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!_next/|favicon.ico).*)'],
 };

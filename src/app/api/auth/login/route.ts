@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       httpOnly: true, // Prevent client-side JavaScript from reading the cookie
       secure: process.env.NODE_ENV === 'production', // Send only over HTTPS in production
       sameSite: 'strict', // Reduce CSRF risk by blocking cross-site cookie sending
+      path: '/',
       maxAge: 60 * 15, // 15 minutes
     });
   
