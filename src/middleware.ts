@@ -1,27 +1,39 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-const publicRoutes = ["/login", "/api/auth/login"];
+const publicRoutes = [
+  '/',
+  '/about',
+  '/interview-questions',
+  '/login',
+  '/api/auth/login',
+  '/nalinsacademy.png',
+  '/profilepic.png',
+];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const isPublicRoute = publicRoutes.some((route) => {
+    if (route === '/') {
+      return pathname === route;
+    }
 
-  const token = request.cookies.get("access_token")?.value;
+    return pathname.startsWith(route);
+  });
+
+  const token = request.cookies.get('access_token')?.value;
 
   if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (token && pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (token && pathname === '/login') {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

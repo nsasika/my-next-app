@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginClient() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("doctor@test.com");
-  const [password, setPassword] = useState("password123");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState('doctor@test.com');
+  const [password, setPassword] = useState('password123');
+  const [message, setMessage] = useState('');
 
   async function login() {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
     });
@@ -23,33 +24,47 @@ export default function LoginClient() {
     setMessage(data.message);
 
     if (res.ok) {
-      router.push("/");
+      router.push('/use-ref-test');
     }
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100">
-      <section className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4">
-          Login to Nalin&apos;s Academy
-        </h1>
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-5 py-10">
+      <section className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+        <Link
+          href="/"
+          className="mb-6 inline-flex text-sm font-bold text-sky-700 hover:text-sky-900"
+        >
+          Back to recruiter view
+        </Link>
 
-        <div className="mb-4 bg-blue-50 p-4 rounded">
-          <p className="font-semibold">Use these test credentials:</p>
+        <h1 className="text-2xl font-bold text-slate-950">
+          Login to see practical examples
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-slate-600">
+          Sign in to access the older hands-on examples for hooks, Redux,
+          rendering, sagas, and performance practice inside Nalin&apos;s
+          Academy.
+        </p>
+
+        <div className="my-6 rounded-lg bg-sky-50 p-4 text-sm text-slate-700">
+          <p className="font-semibold text-slate-950">
+            Use these test credentials:
+          </p>
           <p>Email: doctor@test.com</p>
           <p>Password: password123</p>
         </div>
 
         <div className="grid gap-4">
           <input
-            className="border p-2 rounded"
+            className="rounded-lg border border-slate-300 p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
 
           <input
-            className="border p-2 rounded"
+            className="rounded-lg border border-slate-300 p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
             value={password}
             type="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -57,7 +72,7 @@ export default function LoginClient() {
           />
 
           <button
-            className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+            className="rounded-lg bg-slate-950 p-3 font-bold text-white transition hover:bg-slate-800"
             onClick={login}
           >
             Login
