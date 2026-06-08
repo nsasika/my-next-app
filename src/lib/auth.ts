@@ -1,6 +1,19 @@
-import { SignJWT , jwtVerify} from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+function getJwtSecret() {
+  const rawSecret = process.env.JWT_SECRET;
+
+  if (!rawSecret) {
+    throw new Error('JWT_SECRET is not configured.');
+  }
+
+  const secret = new TextEncoder().encode(rawSecret);
+  if (secret.length < 32) {
+    throw new Error('JWT_SECRET must be at least 32 characters for HS256.');
+  }
+
+  return secret;
+}
 
 export type UserRole = 'ADMIN' | 'DOCTOR' | 'PATIENT' | 'NURSE';
 
@@ -11,6 +24,8 @@ export type AuthUser = {
 };
 
 export async function createToken(user: AuthUser) {
+  const secret = getJwtSecret();
+
   return new SignJWT(user)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -20,6 +35,8 @@ export async function createToken(user: AuthUser) {
 
 export async function verifyToken(token: string) {
   try {
+    const secret = getJwtSecret();
+
     // Verifies token signature and expiration using the shared secret.
     const { payload } = await jwtVerify(token, secret);
 

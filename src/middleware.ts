@@ -1,27 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/auth';
 
-const publicRoutes = ["/login", "/api/auth/login"];
+const publicRoutes = [
+  '/',
+  '/about',
+  '/interview-questions',
+  '/login',
+  '/api/auth/login',
+  '/nalinsacademy.png',
+  '/profilepic.png',
+];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const isPublicRoute = publicRoutes.some((route) => {
+    if (route === '/') {
+      return pathname === route;
+    }
 
-  const token = request.cookies.get("access_token")?.value;
+    return pathname.startsWith(route);
+  });
 
-  if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  const token = request.cookies.get('access_token')?.value;
+  const verifiedUser = token ? await verifyToken(token) : null;
+  const isAuthenticated = Boolean(verifiedUser);
+
+  if (!isAuthenticated && !isPublicRoute) {
+    const response = NextResponse.redirect(new URL('/login', request.url));
+
+    // Clear invalid or expired tokens so route gating cannot be bypassed.
+    if (token) {
+      response.cookies.delete('access_token');
+    }
+
+    return response;
   }
 
-  if (token && pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (isAuthenticated && pathname === '/login') {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!_next/|favicon.ico).*)'],
 };
