@@ -3,17 +3,53 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const navItems = [
+const baseNavItems = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Nalin' },
   { href: '/interview-questions', label: 'Interview Questions' },
   { href: '/interview-questions/react-hooks', label: 'React Hooks' },
-  { href: '/login', label: 'Login' },
 ];
 
 export default function RecruiterNav() {
   const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const response = await fetch('/api/auth/me', {
+        cache: 'no-store',
+        credentials: 'include',
+      });
+
+      setIsAuthenticated(response.ok);
+    } catch {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void Promise.resolve().then(checkAuth);
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('pageshow', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('pageshow', checkAuth);
+    };
+  }, [checkAuth, pathname]);
+
+  const navItems = useMemo(
+    () => [
+      ...baseNavItems,
+      isAuthenticated
+        ? { href: '/use-ref-test', label: 'Practical Examples' }
+        : { href: '/login', label: 'Login' },
+    ],
+    [isAuthenticated],
+  );
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
