@@ -5,6 +5,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import StorageIcon from '@mui/icons-material/Storage';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import InfoCard from '@/components/InfoCard';
+import StepList from '@/components/StepList';
 import {
   homeHeroContent,
   learningPillars,
@@ -61,28 +62,13 @@ export default function HomePage() {
           <h2 className="mt-3 text-2xl font-bold text-slate-950">
             {platformDirectionContent.heading}
           </h2>
-          <div className="mt-6 space-y-4">
-            {platformSteps.map((item, index) => (
-              <div
-                key={item.title}
-                className="flex gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-800">
-                  {platformStepIcons[item.icon]}
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-                    Step {index + 1}
-                  </p>
-                  <h3 className="mt-1 font-bold text-slate-950">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    {item.body}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="mt-6">
+            <StepList
+              steps={platformSteps.map((item) => ({
+                ...item,
+                icon: platformStepIcons[item.icon],
+              }))}
+            />
           </div>
         </div>
       </section>

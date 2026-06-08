@@ -5,7 +5,6 @@ export { APP_PATHS };
 export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
   { href: APP_PATHS.home, label: 'Home' },
   { href: APP_PATHS.interviewQuestions, label: 'Interview Questions' },
-  { href: APP_PATHS.interviewReactHooks, label: 'React Hooks' },
   { href: APP_PATHS.about, label: 'About Nalin' },
 ];
 

@@ -4,8 +4,6 @@ export const APP_PATHS = {
   login: '/login',
 
   interviewQuestions: '/interview-questions',
-  interviewReactHooks: '/interview-questions/react-hooks',
-  interviewUseState: '/interview-questions/react-hooks/use-state',
 
   useRefTest: '/use-ref-test',
   useMemoTest: '/use-memo-test',
