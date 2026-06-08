@@ -22,10 +22,14 @@ function* fetchUsersWorker() {
     }));
 
     yield put(fetchUsersSagaSuccess(users));
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const responseError = error as {
+      response?: { data?: { message?: string } };
+      message?: string;
+    };
     const message =
-      error?.response?.data?.message ??
-      error?.message ??
+      responseError.response?.data?.message ??
+      responseError.message ??
       'Failed to fetch users';
 
     yield put(fetchUsersSagaFailure(message));

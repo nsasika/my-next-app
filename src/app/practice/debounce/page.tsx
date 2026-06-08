@@ -4,7 +4,9 @@ import { updateQuery } from '@/lib/features/client/clientsSlice';
 
 const DebouncePage = () => {
   const dispatch = useAppDispatch();
-  const { query, results, loading, error }= useAppSelector((state) => state.clients);
+  const { query, results, loading, error } = useAppSelector(
+    (state) => state.clients,
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(updateQuery(e.target.value)); // Dispatch the query update

@@ -1,3 +1,5 @@
+import type { RoutesType } from './routes.type';
+
 export const ROUTES: RoutesType[] = [
   {
     title: 'Hooks',

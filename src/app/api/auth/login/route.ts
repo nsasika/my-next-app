@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       path: '/',
       maxAge: 60 * 15, // 15 minutes
     });
-  
+
     return response;
   } catch (error) {
     console.error('Login route failed:', error);

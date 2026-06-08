@@ -1,10 +1,9 @@
-type LinkType = {
-    href: string;
-    label: string;
-}
+export type LinkType = {
+  href: string;
+  label: string;
+};
 
-
-type RoutesType = {
-    title: string;
-    links: LinkType[];
-}
+export type RoutesType = {
+  title: string;
+  links: LinkType[];
+};

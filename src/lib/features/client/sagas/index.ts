@@ -1,8 +1,8 @@
-import { all, fork } from "redux-saga/effects";
-import { watchUpdateQuery } from "./watcher";
+import { all, fork } from 'redux-saga/effects';
+import { watchUpdateQuery } from './watcher';
 
-function* clientsSaga(){
-    yield all([fork(watchUpdateQuery)]);
+function* clientsSaga() {
+  yield all([fork(watchUpdateQuery)]);
 }
 
 export { clientsSaga };

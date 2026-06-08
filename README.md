@@ -40,10 +40,13 @@ Welcome to **Nalin's Academy**, a Next.js application designed to showcase my ex
 ## **Getting Started**
 
 ### **Prerequisites**
+
 - Node.js (v16 or higher)
 - npm or yarn
 
 ### **Installation**
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/nsasika/my-next-app.git
+   ```

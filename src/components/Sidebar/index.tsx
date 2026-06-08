@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import CollapsibleSection from "@/components/Sidebar/CollapsibleSection";
-import { useRouter, usePathname } from "next/navigation";
-import React, { useMemo, useCallback } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { ROUTES } from "@/config/routes";
+import CollapsibleSection from '@/components/Sidebar/CollapsibleSection';
+import { useRouter, usePathname } from 'next/navigation';
+import React, { useMemo, useCallback } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { ROUTES } from '@/config/routes';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(true);
 
   const title = useMemo(() => {
-    return pathname === "/" ? "Home" : "Navigation";
+    return pathname === '/' ? 'Home' : 'Navigation';
   }, [pathname]);
 
   const onClickMenuClose = useCallback(() => {
@@ -23,11 +23,11 @@ const Sidebar: React.FC = () => {
   }, []);
 
   const logout = useCallback(async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
+    await fetch('/api/auth/logout', {
+      method: 'POST',
     });
 
-    router.push("/login");
+    router.push('/login');
   }, [router]);
 
   return (
