@@ -1,61 +1,86 @@
+import CodeIcon from '@mui/icons-material/Code';
+import GroupsIcon from '@mui/icons-material/Groups';
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import SchoolIcon from '@mui/icons-material/School';
+import StorageIcon from '@mui/icons-material/Storage';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import InfoCard from '@/components/InfoCard';
+import {
+  homeHeroContent,
+  learningPillars,
+  platformDirectionContent,
+  platformSteps,
+} from './content';
+
+const platformStepIcons = {
+  code: <CodeIcon fontSize="small" />,
+  groups: <GroupsIcon fontSize="small" />,
+  track: <TrackChangesIcon fontSize="small" />,
+} as const;
+
+const learningPillarIcons = {
+  java: <StorageIcon fontSize="small" />,
+  react: <IntegrationInstructionsIcon fontSize="small" />,
+  recruiter: <SchoolIcon fontSize="small" />,
+} as const;
+
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
       <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
-            Interview preparation for job seekers
+            {homeHeroContent.eyebrow}
           </p>
           <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight text-slate-950 sm:text-6xl">
-            Nalin&apos;s Academy helps candidates turn technical knowledge into
-            interview confidence.
+            {homeHeroContent.heading}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700">
-            The ambition is simple: build a practical interview-preparation
-            platform where job seekers can learn Java, React, frontend
-            architecture, and full-stack trade-offs through clear explanations,
-            recruiter-ready examples, and guided practice.
+            {homeHeroContent.body}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
-              href="/interview-questions"
+              href={homeHeroContent.primaryAction.href}
               className="rounded-lg bg-slate-950 px-6 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-slate-800"
             >
-              Explore questions
+              {homeHeroContent.primaryAction.label}
             </a>
             <a
-              href="/about"
+              href={homeHeroContent.secondaryAction.href}
               className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-center text-sm font-bold text-slate-950 transition hover:border-slate-400 hover:bg-slate-100"
             >
-              Meet Nalin
+              {homeHeroContent.secondaryAction.label}
             </a>
           </div>
         </div>
 
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-950">
-            Platform direction
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
+            {platformDirectionContent.eyebrow}
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-slate-950">
+            {platformDirectionContent.heading}
           </h2>
-          <div className="mt-6 space-y-5">
-            {[
-              {
-                title: 'Interview maps',
-                body: 'Organized tracks for React, Java, system design, and full-stack problem solving.',
-              },
-              {
-                title: 'Practical answers',
-                body: 'Theory paired with code examples, trade-offs, and the kind of wording that works in interviews.',
-              },
-              {
-                title: 'Career positioning',
-                body: 'A learning experience shaped for job seekers who need to explain impact, not just syntax.',
-              },
-            ].map((item) => (
-              <div key={item.title} className="border-l-4 border-sky-600 pl-4">
-                <h3 className="font-bold text-slate-950">{item.title}</h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  {item.body}
-                </p>
+          <div className="mt-6 space-y-4">
+            {platformSteps.map((item, index) => (
+              <div
+                key={item.title}
+                className="flex gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-800">
+                  {platformStepIcons[item.icon]}
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                    Step {index + 1}
+                  </p>
+                  <h3 className="mt-1 font-bold text-slate-950">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    {item.body}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -63,27 +88,13 @@ export default function HomePage() {
       </section>
 
       <section className="mt-16 grid gap-4 md:grid-cols-3">
-        {[
-          [
-            'React depth',
-            'Hooks, rendering behavior, state flow, and performance patterns.',
-          ],
-          [
-            'Java strength',
-            'Backend fundamentals, APIs, services, and production reasoning.',
-          ],
-          [
-            'Recruiter clarity',
-            'Profiles and answers shaped around the expectations of hiring teams.',
-          ],
-        ].map(([title, body]) => (
-          <article
-            key={title}
-            className="rounded-lg border border-slate-200 bg-white p-6"
-          >
-            <h3 className="text-lg font-bold text-slate-950">{title}</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{body}</p>
-          </article>
+        {learningPillars.map((item) => (
+          <InfoCard
+            key={item.title}
+            body={item.body}
+            icon={learningPillarIcons[item.icon]}
+            title={item.title}
+          />
         ))}
       </section>
     </div>
