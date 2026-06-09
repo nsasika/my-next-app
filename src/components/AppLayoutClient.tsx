@@ -10,8 +10,10 @@ const RECRUITER_PATH_PREFIXES = [APP_PATHS.interviewQuestions] as const;
 
 export default function AppLayoutClient({
   children,
+  initialIsAuthenticated,
 }: {
   children: React.ReactNode;
+  initialIsAuthenticated: boolean;
 }) {
   const pathname = usePathname();
 
@@ -29,7 +31,7 @@ export default function AppLayoutClient({
   if (isRecruiterPage) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-950">
-        <RecruiterNav />
+        <RecruiterNav isAuthenticated={initialIsAuthenticated} />
         <main>{children}</main>
       </div>
     );

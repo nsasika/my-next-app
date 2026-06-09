@@ -7,7 +7,6 @@ const publicRoutes = [
   '/interview-questions',
   '/login',
   '/api/auth/login',
-  '/api/auth/me',
   '/nalinsacademy.png',
   '/profilepic.png',
   '/resume/',

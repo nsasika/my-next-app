@@ -9,36 +9,14 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
-export default function RecruiterNav() {
+export default function RecruiterNav({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const checkAuth = useCallback(async () => {
-    try {
-      const response = await fetch(APP_PATHS.authMe, {
-        cache: 'no-store',
-        credentials: 'include',
-      });
-
-      setIsAuthenticated(response.ok);
-    } catch {
-      setIsAuthenticated(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void Promise.resolve().then(checkAuth);
-
-    window.addEventListener('focus', checkAuth);
-    window.addEventListener('pageshow', checkAuth);
-
-    return () => {
-      window.removeEventListener('focus', checkAuth);
-      window.removeEventListener('pageshow', checkAuth);
-    };
-  }, [checkAuth, pathname]);
 
   const navItems = useMemo(
     () => [

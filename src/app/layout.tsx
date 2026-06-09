@@ -6,6 +6,8 @@ import './globals.css';
 import { roboto, geistSans, geistMono } from '@/styles/fonts';
 import StoreProvider from '@/lib/StoreProvider';
 import AppLayoutClient from '@/components/AppLayoutClient';
+import { verifyToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",
@@ -16,18 +18,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('access_token')?.value;
+  const verifiedUser = token ? await verifyToken(token) : null;
+
   return (
     <html lang="en" className={roboto.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <StoreProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
-              <AppLayoutClient>{children}</AppLayoutClient>
+              <AppLayoutClient initialIsAuthenticated={Boolean(verifiedUser)}>
+                {children}
+              </AppLayoutClient>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>

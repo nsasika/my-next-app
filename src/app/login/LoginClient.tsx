@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function LoginClient() {
   const router = useRouter();
@@ -10,33 +10,6 @@ export default function LoginClient() {
   const [email, setEmail] = useState('doctor@test.com');
   const [password, setPassword] = useState('password123');
   const [message, setMessage] = useState('');
-
-  const redirectIfAlreadyLoggedIn = useCallback(async () => {
-    try {
-      const response = await fetch('/api/auth/me', {
-        cache: 'no-store',
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        router.replace('/use-ref-test');
-      }
-    } catch {
-      // Stay on login if the auth check cannot be completed.
-    }
-  }, [router]);
-
-  useEffect(() => {
-    void Promise.resolve().then(redirectIfAlreadyLoggedIn);
-
-    window.addEventListener('focus', redirectIfAlreadyLoggedIn);
-    window.addEventListener('pageshow', redirectIfAlreadyLoggedIn);
-
-    return () => {
-      window.removeEventListener('focus', redirectIfAlreadyLoggedIn);
-      window.removeEventListener('pageshow', redirectIfAlreadyLoggedIn);
-    };
-  }, [redirectIfAlreadyLoggedIn]);
 
   async function login() {
     const res = await fetch('/api/auth/login', {

@@ -24,7 +24,6 @@ export const APP_PATHS = {
   ssr: '/ssr',
   csr: '/csr',
 
-  authMe: '/api/auth/me',
   authLogout: '/api/auth/logout',
 } as const;
 
