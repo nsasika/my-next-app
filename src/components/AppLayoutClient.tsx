@@ -3,8 +3,8 @@
 import { APP_PATHS } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import RecruiterNav from './RecruiterNav';
-import Sidebar from './Sidebar';
+import LearningShell from './layout/LearningShell';
+import SiteHeader from './layout/SiteHeader';
 
 const RECRUITER_PATH_PREFIXES = [APP_PATHS.interviewQuestions] as const;
 
@@ -31,16 +31,11 @@ export default function AppLayoutClient({
   if (isRecruiterPage) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-950">
-        <RecruiterNav isAuthenticated={initialIsAuthenticated} />
+        <SiteHeader isAuthenticated={initialIsAuthenticated} />
         <main>{children}</main>
       </div>
     );
   }
 
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <main className="flex-1 p-8 bg-gray-100">{children}</main>
-    </div>
-  );
+  return <LearningShell>{children}</LearningShell>;
 }

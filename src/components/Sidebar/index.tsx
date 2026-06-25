@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
   }, [router]);
 
   return (
-    <nav className="w-64 bg-gray-800 text-white flex flex-col p-4">
+    <nav className="flex w-64 flex-col border-r border-slate-200 bg-white p-4 text-slate-950">
       {!isOpen ? (
         <Button
           variant="contained"

@@ -1,72 +1,87 @@
 'use client';
 
-import { CustomBtn } from '@/components';
+import AppButton from '@/components/ui/AppButton';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
+import StatusMessage from '@/components/ui/StatusMessage';
 import { fetchUsers, resetUsers } from '@/lib/features/user/usersSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-
-const headingStyle = {
-  textDecoration: 'underline',
-  backgroundColor: '#f0f8ff',
-  padding: '4px',
-};
 
 const ReduxThunkPage = () => {
   const dispatch = useAppDispatch();
   const { users, loading, error } = useAppSelector((state) => state.users);
   return (
-    <div style={{ padding: '16px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={headingStyle}>Redux Thunk Example Page</h1>
-      <p>
-        This page demonstrates the use of Redux Thunk in a Next.js application.
-      </p>
+    <>
+      <PageHeader
+        description="Redux Thunk is a practical fit for one-shot async requests and logic that needs dispatch or state access."
+        eyebrow="Redux Toolkit"
+        tags={['Redux Thunk', 'Client Component', 'Async State']}
+        title="Redux Thunk Example"
+      />
 
-      <h2>Thunk Use Cases</h2>
-      <ul>
-        <li>
-          Thunks are best used for complex synchronous logic that needs access
-          to <code>dispatch</code> and <code>getState</code>.
-        </li>
-        <li>
-          They are also useful for moderate asynchronous logic, such as one-shot
-          &quot;fetch some async data and dispatch an action with the
-          result&quot; requests.
-        </li>
-        <li>
-          Redux Toolkit includes the <code>createAsyncThunk</code> API for the
-          &quot;request and dispatch&quot; use case.
-        </li>
-        <li>For other use cases, you can write your own thunk functions.</li>
-      </ul>
+      <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+        <ContentCard>
+          <h2 className="text-xl font-bold text-slate-950">Thunk Use Cases</h2>
+          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>
+              Thunks are useful for logic that needs access to{' '}
+              <code>dispatch</code> and <code>getState</code>.
+            </li>
+            <li>
+              They work well for one-shot async requests that dispatch results.
+            </li>
+            <li>
+              Redux Toolkit includes <code>createAsyncThunk</code> for request
+              and dispatch flows.
+            </li>
+          </ul>
+        </ContentCard>
 
-      <h2 style={headingStyle}>Thunk Tradeoffs</h2>
-      <ul>
-        <li>
-          <strong>👍 Advantages:</strong> Just write functions; may contain any
-          logic.
-        </li>
-        <li>
-          <strong>👎 Disadvantages:</strong> Can&apos;t respond to dispatched
-          actions; imperative; can&apos;t be cancelled.
-        </li>
-      </ul>
-      <div className="flex flex-row gap-2">
-        <CustomBtn title="Fetch Users" onClick={() => dispatch(fetchUsers())} />
-        <CustomBtn title="Reset Users" onClick={() => dispatch(resetUsers())} />
+        <ContentCard>
+          <h2 className="text-xl font-bold text-slate-950">Tradeoffs</h2>
+          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>
+              <strong>Advantages:</strong> simple functions that may contain any
+              logic.
+            </li>
+            <li>
+              <strong>Disadvantages:</strong> imperative and not designed for
+              action watching or cancellation.
+            </li>
+          </ul>
+        </ContentCard>
       </div>
 
-      {loading && <p>Loading users...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {users.length > 0 && (
-        <div>
-          <h3>Fetched Users:</h3>
-          <ul>
-            {users.map((user) => (
-              <li key={user.id}>{user.name}</li>
-            ))}
-          </ul>
+      <ContentCard className="mt-6">
+        <div className="flex flex-wrap gap-2">
+          <AppButton onClick={() => dispatch(fetchUsers())}>
+            Fetch Users
+          </AppButton>
+          <AppButton onClick={() => dispatch(resetUsers())} variant="secondary">
+            Reset Users
+          </AppButton>
         </div>
-      )}
-    </div>
+
+        <div className="mt-5 space-y-3">
+          {loading ? <StatusMessage>Loading users...</StatusMessage> : null}
+          {error ? (
+            <StatusMessage tone="error">Error: {error}</StatusMessage>
+          ) : null}
+          {users.length > 0 ? (
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {users.map((user) => (
+                <li
+                  key={user.id}
+                  className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
+                >
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      </ContentCard>
+    </>
   );
 };
 

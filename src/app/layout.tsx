@@ -28,8 +28,11 @@ export default async function RootLayout({
   const verifiedUser = token ? await verifyToken(token) : null;
 
   return (
-    <html lang="en" className={roboto.variable}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable}`}
+    >
+      <body>
         <StoreProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>

@@ -1,12 +1,23 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import AppButton from '@/components/ui/AppButton';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function UseMemoTest() {
   const [count, setCount] = useState(0);
   const [otherCount, setOtherCount] = useState(0);
   const [showBanner, setShowBanner] = useState(false);
   const bannerTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (bannerTimeoutRef.current) {
+        clearTimeout(bannerTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Non-memoized calculation
   const nonMemoizedCalculation = () => {
@@ -32,38 +43,52 @@ export default function UseMemoTest() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {/* Banner to indicate unnecessary re-renders */}
+    <>
       {showBanner && (
-        <div className="fixed top-0 left-0 w-full bg-red-500 text-white text-center py-2">
+        <div className="fixed left-0 top-0 z-50 w-full bg-rose-600 py-2 text-center text-sm font-bold text-white">
           Unnecessary Render Triggered!
         </div>
       )}
 
-      <h1 className="text-2xl font-bold mb-4">useMemo Hook Test</h1>
-      <div className="mb-4">
-        <p>Count: {count}</p>
-        <p>Other Count: {otherCount}</p>
-        <p>Non-Memoized Calculation Result: {nonMemoizedCalculation()}</p>
-        <p>Memoized Calculation Result: {memoizedCalculation}</p>
-      </div>
-      <div className="flex gap-4">
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-          onClick={() => setCount(count + 1)}
-        >
-          Increment Count
-        </button>
-        <button
-          className="px-4 py-2 bg-green-500 text-white rounded"
-          onClick={() => {
-            setOtherCount(otherCount + 1);
-            triggerBanner(); // Trigger the banner when otherCount changes
-          }}
-        >
-          Increment Other Count
-        </button>
-      </div>
-    </div>
+      <PageHeader
+        description="Compare a normal calculation with a memoized calculation when state changes."
+        eyebrow="Hooks"
+        tags={['React', 'Client Component', 'useMemo']}
+        title="useMemo Hook Test"
+      />
+
+      <ContentCard className="max-w-3xl">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {[
+            ['Count', count],
+            ['Other Count', otherCount],
+            ['Non-memoized result', nonMemoizedCalculation()],
+            ['Memoized result', memoizedCalculation],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-lg bg-slate-50 p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                {label}
+              </p>
+              <p className="mt-2 text-2xl font-black text-slate-950">{value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <AppButton onClick={() => setCount(count + 1)}>
+            Increment Count
+          </AppButton>
+          <AppButton
+            onClick={() => {
+              setOtherCount(otherCount + 1);
+              triggerBanner();
+            }}
+            variant="secondary"
+          >
+            Increment Other Count
+          </AppButton>
+        </div>
+      </ContentCard>
+    </>
   );
 }

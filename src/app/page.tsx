@@ -6,6 +6,8 @@ import StorageIcon from '@mui/icons-material/Storage';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import InfoCard from '@/components/InfoCard';
 import StepList from '@/components/StepList';
+import AppButton from '@/components/ui/AppButton';
+import ContentCard from '@/components/ui/ContentCard';
 import {
   homeHeroContent,
   learningPillars,
@@ -40,22 +42,23 @@ export default function HomePage() {
             {homeHeroContent.body}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
+            <AppButton
               href={homeHeroContent.primaryAction.href}
-              className="rounded-lg bg-slate-950 px-6 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-slate-800"
+              className="px-6 py-3"
             >
               {homeHeroContent.primaryAction.label}
-            </a>
-            <a
+            </AppButton>
+            <AppButton
               href={homeHeroContent.secondaryAction.href}
-              className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-center text-sm font-bold text-slate-950 transition hover:border-slate-400 hover:bg-slate-100"
+              className="px-6 py-3"
+              variant="secondary"
             >
               {homeHeroContent.secondaryAction.label}
-            </a>
+            </AppButton>
           </div>
         </div>
 
-        <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <ContentCard className="p-6">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
             {platformDirectionContent.eyebrow}
           </p>
@@ -70,7 +73,7 @@ export default function HomePage() {
               }))}
             />
           </div>
-        </div>
+        </ContentCard>
       </section>
 
       <section className="mt-16 grid gap-4 md:grid-cols-3">
