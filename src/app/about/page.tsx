@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Image from 'next/image';
-import { HighlightBadge, SocialLink } from '@/components/AboutProfile';
+import ContentCard from '@/components/ui/ContentCard';
+import DownloadPanel from '@/components/DownloadPanel/index';
 import InfoCard from '@/components/InfoCard';
-import ResumeDownload from '@/components/ResumeDownload';
+import { HighlightBadge, SocialLink } from '@/components/ProfileLinks/index';
 import {
   academyOriginContent,
   expertiseCards,
@@ -29,7 +30,7 @@ export default function AboutMePage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
       <section className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-        <div className="mx-auto w-full max-w-sm rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <ContentCard className="mx-auto w-full max-w-sm p-5">
           <Image
             src="/profilepic.png"
             alt="Nalin Padmasiri"
@@ -38,7 +39,7 @@ export default function AboutMePage() {
             className="aspect-square w-full rounded-lg object-cover"
             priority
           />
-        </div>
+        </ContentCard>
 
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
@@ -86,7 +87,7 @@ export default function AboutMePage() {
       </section>
 
       <section className="mt-14">
-        <article className="rounded-lg border border-slate-200 bg-white p-6 sm:p-8">
+        <ContentCard className="p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-slate-950">
             {targetRoleContent.title}
           </h2>
@@ -103,8 +104,13 @@ export default function AboutMePage() {
               </li>
             ))}
           </ul>
-          <ResumeDownload options={availableResumeOptions} />
-        </article>
+          <DownloadPanel
+            emptyHint="Resume upload pending. Add a PDF or DOCX to enable downloads."
+            emptyPathLabel="public/resume/"
+            options={availableResumeOptions}
+            title="Resume"
+          />
+        </ContentCard>
       </section>
 
       <section className="mt-14 rounded-lg border border-sky-200 bg-sky-50 p-6 sm:p-8">

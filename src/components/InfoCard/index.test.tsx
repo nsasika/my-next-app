@@ -18,4 +18,16 @@ describe('InfoCard', () => {
       screen.getByText('React.js, TypeScript, and micro-frontends.'),
     ).toBeInTheDocument();
   });
+
+  it('renders an optional icon', () => {
+    render(
+      <InfoCard
+        title="Cloud native"
+        body="Serverless deployment and observability."
+        icon={<span data-testid="info-card-icon">Icon</span>}
+      />,
+    );
+
+    expect(screen.getByTestId('info-card-icon')).toBeInTheDocument();
+  });
 });

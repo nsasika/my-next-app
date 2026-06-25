@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { CustomBtn } from '@/components';
+import AppButton from '@/components/ui/AppButton';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
 
 const AutoBatchingDemo = () => {
   const [count, setCount] = useState<number>(0);
   const [text, setText] = useState<string>('');
   const [msg, setMsg] = useState<string>('Hello World!');
 
-  console.log('🔄 component rendered');
+  console.log('Automatic batching component rendered');
 
   const runWithoutAsync = () => {
     // React has always batched updates inside React event handlers.
@@ -33,40 +35,48 @@ const AutoBatchingDemo = () => {
   };
 
   return (
-    <div style={{ padding: 16, fontFamily: 'system-ui' }}>
-      <h1>React 18: Automatic Batching</h1>
+    <>
+      <PageHeader
+        description="React batches multiple state updates into fewer renders, including async boundaries in modern React."
+        eyebrow="React 18"
+        tags={['React', 'Client Component', 'Batching']}
+        title="Automatic Batching"
+      />
 
-      <p>
-        <b>count:</b> {count}
-      </p>
-      <p>
-        <b>text:</b> {text}
-      </p>
-      <p>
-        <b>message:</b> {msg}
-      </p>
+      <ContentCard className="max-w-3xl">
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            ['Count', count],
+            ['Text', text || 'Empty'],
+            ['Message', msg],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-lg bg-slate-50 p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                {label}
+              </p>
+              <p className="mt-2 font-bold text-slate-950">{value}</p>
+            </div>
+          ))}
+        </div>
 
-      <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-        <CustomBtn
-          title="Update (sync)"
-          variant="outlined"
-          onClick={runWithoutAsync}
-        />
-        <CustomBtn
-          title="Update (async setTimeout)"
-          variant="outlined"
-          onClick={runWithAsync}
-        />
-        <CustomBtn title="Reset" variant="outlined" onClick={runReset} />
-      </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <AppButton onClick={runWithoutAsync} variant="secondary">
+            Update sync
+          </AppButton>
+          <AppButton onClick={runWithAsync} variant="secondary">
+            Update async setTimeout
+          </AppButton>
+          <AppButton onClick={runReset} variant="ghost">
+            Reset
+          </AppButton>
+        </div>
 
-      <p style={{ marginTop: 16, opacity: 0.8 }}>
-        Tip: Open React DevTools to observe console logs and verify logged count
-        of renders. Here, in each sync & asyn function 3 state updates are
-        called, but only 1 re-render occurs due to automatic batching in React
-        18.
-      </p>
-    </div>
+        <p className="mt-5 text-sm leading-6 text-slate-600">
+          Tip: open DevTools and watch the render log. Each action triggers
+          three state updates, but React can batch them into a single render.
+        </p>
+      </ContentCard>
+    </>
   );
 };
 export default AutoBatchingDemo;

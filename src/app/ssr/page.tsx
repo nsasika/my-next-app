@@ -1,3 +1,6 @@
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
+
 type User = {
   id: number;
   name: string;
@@ -11,17 +14,28 @@ const SSRPage = async () => {
   const users: User[] = await res.json();
 
   return (
-    <main>
-      <h1>SSR Users Page</h1>
-      <p>This content is rendered on the server.</p>
+    <>
+      <PageHeader
+        description="This page fetches data on the server with no client component needed for the list."
+        eyebrow="Rendering"
+        tags={['SSR', 'Server Component', 'no-store']}
+        title="SSR Users Page"
+      />
 
-      {users.map((user) => (
-        <div key={user.id}>
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
+      <ContentCard>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+            >
+              <h2 className="font-bold text-slate-950">{user.name}</h2>
+              <p className="mt-1 text-sm text-slate-600">{user.email}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </main>
+      </ContentCard>
+    </>
   );
 };
 

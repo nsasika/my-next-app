@@ -1,6 +1,9 @@
 'use client';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateQuery } from '@/lib/features/client/clientsSlice';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
+import StatusMessage from '@/components/ui/StatusMessage';
 
 const DebouncePage = () => {
   const dispatch = useAppDispatch();
@@ -13,29 +16,40 @@ const DebouncePage = () => {
   };
 
   return (
-    <div style={{ padding: '16px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Clients Search</h1>
-      <input
-        type="text"
-        value={query}
-        onChange={handleInputChange}
-        placeholder="Search clients..."
-        style={{
-          padding: '8px',
-          width: '100%',
-          marginBottom: '16px',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-        }}
+    <>
+      <PageHeader
+        description="A Redux Saga debounce example that keeps only useful search work flowing through the state layer."
+        eyebrow="Redux Saga"
+        tags={['Debounce', 'Client Component', 'Search']}
+        title="Clients Search"
       />
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      <ul>
-        {results.map((client) => (
-          <li key={client.id}>{client.name}</li>
-        ))}
-      </ul>
-    </div>
+
+      <ContentCard>
+        <input
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          placeholder="Search clients..."
+          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+        />
+        <div className="mt-5 space-y-3">
+          {loading ? <StatusMessage>Loading...</StatusMessage> : null}
+          {error ? (
+            <StatusMessage tone="error">Error: {error}</StatusMessage>
+          ) : null}
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {results.map((client) => (
+              <li
+                key={client.id}
+                className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
+              >
+                {client.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </ContentCard>
+    </>
   );
 };
 

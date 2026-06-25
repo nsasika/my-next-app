@@ -1,6 +1,6 @@
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
-import Link from 'next/link';
 import InfoCard from '@/components/InfoCard';
+import AppButton from '@/components/ui/AppButton';
 import { interviewQuestionsHeroContent, reactHooksTrack } from './content';
 
 export default function InterviewQuestionsPage() {
@@ -26,12 +26,9 @@ export default function InterviewQuestionsPage() {
         </div>
 
         <div className="mt-4">
-          <Link
-            href={reactHooksTrack.loginHref}
-            className="inline-flex rounded-lg bg-slate-950 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-slate-800"
-          >
+          <AppButton href={reactHooksTrack.loginHref} className="px-5 py-3">
             {reactHooksTrack.loginLabel}
-          </Link>
+          </AppButton>
         </div>
       </section>
     </div>

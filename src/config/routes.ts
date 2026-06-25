@@ -1,6 +1,7 @@
 import { APP_PATHS, type NavItem, type SidebarSection } from './routes.type';
 
 export { APP_PATHS };
+export type { AppPath, NavItem, SidebarSection } from './routes.type';
 
 export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
   { href: APP_PATHS.home, label: 'Home' },
@@ -26,6 +27,10 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
       { href: APP_PATHS.useMemoTest, label: 'useMemo' },
       { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
     ],
+  },
+  {
+    title: 'Java Examples',
+    links: [{ href: APP_PATHS.javaExamples, label: 'Java Overview' }],
   },
   {
     title: 'React 18 Changes',

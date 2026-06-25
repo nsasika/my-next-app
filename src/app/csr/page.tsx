@@ -1,12 +1,20 @@
 import CSRUsers from './CSRUsers';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function CSRPage() {
   return (
-    <main>
-      <h1>CSR Users Page</h1>
-      <p>This page loads data in the browser.</p>
+    <>
+      <PageHeader
+        description="This route is server-rendered, while the user list below is intentionally fetched in a client component."
+        eyebrow="Rendering"
+        tags={['CSR', 'Server Wrapper', 'Client Fetch']}
+        title="CSR Users Page"
+      />
 
-      <CSRUsers />
-    </main>
+      <ContentCard>
+        <CSRUsers />
+      </ContentCard>
+    </>
   );
 }

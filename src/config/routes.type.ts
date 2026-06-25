@@ -12,19 +12,19 @@ export const APP_PATHS = {
   react18Batching: '/react18/batching',
   react18Transitions: '/react18/transitions',
 
-  counterSlice: '/counterSlice',
+  javaExamples: '/java-examples',
+  counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
   reduxSaga: '/redux-saga',
 
-  takeEvery: '/practice/takeEvery',
-  takeLatest: '/practice/takeLatest',
+  takeEvery: '/practice/take-every',
+  takeLatest: '/practice/take-latest',
   debounce: '/practice/debounce',
 
   performance: '/performance',
   ssr: '/ssr',
   csr: '/csr',
 
-  authMe: '/api/auth/me',
   authLogout: '/api/auth/logout',
 } as const;
 

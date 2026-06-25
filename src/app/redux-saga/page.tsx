@@ -1,6 +1,9 @@
 'use client';
 
-import { CustomBtn } from '@/components';
+import AppButton from '@/components/ui/AppButton';
+import ContentCard from '@/components/ui/ContentCard';
+import PageHeader from '@/components/ui/PageHeader';
+import StatusMessage from '@/components/ui/StatusMessage';
 import { fetchUsersSagaRequest } from '@/lib/features/user/usersSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -8,87 +11,72 @@ const ReduxSagaPage = () => {
   const dispatch = useAppDispatch();
   const { loading, users, error } = useAppSelector((state) => state.users);
   return (
-    <div style={{ padding: '16px', fontFamily: 'Arial, sans-serif' }}>
-      <h1
-        style={{
-          textDecoration: 'underline',
-          backgroundColor: '#f0f8ff',
-          padding: '4px',
-        }}
-      >
-        Redux Saga Example Page
-      </h1>
-      <p>
-        This page explains when and why you might choose Redux Saga for managing
-        side effects in a Redux application.
-      </p>
-
-      <h2
-        style={{
-          textDecoration: 'underline',
-          backgroundColor: '#f0f8ff',
-          padding: '4px',
-        }}
-      >
-        Why Choose Redux Saga?
-      </h2>
-      <ul>
-        <li>
-          <strong>Cancellation:</strong> Easily cancel ongoing tasks.
-        </li>
-        <li>
-          <strong>Parallel API Calls:</strong> Handle multiple API calls in
-          parallel.
-        </li>
-        <li>
-          <strong>Retry/Debounce/Throttle:</strong> Manage retries, debouncing,
-          and throttling of actions.
-        </li>
-        <li>
-          <strong>Complex Workflows:</strong> Handle workflows like step 1 →
-          step 2 → step 3.
-        </li>
-        <li>
-          <strong>Long-Running Background Tasks:</strong> Manage tasks that need
-          to run in the background.
-        </li>
-        <li>
-          <strong>Better Testability:</strong> Write deterministic and testable
-          async flows.
-        </li>
-      </ul>
-
-      <h2
-        style={{
-          textDecoration: 'underline',
-          backgroundColor: '#f0f8ff',
-          padding: '4px',
-        }}
-      >
-        Why Banks Love Redux Saga
-      </h2>
-      <p>
-        Banks and financial institutions often prefer Redux Saga because async
-        flows must be deterministic and controllable. This ensures reliability
-        and predictability in critical systems.
-      </p>
-      <CustomBtn
-        title="Fetch Saga Users"
-        onClick={() => dispatch(fetchUsersSagaRequest())}
+    <>
+      <PageHeader
+        description="Redux Saga is useful when async workflows need cancellation, orchestration, retries, or deterministic control."
+        eyebrow="Redux Saga"
+        tags={['Redux Saga', 'Client Component', 'Side Effects']}
+        title="Redux Saga Example"
       />
-      {loading && <p>Loading users...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {users.length > 0 && (
-        <div>
-          <h3>Fetched Users:</h3>
-          <ul>
-            {users.map((user) => (
-              <li key={user.id}>{user.name}</li>
-            ))}
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ContentCard>
+          <h2 className="text-xl font-bold text-slate-950">
+            Why Choose Redux Saga?
+          </h2>
+          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>
+              <strong>Cancellation:</strong> cancel ongoing tasks cleanly.
+            </li>
+            <li>
+              <strong>Parallel calls:</strong> coordinate multiple effects.
+            </li>
+            <li>
+              <strong>Retry and debounce:</strong> model timing behavior
+              explicitly.
+            </li>
+            <li>
+              <strong>Complex workflows:</strong> keep multi-step flows
+              testable.
+            </li>
           </ul>
+        </ContentCard>
+
+        <ContentCard>
+          <h2 className="text-xl font-bold text-slate-950">Enterprise fit</h2>
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Teams in domains like banking often prefer deterministic async flows
+            because reliability and traceability matter during critical
+            operations.
+          </p>
+        </ContentCard>
+      </div>
+
+      <ContentCard className="mt-6">
+        <AppButton onClick={() => dispatch(fetchUsersSagaRequest())}>
+          Fetch Saga Users
+        </AppButton>
+
+        <div className="mt-5 space-y-3">
+          {loading ? <StatusMessage>Loading users...</StatusMessage> : null}
+          {error ? (
+            <StatusMessage tone="error">Error: {error}</StatusMessage>
+          ) : null}
+          {users.length > 0 ? (
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {users.map((user) => (
+                <li
+                  key={user.id}
+                  className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
+                >
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
-      )}
-    </div>
+      </ContentCard>
+    </>
   );
 };
 
