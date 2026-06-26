@@ -3,6 +3,8 @@ import UserCard from '@/components/UserCard';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 import React, { useState } from 'react';
 
 const PerformancePage: React.FC = () => {
@@ -10,12 +12,9 @@ const PerformancePage: React.FC = () => {
   console.log('PerformancePage rendered');
   return (
     <>
-      <PageHeader
-        description="Practice rerenders, memoization, API debounce, and large-list reasoning with small focused examples."
-        eyebrow="Performance"
-        tags={['React', 'Client Component', 'Memoization']}
-        title="React Performance Practice"
-      />
+      <PageHeader {...learningContent.performance.header} />
+
+      <TheoryPanel {...learningContent.performance.theory} />
 
       <ContentCard className="max-w-2xl">
         <div className="rounded-lg bg-slate-50 p-5">

@@ -4,6 +4,8 @@ import { useRef, useState, useEffect } from 'react';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 
 export default function UseRefTest() {
   const inputRef = useRef<HTMLInputElement>(null); // Ref for accessing the DOM element
@@ -26,12 +28,9 @@ export default function UseRefTest() {
 
   return (
     <>
-      <PageHeader
-        description="Use refs for mutable values and direct DOM access without making those values part of render state."
-        eyebrow="Hooks"
-        tags={['React', 'Client Component', 'useRef']}
-        title="useRef Hook Example"
-      />
+      <PageHeader {...learningContent.useRef.header} />
+
+      <TheoryPanel {...learningContent.useRef.theory} />
 
       <ContentCard className="max-w-2xl">
         <label className="grid gap-2 text-sm font-bold text-slate-700">

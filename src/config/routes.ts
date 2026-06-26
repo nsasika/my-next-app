@@ -43,11 +43,12 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     ],
   },
   {
-    title: 'Redux Toolkit',
+    title: 'State Management',
     links: [
       { href: APP_PATHS.counterSlice, label: 'Counter Example' },
       { href: APP_PATHS.reduxThunk, label: 'Redux Thunk Example' },
       { href: APP_PATHS.reduxSaga, label: 'Redux Saga Example' },
+      { href: APP_PATHS.zustand, label: 'Zustand Example' },
     ],
   },
   {

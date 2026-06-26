@@ -4,6 +4,8 @@ import { useState } from 'react';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 
 const AutoBatchingDemo = () => {
   const [count, setCount] = useState<number>(0);
@@ -36,12 +38,9 @@ const AutoBatchingDemo = () => {
 
   return (
     <>
-      <PageHeader
-        description="React batches multiple state updates into fewer renders, including async boundaries in modern React."
-        eyebrow="React 18"
-        tags={['React', 'Client Component', 'Batching']}
-        title="Automatic Batching"
-      />
+      <PageHeader {...learningContent.batching.header} />
+
+      <TheoryPanel {...learningContent.batching.theory} />
 
       <ContentCard className="max-w-3xl">
         <div className="grid gap-3 sm:grid-cols-3">

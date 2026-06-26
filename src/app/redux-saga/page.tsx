@@ -4,6 +4,8 @@ import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import StatusMessage from '@/components/ui/StatusMessage';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 import { fetchUsersSagaRequest } from '@/lib/features/user/usersSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -12,12 +14,9 @@ const ReduxSagaPage = () => {
   const { loading, users, error } = useAppSelector((state) => state.users);
   return (
     <>
-      <PageHeader
-        description="Redux Saga is useful when async workflows need cancellation, orchestration, retries, or deterministic control."
-        eyebrow="Redux Saga"
-        tags={['Redux Saga', 'Client Component', 'Side Effects']}
-        title="Redux Saga Example"
-      />
+      <PageHeader {...learningContent.reduxSaga.header} />
+
+      <TheoryPanel {...learningContent.reduxSaga.theory} />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <ContentCard>

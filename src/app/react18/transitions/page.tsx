@@ -5,6 +5,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 
 function makeItems(n: number) {
   // deterministic list
@@ -54,12 +56,9 @@ export default function TransitionDemo() {
 
   return (
     <>
-      <PageHeader
-        description="Keep urgent input responsive while expensive list filtering runs as lower-priority work."
-        eyebrow="React 18"
-        tags={['React', 'Client Component', 'useTransition']}
-        title="startTransition / useTransition"
-      />
+      <PageHeader {...learningContent.transitions.header} />
+
+      <TheoryPanel {...learningContent.transitions.theory} />
 
       <ContentCard>
         <label className="grid gap-2 text-sm font-bold text-slate-700">

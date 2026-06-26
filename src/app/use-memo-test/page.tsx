@@ -1,23 +1,19 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import ReduxBanner from '@/components/learning/ReduxBanner';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
+import { showBanner } from '@/lib/features/ui/uiSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 export default function UseMemoTest() {
+  const dispatch = useAppDispatch();
   const [count, setCount] = useState(0);
   const [otherCount, setOtherCount] = useState(0);
-  const [showBanner, setShowBanner] = useState(false);
-  const bannerTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (bannerTimeoutRef.current) {
-        clearTimeout(bannerTimeoutRef.current);
-      }
-    };
-  }, []);
 
   // Non-memoized calculation
   const nonMemoizedCalculation = () => {
@@ -31,33 +27,17 @@ export default function UseMemoTest() {
     return count * 2;
   }, [count]);
 
-  // Function to show the banner
-  const triggerBanner = () => {
-    if (bannerTimeoutRef.current) {
-      clearTimeout(bannerTimeoutRef.current); // Clear any existing timeout
-    }
-    setShowBanner(true);
-    bannerTimeoutRef.current = setTimeout(() => {
-      setShowBanner(false);
-    }, 1000); // Hide banner after 1 second
-  };
-
   return (
     <>
-      {showBanner && (
-        <div className="fixed left-0 top-0 z-50 w-full bg-rose-600 py-2 text-center text-sm font-bold text-white">
-          Unnecessary Render Triggered!
-        </div>
-      )}
+      <PageHeader {...learningContent.useMemo.header} />
 
-      <PageHeader
-        description="Compare a normal calculation with a memoized calculation when state changes."
-        eyebrow="Hooks"
-        tags={['React', 'Client Component', 'useMemo']}
-        title="useMemo Hook Test"
-      />
+      <TheoryPanel {...learningContent.useMemo.theory} />
 
       <ContentCard className="max-w-3xl">
+        <div className="mb-5">
+          <ReduxBanner />
+        </div>
+
         <div className="grid gap-3 sm:grid-cols-2">
           {[
             ['Count', count],
@@ -81,7 +61,7 @@ export default function UseMemoTest() {
           <AppButton
             onClick={() => {
               setOtherCount(otherCount + 1);
-              triggerBanner();
+              dispatch(showBanner(learningContent.useMemo.banner));
             }}
             variant="secondary"
           >

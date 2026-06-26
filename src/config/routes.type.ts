@@ -16,6 +16,7 @@ export const APP_PATHS = {
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
   reduxSaga: '/redux-saga',
+  zustand: '/zustand',
 
   takeEvery: '/practice/take-every',
   takeLatest: '/practice/take-latest',
