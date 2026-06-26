@@ -51,6 +51,10 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     ],
   },
   {
+    title: 'Application Security',
+    links: [{ href: APP_PATHS.authStrategy, label: 'Authentication Strategy' }],
+  },
+  {
     title: 'RTK SAGA',
     links: [
       { href: APP_PATHS.takeEvery, label: 'Take Every' },
