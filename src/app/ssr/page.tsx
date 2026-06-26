@@ -1,5 +1,7 @@
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 
 type User = {
   id: number;
@@ -15,12 +17,9 @@ const SSRPage = async () => {
 
   return (
     <>
-      <PageHeader
-        description="This page fetches data on the server with no client component needed for the list."
-        eyebrow="Rendering"
-        tags={['SSR', 'Server Component', 'no-store']}
-        title="SSR Users Page"
-      />
+      <PageHeader {...learningContent.ssr.header} />
+
+      <TheoryPanel {...learningContent.ssr.theory} />
 
       <ContentCard>
         <div className="grid gap-3 sm:grid-cols-2">

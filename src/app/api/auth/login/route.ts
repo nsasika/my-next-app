@@ -1,3 +1,4 @@
+import { dummyAuthUser } from '@/content/auth';
 import { createToken } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
@@ -12,7 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (email !== 'doctor@test.com' || password !== 'password123') {
+    if (email !== dummyAuthUser.email || password !== dummyAuthUser.password) {
       return NextResponse.json(
         { message: 'Invalid credentials' },
         { status: 401 },
@@ -21,17 +22,17 @@ export async function POST(request: Request) {
 
     // In a real application, you would look up the user in the database and verify the password, then create a token with the user's actual information
     const token = await createToken({
-      id: '1',
+      id: dummyAuthUser.id,
       email,
-      role: 'DOCTOR',
+      role: dummyAuthUser.role,
     });
 
     const response = NextResponse.json({
       message: 'Login successful',
       user: {
-        id: '1',
+        id: dummyAuthUser.id,
         email,
-        role: 'DOCTOR',
+        role: dummyAuthUser.role,
       },
     });
 

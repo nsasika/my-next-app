@@ -24,7 +24,6 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     title: 'Hooks',
     links: [
       { href: APP_PATHS.useRefTest, label: 'useRef' },
-      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
       { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
     ],
   },
@@ -43,12 +42,17 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     ],
   },
   {
-    title: 'Redux Toolkit',
+    title: 'State Management',
     links: [
       { href: APP_PATHS.counterSlice, label: 'Counter Example' },
       { href: APP_PATHS.reduxThunk, label: 'Redux Thunk Example' },
       { href: APP_PATHS.reduxSaga, label: 'Redux Saga Example' },
+      { href: APP_PATHS.zustand, label: 'Zustand Example' },
     ],
+  },
+  {
+    title: 'Application Security',
+    links: [{ href: APP_PATHS.authStrategy, label: 'Authentication Strategy' }],
   },
   {
     title: 'RTK SAGA',
@@ -59,8 +63,9 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     ],
   },
   {
-    title: 'Performance Testing',
+    title: 'React Performance',
     links: [
+      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
       { href: APP_PATHS.performance, label: 'Performance Testing' },
       { href: APP_PATHS.ssr, label: 'SSR rendering' },
       { href: APP_PATHS.csr, label: 'CSR rendering' },

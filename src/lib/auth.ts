@@ -15,7 +15,7 @@ function getJwtSecret() {
   return secret;
 }
 
-export type UserRole = 'ADMIN' | 'DOCTOR' | 'PATIENT' | 'NURSE';
+export type UserRole = 'ADMIN' | 'ANALYST' | 'DOCTOR' | 'PATIENT' | 'NURSE';
 
 export type AuthUser = {
   id: string;

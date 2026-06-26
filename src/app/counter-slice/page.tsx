@@ -2,6 +2,8 @@
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 import {
   increment,
   decrement,
@@ -23,12 +25,9 @@ const CounterSlicePage = () => {
 
   return (
     <>
-      <PageHeader
-        description="A small Redux Toolkit slice example with increment, decrement, reset, and payload-based actions."
-        eyebrow="Redux Toolkit"
-        tags={['Redux Toolkit', 'Client Component', 'State']}
-        title="Counter Slice"
-      />
+      <PageHeader {...learningContent.counterSlice.header} />
+
+      <TheoryPanel {...learningContent.counterSlice.theory} />
 
       <ContentCard className="max-w-3xl">
         <div className="rounded-lg bg-slate-50 p-5">

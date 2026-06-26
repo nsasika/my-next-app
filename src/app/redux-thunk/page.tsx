@@ -4,6 +4,8 @@ import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import StatusMessage from '@/components/ui/StatusMessage';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 import { fetchUsers, resetUsers } from '@/lib/features/user/usersSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -12,12 +14,9 @@ const ReduxThunkPage = () => {
   const { users, loading, error } = useAppSelector((state) => state.users);
   return (
     <>
-      <PageHeader
-        description="Redux Thunk is a practical fit for one-shot async requests and logic that needs dispatch or state access."
-        eyebrow="Redux Toolkit"
-        tags={['Redux Thunk', 'Client Component', 'Async State']}
-        title="Redux Thunk Example"
-      />
+      <PageHeader {...learningContent.reduxThunk.header} />
+
+      <TheoryPanel {...learningContent.reduxThunk.theory} />
 
       <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
         <ContentCard>

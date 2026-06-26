@@ -4,6 +4,8 @@ import { updateQuery } from '@/lib/features/client/clientsSlice';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import StatusMessage from '@/components/ui/StatusMessage';
+import TheoryPanel from '@/components/learning/TheoryPanel';
+import { learningContent } from '@/content/learning';
 
 const DebouncePage = () => {
   const dispatch = useAppDispatch();
@@ -17,12 +19,9 @@ const DebouncePage = () => {
 
   return (
     <>
-      <PageHeader
-        description="A Redux Saga debounce example that keeps only useful search work flowing through the state layer."
-        eyebrow="Redux Saga"
-        tags={['Debounce', 'Client Component', 'Search']}
-        title="Clients Search"
-      />
+      <PageHeader {...learningContent.debounce.header} />
+
+      <TheoryPanel {...learningContent.debounce.theory} />
 
       <ContentCard>
         <input

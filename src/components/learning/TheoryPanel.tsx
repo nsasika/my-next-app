@@ -1,0 +1,61 @@
+import CodeBlock from '@/components/ui/CodeBlock';
+import ContentCard from '@/components/ui/ContentCard';
+
+type TheoryPanelProps = {
+  code?: string;
+  points: readonly string[];
+  summary: string;
+  title: string;
+  whatToTry?: readonly string[];
+};
+
+const THEORY_PANEL_TEXT = {
+  eyebrow: 'Theory first',
+  whatToTryTitle: 'Try this in the example',
+} as const;
+
+export default function TheoryPanel({
+  code,
+  points,
+  summary,
+  title,
+  whatToTry = [],
+}: TheoryPanelProps) {
+  return (
+    <ContentCard className="mb-6">
+      <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+            {THEORY_PANEL_TEXT.eyebrow}
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-950">{title}</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">{summary}</p>
+          <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600">
+            {points.map((point) => (
+              <li key={point} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          {code ? <CodeBlock code={code} language="mental model" /> : null}
+          {whatToTry.length > 0 ? (
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h3 className="text-sm font-bold text-slate-950">
+                {THEORY_PANEL_TEXT.whatToTryTitle}
+              </h3>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+                {whatToTry.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </ContentCard>
+  );
+}

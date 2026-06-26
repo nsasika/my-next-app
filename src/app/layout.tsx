@@ -3,7 +3,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import './globals.css';
-import { roboto, geistSans, geistMono } from '@/styles/fonts';
 import StoreProvider from '@/lib/StoreProvider';
 import AppLayoutClient from '@/components/AppLayoutClient';
 import { verifyToken } from '@/lib/auth';
@@ -28,10 +27,7 @@ export default async function RootLayout({
   const verifiedUser = token ? await verifyToken(token) : null;
 
   return (
-    <html
-      lang="en"
-      className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable}`}
-    >
+    <html lang="en">
       <body>
         <StoreProvider>
           <AppRouterCacheProvider>

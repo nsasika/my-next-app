@@ -5,17 +5,19 @@ export const APP_PATHS = {
 
   interviewQuestions: '/interview-questions',
 
-  useRefTest: '/use-ref-test',
-  useMemoTest: '/use-memo-test',
+  useRefTest: '/use-ref',
+  useMemoTest: '/use-memo',
   customHooks: '/custom-hooks',
 
   react18Batching: '/react18/batching',
   react18Transitions: '/react18/transitions',
 
   javaExamples: '/java-examples',
+  authStrategy: '/authentication-strategy',
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
   reduxSaga: '/redux-saga',
+  zustand: '/zustand',
 
   takeEvery: '/practice/take-every',
   takeLatest: '/practice/take-latest',
