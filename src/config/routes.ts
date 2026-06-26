@@ -24,7 +24,6 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     title: 'Hooks',
     links: [
       { href: APP_PATHS.useRefTest, label: 'useRef' },
-      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
       { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
     ],
   },
@@ -60,8 +59,9 @@ export const SIDEBAR_ROUTES: SidebarSection[] = [
     ],
   },
   {
-    title: 'Performance Testing',
+    title: 'React Performance',
     links: [
+      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
       { href: APP_PATHS.performance, label: 'Performance Testing' },
       { href: APP_PATHS.ssr, label: 'SSR rendering' },
       { href: APP_PATHS.csr, label: 'CSR rendering' },

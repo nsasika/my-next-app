@@ -27,33 +27,72 @@ inputRef.current?.focus();`,
   useMemo: {
     header: {
       description:
-        'Compare a normal calculation with a memoized calculation when state changes.',
-      eyebrow: 'Hooks',
-      tags: ['React', 'Client Component', 'useMemo'],
-      title: 'useMemo Hook Test',
+        'Search and sort 10,000 banking transactions while comparing expensive filtering with and without useMemo.',
+      eyebrow: 'React Performance',
+      tags: ['React', 'Client Component', 'useMemo', 'Banking'],
+      title: 'useMemo Banking Transactions Performance Demo',
     },
     theory: {
-      title: 'What useMemo does',
+      title: 'Why useMemo matters in a dashboard',
       summary:
-        'useMemo caches the result of an expensive calculation between renders. React recalculates it only when one of its dependencies changes.',
+        'Banking dashboards often filter and sort large transaction lists. useMemo prevents that expensive work from running again when unrelated UI state changes.',
       points: [
-        'It does not stop the component from rendering; it avoids repeating a selected calculation during that render.',
-        'The dependency array is the contract. If count changes, the memoized result updates. If otherCount changes, the cached result is reused.',
-        'Use it for expensive derived values or stable references, not for every small calculation.',
+        'Without useMemo, filtering runs when search changes, sort changes, counter changes, or theme changes.',
+        'With useMemo, filtering runs only when the transactions, search text, or sort order changes.',
+        'That means fewer calculations, faster re-renders, and a better user experience.',
       ],
-      code: `const doubled = useMemo(() => {
-  return count * 2;
-}, [count]);`,
+      code: `const filteredTransactions = useMemo(() => {
+  return filterTransactions(transactions, searchText, sortOrder);
+}, [transactions, searchText, sortOrder]);`,
       whatToTry: [
-        'Increment Count and both results update because count is a dependency.',
-        'Increment Other Count and the Redux banner explains why the memoized result stays stable.',
+        'Search or change sort order. Both versions must filter again because the filter input changed.',
+        'Click Counter or Theme Toggle. Only the non-memoized version repeats the expensive filtering.',
       ],
     },
-    banner: {
-      message:
-        'The component rendered because otherCount changed, but useMemo reused the cached count calculation.',
-      title: 'Memoized calculation reused',
-      tone: 'success',
+    banners: {
+      memoEnabled: {
+        message:
+          'The page re-rendered for unrelated UI state. useMemo reused the filtered banking transactions instead of filtering 10,000 rows again.',
+        title: 'useMemo skipped unnecessary filtering',
+        tone: 'success',
+      },
+      memoDisabled: {
+        message:
+          'The page re-rendered for unrelated UI state. Because useMemo is OFF, the dashboard filtered 10,000 rows again.',
+        title: 'Filtering ran again',
+        tone: 'warning',
+      },
+    },
+    demo: {
+      searchLabel: 'Search transaction',
+      searchPlaceholder: 'Try salary, ATM, loan, merchant, card...',
+      sortLabel: 'Sort by amount',
+      sortAscendingLabel: 'Asc',
+      sortDescendingLabel: 'Desc',
+      themeToggleLabel: 'Theme Toggle',
+      counterLabel: 'Counter',
+      useMemoToggleLabel: 'Use useMemo',
+      enabledLabel: 'ON',
+      disabledLabel: 'OFF',
+      totalTransactionsLabel: 'Total transactions',
+      filteredTransactionsLabel: 'Filtered transactions',
+      filterRunsLabel: 'Filter executed',
+      calculationTimeLabel: 'Last calculation time',
+      withoutMemoTitle: 'Without useMemo',
+      withMemoTitle: 'With useMemo',
+      normalCalculationDescription:
+        'Filtering runs when search changes, counter changes, and theme changes.',
+      memoCalculationDescription:
+        'Filtering runs only when search text or sort order changes.',
+      activeModeLabel: 'Current mode',
+      transactionListTitle: 'Sample filtered transactions',
+      tableHeaders: {
+        account: 'Account',
+        amount: 'Amount',
+        channel: 'Channel',
+        id: 'ID',
+        merchant: 'Merchant',
+      },
     },
   },
   customHooks: {

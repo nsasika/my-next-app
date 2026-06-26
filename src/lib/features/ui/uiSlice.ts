@@ -17,6 +17,12 @@ type ShowBannerPayload = {
   tone?: BannerTone;
 };
 
+type PreparedShowBannerPayload = Required<
+  Omit<ShowBannerPayload, 'durationMs'>
+> & {
+  durationMs?: number;
+};
+
 type UiState = {
   banner: Banner | null;
 };
@@ -30,7 +36,7 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     showBanner: {
-      reducer: (state, action: PayloadAction<Required<ShowBannerPayload>>) => {
+      reducer: (state, action: PayloadAction<PreparedShowBannerPayload>) => {
         state.banner = {
           id: action.payload.id,
           message: action.payload.message,
@@ -39,7 +45,7 @@ const uiSlice = createSlice({
         };
       },
       prepare: ({
-        durationMs = 2500,
+        durationMs,
         id = nanoid(),
         message,
         title,

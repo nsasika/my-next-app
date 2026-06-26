@@ -7,6 +7,11 @@ listenerMiddleware.startListening({
   actionCreator: showBanner,
   effect: async (action, listenerApi) => {
     listenerApi.cancelActiveListeners();
+
+    if (action.payload.durationMs === undefined) {
+      return;
+    }
+
     await listenerApi.delay(action.payload.durationMs);
     listenerApi.dispatch(hideBanner(action.payload.id));
   },
