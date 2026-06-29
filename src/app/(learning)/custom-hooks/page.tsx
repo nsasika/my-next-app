@@ -4,7 +4,7 @@ import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
-import useCounter from '../../hooks/useCounter';
+import useCounter from '@/hooks/useCounter';
 
 export default function CustomHooks() {
   const { count, increment, decrement } = useCounter();
