@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useTrottle = (value, delay = 500) => {
+export default function useThrottle<T>(value: T, delay = 500) {
   const [throttledValue, setThrottledValue] = useState(value);
   const lastExecutedRef = useRef(0);
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trailingValueRef = useRef(value);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const useTrottle = (value, delay = 500) => {
     if (timeSinceLastExecution >= delay) {
       lastExecutedRef.current = now;
       setThrottledValue(value);
-      return;
+      return undefined;
     }
 
     if (timeoutRef.current) {
@@ -36,6 +36,4 @@ const useTrottle = (value, delay = 500) => {
   }, [value, delay]);
 
   return throttledValue;
-};
-
-export default useTrottle;
+}

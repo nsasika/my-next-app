@@ -12,7 +12,7 @@
     "test": "NODE_ENV=test vitest run",
     "test:watch": "NODE_ENV=test vitest",
     "test:coverage": "NODE_ENV=test vitest run --coverage",
-    "type-check": "tsc --noEmit",
+    "type-check": "next typegen && tsc --noEmit",
     "check:local": "npm run precommit",
     "precommit": "node scripts/pre-commit.mjs",
     "prepare": "git config core.hooksPath .githooks"
