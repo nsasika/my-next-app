@@ -3,9 +3,8 @@
 import React, { useMemo, useState, useTransition } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 
 function makeItems(n: number) {
@@ -55,11 +54,11 @@ export default function TransitionDemo() {
   }
 
   return (
-    <>
-      <PageHeader {...learningContent.transitions.header} />
-
-      <TheoryPanel {...learningContent.transitions.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/react18/transitions/page.tsx"
+      header={learningContent.transitions.header}
+      theory={learningContent.transitions.theory}
+    >
       <ContentCard>
         <label className="grid gap-2 text-sm font-bold text-slate-700">
           Search
@@ -142,6 +141,6 @@ export default function TransitionDemo() {
           </li>
         </ul>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 }

@@ -41,3 +41,12 @@ export type SidebarSection = {
   title: string;
   links: NavItem[];
 };
+
+export type SidebarTechnology = {
+  description: string;
+  href?: AppPath;
+  label: string;
+  sections: SidebarSection[];
+  status?: 'available' | 'planned';
+  value: 'react' | 'java' | 'angular';
+};

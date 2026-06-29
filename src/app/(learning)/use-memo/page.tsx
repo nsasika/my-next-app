@@ -1,11 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ReduxBanner from '@/components/learning/ReduxBanner';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
 import { learningContent } from '@/content/learning';
 import { showBanner } from '@/lib/features/ui/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -141,11 +140,11 @@ export default function UseMemoTest() {
   };
 
   return (
-    <>
-      <PageHeader {...learningContent.useMemo.header} />
-
-      <TheoryPanel {...learningContent.useMemo.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/use-memo/page.tsx"
+      header={learningContent.useMemo.header}
+      theory={learningContent.useMemo.theory}
+    >
       <ContentCard
         className={`max-w-5xl ${
           darkMode ? 'border-slate-700 bg-slate-900 text-white' : ''
@@ -341,6 +340,6 @@ export default function UseMemoTest() {
           </div>
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 }
