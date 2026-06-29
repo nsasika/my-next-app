@@ -1,19 +1,18 @@
 'use client';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 import useCounter from '@/hooks/useCounter';
 
 export default function CustomHooks() {
   const { count, increment, decrement } = useCounter();
   return (
-    <>
-      <PageHeader {...learningContent.customHooks.header} />
-
-      <TheoryPanel {...learningContent.customHooks.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/hooks/useCounter.ts"
+      header={learningContent.customHooks.header}
+      theory={learningContent.customHooks.theory}
+    >
       <ContentCard className="max-w-2xl">
         <p className="text-sm leading-6 text-slate-600">
           {learningContent.customHooks.demoDescription}
@@ -31,6 +30,6 @@ export default function CustomHooks() {
           </AppButton>
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 }

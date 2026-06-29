@@ -1,8 +1,7 @@
 'use client';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 import {
   increment,
@@ -24,11 +23,11 @@ const CounterSlicePage = () => {
   };
 
   return (
-    <>
-      <PageHeader {...learningContent.counterSlice.header} />
-
-      <TheoryPanel {...learningContent.counterSlice.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/lib/features/counter/counterSlice.ts"
+      header={learningContent.counterSlice.header}
+      theory={learningContent.counterSlice.theory}
+    >
       <ContentCard className="max-w-3xl">
         <div className="rounded-lg bg-slate-50 p-5">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
@@ -63,7 +62,7 @@ const CounterSlicePage = () => {
           </AppButton>
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 

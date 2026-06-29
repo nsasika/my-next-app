@@ -1,10 +1,9 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 
 export default function UseRefTest() {
@@ -27,11 +26,11 @@ export default function UseRefTest() {
   }, [text]);
 
   return (
-    <>
-      <PageHeader {...learningContent.useRef.header} />
-
-      <TheoryPanel {...learningContent.useRef.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/use-ref/page.tsx"
+      header={learningContent.useRef.header}
+      theory={learningContent.useRef.theory}
+    >
       <ContentCard className="max-w-2xl">
         <label className="grid gap-2 text-sm font-bold text-slate-700">
           Demo input
@@ -54,6 +53,6 @@ export default function UseRefTest() {
           times.
         </p>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 }

@@ -1,9 +1,9 @@
 import StorageIcon from '@mui/icons-material/Storage';
 import ApiIcon from '@mui/icons-material/Api';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import CodeBlock from '@/components/ui/CodeBlock';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
+import { learningContent } from '@/content/learning';
 
 const javaTopics = [
   {
@@ -25,14 +25,12 @@ const javaTopics = [
 
 export default function JavaExamplesPage() {
   return (
-    <>
-      <PageHeader
-        description="A starter workspace for Java interview examples. We can expand this into focused pages as we add real implementations."
-        eyebrow="Java track"
-        tags={['Java', 'Spring Boot', 'Backend', 'Practice']}
-        title="Java Examples"
-      />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/java-examples/page.tsx"
+      codeLanguage="java"
+      header={learningContent.javaExamples.header}
+      theory={learningContent.javaExamples.theory}
+    >
       <div className="grid gap-4 md:grid-cols-3">
         {javaTopics.map((topic) => {
           const Icon = topic.icon;
@@ -52,28 +50,6 @@ export default function JavaExamplesPage() {
           );
         })}
       </div>
-
-      <ContentCard className="mt-6">
-        <h2 className="text-xl font-bold text-slate-950">
-          First Java sample direction
-        </h2>
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          We can use this shape for upcoming Java examples: short explanation,
-          runnable code, and interview notes.
-        </p>
-        <div className="mt-5">
-          <CodeBlock
-            language="java"
-            code={`public List<String> activeUserNames(List<User> users) {
-    return users.stream()
-        .filter(User::isActive)
-        .map(User::name)
-        .sorted()
-        .toList();
-}`}
-          />
-        </div>
-      </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 }

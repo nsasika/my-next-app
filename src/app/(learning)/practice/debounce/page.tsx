@@ -1,10 +1,9 @@
 'use client';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateQuery } from '@/lib/features/client/clientsSlice';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
 import StatusMessage from '@/components/ui/StatusMessage';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 
 const DebouncePage = () => {
@@ -18,11 +17,12 @@ const DebouncePage = () => {
   };
 
   return (
-    <>
-      <PageHeader {...learningContent.debounce.header} />
-
-      <TheoryPanel {...learningContent.debounce.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/lib/features/client/sagas/watcher.ts"
+      codeLanguage="ts"
+      header={learningContent.debounce.header}
+      theory={learningContent.debounce.theory}
+    >
       <ContentCard>
         <input
           type="text"
@@ -48,7 +48,7 @@ const DebouncePage = () => {
           </ul>
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 

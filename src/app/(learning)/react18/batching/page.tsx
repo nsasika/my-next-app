@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 
 const AutoBatchingDemo = () => {
@@ -37,11 +36,11 @@ const AutoBatchingDemo = () => {
   };
 
   return (
-    <>
-      <PageHeader {...learningContent.batching.header} />
-
-      <TheoryPanel {...learningContent.batching.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/react18/batching/page.tsx"
+      header={learningContent.batching.header}
+      theory={learningContent.batching.theory}
+    >
       <ContentCard className="max-w-3xl">
         <div className="grid gap-3 sm:grid-cols-3">
           {[
@@ -75,7 +74,7 @@ const AutoBatchingDemo = () => {
           three state updates, but React can batch them into a single render.
         </p>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 export default AutoBatchingDemo;

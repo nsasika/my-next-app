@@ -1,6 +1,5 @@
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 
 type User = {
@@ -16,11 +15,12 @@ const SSRPage = async () => {
   const users: User[] = await res.json();
 
   return (
-    <>
-      <PageHeader {...learningContent.ssr.header} />
-
-      <TheoryPanel {...learningContent.ssr.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/ssr/page.tsx"
+      codeLanguage="ts"
+      header={learningContent.ssr.header}
+      theory={learningContent.ssr.theory}
+    >
       <ContentCard>
         <div className="grid gap-3 sm:grid-cols-2">
           {users.map((user) => (
@@ -34,7 +34,7 @@ const SSRPage = async () => {
           ))}
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 

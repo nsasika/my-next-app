@@ -1,8 +1,7 @@
 'use client';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 import { userLogEvent } from '@/lib/features/user/usersSlice';
 import { useAppDispatch } from '@/lib/hooks';
@@ -22,11 +21,12 @@ const TakeEveryPage = () => {
   };
 
   return (
-    <>
-      <PageHeader {...learningContent.takeEvery.header}></PageHeader>
-
-      <TheoryPanel {...learningContent.takeEvery.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/lib/features/user/sagas/watchers.ts"
+      codeLanguage="ts"
+      header={learningContent.takeEvery.header}
+      theory={learningContent.takeEvery.theory}
+    >
       <ContentCard className="max-w-2xl">
         <p className="text-sm leading-6 text-slate-600">
           {learningContent.takeEvery.demoDescription}
@@ -35,7 +35,7 @@ const TakeEveryPage = () => {
           <AppButton onClick={handleButtonClick}>Log Event</AppButton>
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 

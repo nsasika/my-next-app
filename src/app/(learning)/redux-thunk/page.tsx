@@ -1,10 +1,9 @@
 'use client';
 
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
 import StatusMessage from '@/components/ui/StatusMessage';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 import { fetchUsers, resetUsers } from '@/lib/features/user/usersSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -13,11 +12,11 @@ const ReduxThunkPage = () => {
   const dispatch = useAppDispatch();
   const { users, loading, error } = useAppSelector((state) => state.users);
   return (
-    <>
-      <PageHeader {...learningContent.reduxThunk.header} />
-
-      <TheoryPanel {...learningContent.reduxThunk.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/lib/features/user/usersSlice.ts"
+      header={learningContent.reduxThunk.header}
+      theory={learningContent.reduxThunk.theory}
+    >
       <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
         <ContentCard>
           <h2 className="text-xl font-bold text-slate-950">Thunk Use Cases</h2>
@@ -80,7 +79,7 @@ const ReduxThunkPage = () => {
           ) : null}
         </div>
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 

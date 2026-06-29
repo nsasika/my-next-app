@@ -1,9 +1,8 @@
 'use client';
+import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import UserCard from '@/components/UserCard';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
-import PageHeader from '@/components/ui/PageHeader';
-import TheoryPanel from '@/components/learning/TheoryPanel';
 import { learningContent } from '@/content/learning';
 import React, { useState } from 'react';
 
@@ -11,11 +10,11 @@ const PerformancePage: React.FC = () => {
   const [count, setCount] = useState(0);
   console.log('PerformancePage rendered');
   return (
-    <>
-      <PageHeader {...learningContent.performance.header} />
-
-      <TheoryPanel {...learningContent.performance.theory} />
-
+    <LearningExamplePage
+      codeFilePath="src/app/(learning)/performance/page.tsx"
+      header={learningContent.performance.header}
+      theory={learningContent.performance.theory}
+    >
       <ContentCard className="max-w-2xl">
         <div className="rounded-lg bg-slate-50 p-5">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
@@ -30,7 +29,7 @@ const PerformancePage: React.FC = () => {
         </div>
         <UserCard name="John Doe" />
       </ContentCard>
-    </>
+    </LearningExamplePage>
   );
 };
 
