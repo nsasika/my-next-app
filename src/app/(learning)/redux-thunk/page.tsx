@@ -17,7 +17,7 @@ const ReduxThunkPage = () => {
       header={learningContent.reduxThunk.header}
       theory={learningContent.reduxThunk.theory}
     >
-      <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
         <ContentCard>
           <h2 className="text-xl font-bold text-slate-950">Thunk Use Cases</h2>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">

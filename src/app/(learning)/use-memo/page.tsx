@@ -154,7 +154,7 @@ export default function UseMemoTest() {
           <ReduxBanner />
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-[1fr_220px_220px]">
+        <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_220px_220px]">
           <label className="grid gap-2 text-sm font-bold">
             {demoContent.searchLabel}
             <input

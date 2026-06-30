@@ -16,14 +16,14 @@ export default function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-      <div>
+    <header className="mb-6 flex min-w-0 flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className="min-w-0">
         {eyebrow ? (
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-700">
+          <p className="max-w-full text-xs font-bold uppercase tracking-[0.16em] text-sky-700 [overflow-wrap:anywhere] sm:tracking-[0.2em]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+        <h1 className="mt-2 max-w-full text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
           {title}
         </h1>
         {description ? (
@@ -32,11 +32,11 @@ export default function PageHeader({
           </p>
         ) : null}
         {tags.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex max-w-full flex-wrap gap-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-800"
+                className="max-w-full rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-800"
               >
                 {tag}
               </span>
@@ -44,7 +44,9 @@ export default function PageHeader({
           </div>
         ) : null}
       </div>
-      {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
+      {actions ? (
+        <div className="flex min-w-0 flex-wrap gap-2">{actions}</div>
+      ) : null}
     </header>
   );
 }

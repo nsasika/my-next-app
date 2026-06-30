@@ -53,7 +53,7 @@ export default function LoginClient() {
           </AppButton>
         </header>
 
-        <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+        <section className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
           <ContentCard className="p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-700">
               {authContent.login.eyebrow}

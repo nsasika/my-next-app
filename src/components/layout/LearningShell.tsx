@@ -112,9 +112,9 @@ export default function LearningShell({ children }: { children: ReactNode }) {
     onNavigate?: () => void;
     showCloseButton?: boolean;
   } = {}) => (
-    <aside className="flex h-full min-h-0 flex-col border-r border-slate-200 bg-white">
+    <aside className="flex h-full min-h-0 w-full flex-col border-r border-slate-200 bg-white">
       <div className="shrink-0 border-b border-slate-200 p-5">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center justify-between gap-3">
           <BrandMark />
           {showCloseButton ? (
             <button
@@ -224,14 +224,14 @@ export default function LearningShell({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
+    <div className="min-h-screen overflow-x-clip bg-slate-50 text-slate-950">
       <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:block lg:w-72">
         {renderSidebar()}
       </div>
 
       {mobileNavOpen ? (
-        <div className="fixed inset-0 z-40 bg-slate-950/30 lg:hidden">
-          <div className="h-dvh w-80 max-w-[86vw] bg-white shadow-xl">
+        <div className="fixed inset-0 z-40 overflow-hidden bg-slate-950/30 lg:hidden">
+          <div className="h-dvh w-[min(22rem,calc(100vw-2rem))] bg-white shadow-xl">
             {renderSidebar({
               onNavigate: () => setMobileNavOpen(false),
               showCloseButton: true,
@@ -240,23 +240,23 @@ export default function LearningShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
 
-      <div className="lg:pl-72">
-        <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-5 py-4 backdrop-blur">
-          <div className="flex items-center justify-between gap-4">
+      <div className="min-w-0 lg:pl-72">
+        <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-4 py-4 backdrop-blur sm:px-5">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 lg:gap-4">
             <button
               aria-label="Open navigation"
-              className="rounded-lg border border-slate-200 bg-white p-2 text-slate-700 lg:hidden"
+              className="shrink-0 rounded-lg border border-slate-200 bg-white p-2 text-slate-700 lg:hidden"
               onClick={() => setMobileNavOpen(true)}
               type="button"
             >
               <MenuIcon fontSize="small" />
             </button>
 
-            <div className="min-w-0">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 sm:text-xs sm:tracking-[0.18em]">
                 {activeTechnology.label} / {activeSectionTitle}
               </p>
-              <p className="truncate text-sm font-semibold text-slate-950">
+              <p className="truncate text-xs font-semibold text-slate-950 sm:text-sm">
                 Theory, code example, and demo for every lesson.
               </p>
             </div>
@@ -272,7 +272,9 @@ export default function LearningShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="mx-auto max-w-6xl px-5 py-8 lg:px-8">{children}</main>
+        <main className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 sm:px-5 lg:px-8">
+          {children}
+        </main>
       </div>
     </div>
   );
