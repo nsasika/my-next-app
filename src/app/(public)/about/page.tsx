@@ -6,6 +6,7 @@ import DownloadPanel from '@/components/DownloadPanel/index';
 import InfoCard from '@/components/InfoCard';
 import { HighlightBadge, SocialLink } from '@/components/ProfileLinks/index';
 import {
+  academyImpactStats,
   academyOriginContent,
   expertiseCards,
   highlightLinks,
@@ -29,18 +30,7 @@ export default function AboutMePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
-      <section className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-        <ContentCard className="mx-auto w-full max-w-sm p-5">
-          <Image
-            src="/profilepic.png"
-            alt="Nalin Padmasiri"
-            width={420}
-            height={420}
-            className="aspect-square w-full rounded-lg object-cover"
-            priority
-          />
-        </ContentCard>
-
+      <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
             {heroContent.eyebrow}
@@ -78,6 +68,54 @@ export default function AboutMePage() {
             ))}
           </div>
         </div>
+
+        <ContentCard className="mx-auto w-full max-w-sm overflow-hidden p-0">
+          <div className="relative">
+            <Image
+              src="/profilepic.png"
+              alt="Nalin Padmasiri"
+              width={420}
+              height={420}
+              className="aspect-square w-full object-cover"
+              priority
+            />
+            <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/40 bg-white/90 p-4 shadow-sm backdrop-blur">
+              <p className="text-sm font-bold text-slate-950">
+                React, TypeScript, Java
+              </p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                Enterprise delivery
+              </p>
+            </div>
+          </div>
+        </ContentCard>
+      </section>
+
+      <section className="mt-12 grid gap-5 rounded-lg border border-sky-200 bg-sky-50 p-6 sm:p-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        <div>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
+            Academy purpose
+          </p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
+            {academyOriginContent.title}
+          </h2>
+          <p className="mt-4 leading-7 text-slate-700">
+            {academyOriginContent.body}
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+          {academyImpactStats.map((stat) => (
+            <article
+              key={stat.label}
+              className="rounded-lg border border-white/70 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
+              <p className="text-3xl font-black text-slate-950">{stat.value}</p>
+              <p className="mt-1 text-sm font-bold text-slate-600">
+                {stat.label}
+              </p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="mt-14 grid gap-4 md:grid-cols-3">
@@ -111,15 +149,6 @@ export default function AboutMePage() {
             title="Resume"
           />
         </ContentCard>
-      </section>
-
-      <section className="mt-14 rounded-lg border border-sky-200 bg-sky-50 p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-slate-950">
-          {academyOriginContent.title}
-        </h2>
-        <p className="mt-4 leading-7 text-slate-700">
-          {academyOriginContent.body}
-        </p>
       </section>
     </div>
   );

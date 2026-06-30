@@ -17,11 +17,10 @@ export const socialLinks = [
 ] as const;
 
 export const heroContent = {
-  eyebrow: 'Senior frontend-focused full-stack engineer',
-  heading:
-    "I'm Nalin Padmasiri, a React, TypeScript, and Java engineer building enterprise-grade web applications.",
+  eyebrow: 'Founder-engineer behind the academy',
+  heading: 'Nalin Padmasiri: Engineering Leader & Academy Builder',
   paragraphs: [
-    'Senior Software Engineer with 8+ years of experience building enterprise applications across Singapore and Sri Lanka, with strong expertise in React.js, TypeScript, and modern frontend engineering. I have designed and developed scalable micro-frontend applications, especially within banking and enterprise environments.',
+    "I build enterprise-grade web applications and use Nalin's Academy as a practical learning platform for job seekers who want clear, interview-ready explanations.",
     'I have worked on large-scale systems at DBS Bank, GIC, and EMC Singapore, contributing to frontend modernization, React migrations, enterprise integrations, and application performance improvements while collaborating with cross-functional teams across multiple countries.',
   ],
 } as const;
@@ -74,9 +73,15 @@ export const targetRoles = [
 ] as const;
 
 export const academyOriginContent = {
-  title: "Why I started Nalin's Academy",
-  body: "After being affected by a layoff in Singapore, I used the transition period to study independently, strengthen my React and full-stack fundamentals, and reflect on the interview preparation journey many engineers go through alone. Nalin's Academy came from that experience: a practical platform to organize what I learn, explain concepts clearly, and help job seekers prepare for technical interviews with confidence.",
+  title: "The purpose of Nalin's Academy",
+  body: "Nalin's Academy exists to turn hard-earned engineering experience into practical preparation: React, Java, architecture, performance, and interview communication explained through examples that candidates can study, run, and discuss with confidence.",
 } as const;
+
+export const academyImpactStats = [
+  { label: 'Years engineering', value: '8+' },
+  { label: 'Core tracks', value: 'React + Java' },
+  { label: 'Delivery focus', value: 'Enterprise' },
+] as const;
 
 export const resumePath = '/resume/nalin-padmasiri-resume.pdf';
 export const resumeFiles = [

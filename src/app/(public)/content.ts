@@ -1,14 +1,16 @@
+import { APP_PATHS } from '@/config/routes';
+
 export const homeHeroContent = {
   eyebrow: 'Interview preparation for job seekers',
   heading:
     "Nalin's Academy helps candidates turn technical knowledge into interview confidence.",
   body: 'The ambition is simple: build a practical interview-preparation platform where job seekers can learn Java, React, frontend architecture, and full-stack trade-offs through clear explanations, recruiter-ready examples, and guided practice.',
   primaryAction: {
-    href: '/interview-questions',
-    label: 'Explore questions',
+    href: APP_PATHS.engineeringBlueprint,
+    label: 'View engineering blueprint',
   },
   secondaryAction: {
-    href: '/about',
+    href: APP_PATHS.about,
     label: 'Meet Nalin',
   },
 } as const;

@@ -36,3 +36,35 @@ textarea,
 select {
   font: inherit;
 }
+
+@keyframes blueprint-scan {
+  0% {
+    transform: translateX(-70%);
+  }
+
+  100% {
+    transform: translateX(160%);
+  }
+}
+
+.animate-blueprint-scan {
+  animation: blueprint-scan 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes blueprint-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scaleX(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.animate-blueprint-pulse {
+  animation: blueprint-pulse 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
