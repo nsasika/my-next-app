@@ -11,7 +11,7 @@ export default function ContentCard({
 }: ContentCardProps) {
   return (
     <section
-      className={`rounded-lg border border-slate-200 bg-white p-5 shadow-sm ${className}`}
+      className={`min-w-0 max-w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm ${className}`}
     >
       {children}
     </section>

@@ -4,9 +4,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import './globals.css';
 import StoreProvider from '@/lib/StoreProvider';
-import AppLayoutClient from '@/components/AppLayoutClient';
-import { verifyToken } from '@/lib/auth';
-import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   title: "Nalin's Academy",
@@ -22,20 +19,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('access_token')?.value;
-  const verifiedUser = token ? await verifyToken(token) : null;
-
   return (
     <html lang="en">
       <body>
         <StoreProvider>
           <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-              <AppLayoutClient initialIsAuthenticated={Boolean(verifiedUser)}>
-                {children}
-              </AppLayoutClient>
-            </ThemeProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
       </body>

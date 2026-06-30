@@ -23,8 +23,8 @@ export default function TheoryPanel({
 }: TheoryPanelProps) {
   return (
     <ContentCard className="mb-6">
-      <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
-        <div>
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
+        <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
             {THEORY_PANEL_TEXT.eyebrow}
           </p>
@@ -40,7 +40,7 @@ export default function TheoryPanel({
           </ul>
         </div>
 
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {code ? <CodeBlock code={code} language="mental model" /> : null}
           {whatToTry.length > 0 ? (
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">

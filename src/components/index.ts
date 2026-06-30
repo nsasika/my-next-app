@@ -1,5 +1,3 @@
-export { default as CustomBtn } from './Button';
-export { default as Sidebar } from './Sidebar';
 export { default as AppButton } from './ui/AppButton';
 export { default as CodeBlock } from './ui/CodeBlock';
 export { default as ContentCard } from './ui/ContentCard';

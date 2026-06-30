@@ -1,4 +1,34 @@
 export const learningContent = {
+  javaExamples: {
+    header: {
+      description:
+        'A starter workspace for Java interview examples. We can expand this into focused pages as we add real implementations.',
+      eyebrow: 'Java track',
+      tags: ['Java', 'Spring Boot', 'Backend', 'Practice'],
+      title: 'Java Examples',
+    },
+    theory: {
+      title: 'How Java examples should be studied',
+      summary:
+        'Java interview examples are easiest to learn when each one connects the language feature, a realistic code sample, and the tradeoffs behind the implementation.',
+      points: [
+        'Start with the concept: collections, streams, exceptions, generics, APIs, or transactions.',
+        'Read the implementation with attention to naming, null handling, immutability, and boundary design.',
+        'Use the demo notes to explain why the code is useful in production-style backend work.',
+      ],
+      code: `public List<String> activeUserNames(List<User> users) {
+    return users.stream()
+        .filter(User::isActive)
+        .map(User::name)
+        .sorted()
+        .toList();
+}`,
+      whatToTry: [
+        'Trace the stream pipeline from list input to sorted names.',
+        'Think through how the method should behave with no active users.',
+      ],
+    },
+  },
   useRef: {
     header: {
       description:

@@ -1,6 +1,7 @@
 export const APP_PATHS = {
   home: '/',
   about: '/about',
+  engineeringBlueprint: '/engineering-blueprint',
   login: '/login',
 
   interviewQuestions: '/interview-questions',
@@ -40,4 +41,13 @@ export type NavItem = {
 export type SidebarSection = {
   title: string;
   links: NavItem[];
+};
+
+export type SidebarTechnology = {
+  description: string;
+  href?: AppPath;
+  label: string;
+  sections: SidebarSection[];
+  status?: 'available' | 'planned';
+  value: 'react' | 'java' | 'angular';
 };
