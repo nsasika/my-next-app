@@ -30,7 +30,7 @@ const learningPillarIcons = {
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
-      <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
             {homeHeroContent.eyebrow}

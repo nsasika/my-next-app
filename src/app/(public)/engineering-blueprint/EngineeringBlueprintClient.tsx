@@ -28,7 +28,7 @@ export default function EngineeringBlueprintClient() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
-      <section className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <section className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
             {engineeringHeroContent.eyebrow}
@@ -114,7 +114,7 @@ export default function EngineeringBlueprintClient() {
           </div>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">
+        <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center">
           <DiagramNode
             title="Application stack"
             items={[
@@ -170,7 +170,7 @@ export default function EngineeringBlueprintClient() {
         ))}
       </section>
 
-      <section className="mt-16 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <section className="mt-16 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
             Release checklist

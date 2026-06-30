@@ -8,7 +8,7 @@ export default function AuthenticationStrategyPage() {
     <>
       <PageHeader {...authContent.strategy.header} />
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
         <ContentCard>
           <h2 className="text-xl font-black text-slate-950">
             {authContent.strategy.overviewTitle}
@@ -37,7 +37,7 @@ export default function AuthenticationStrategyPage() {
         <h2 className="mb-4 text-2xl font-black text-slate-950">
           {authContent.strategy.codeExamplesTitle}
         </h2>
-        <div className="grid gap-4">
+        <div className="grid min-w-0 gap-4">
           {authContent.strategy.codeExamples.map((example) => (
             <CodeExample
               key={example.filePath}
