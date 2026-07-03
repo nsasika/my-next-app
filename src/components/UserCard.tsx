@@ -5,7 +5,6 @@ type UserCardProps = {
 };
 
 const UserCard = ({ name }: UserCardProps) => {
-  console.log('UserCard rendered');
   return (
     <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
       <h3 className="font-bold text-slate-950">Memoized User Card</h3>

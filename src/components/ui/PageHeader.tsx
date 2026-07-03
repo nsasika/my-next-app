@@ -23,11 +23,11 @@ export default function PageHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-2 max-w-full text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+        <h1 className="mt-2 max-w-full text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
           {title}
         </h1>
         {description ? (
-          <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
             {description}
           </p>
         ) : null}

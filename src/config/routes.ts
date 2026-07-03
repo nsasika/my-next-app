@@ -31,10 +31,11 @@ export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
 
 const REACT_SECTIONS: SidebarSection[] = [
   {
-    title: 'React fundamentals',
+    title: 'React Hooks',
     links: [
+      { href: APP_PATHS.customHooks, label: 'Rules of Hooks' },
       { href: APP_PATHS.useRefTest, label: 'useRef' },
-      { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
+      { href: APP_PATHS.useCallback, label: 'useCallback' },
     ],
   },
   {
@@ -62,25 +63,23 @@ const REACT_SECTIONS: SidebarSection[] = [
   {
     title: 'State management',
     links: [
-      { href: APP_PATHS.counterSlice, label: 'Counter Example' },
-      { href: APP_PATHS.reduxThunk, label: 'Redux Thunk Example' },
-      { href: APP_PATHS.reduxSaga, label: 'Redux Saga Example' },
-      { href: APP_PATHS.zustand, label: 'Zustand Example' },
-    ],
-  },
-  {
-    title: 'RTK SAGA',
-    links: [
-      { href: APP_PATHS.takeEvery, label: 'Take Every' },
-      { href: APP_PATHS.takeLatest, label: 'Take Latest' },
-      { href: APP_PATHS.debounce, label: 'Debounce' },
+      { href: APP_PATHS.counterSlice, label: 'Redux Toolkit Slice' },
+      { href: APP_PATHS.zustand, label: 'Zustand Store' },
+      { href: APP_PATHS.reduxThunk, label: 'RTK Middleware: Thunk' },
+      { href: APP_PATHS.reduxSaga, label: 'RTK Middleware: Saga' },
+      { href: APP_PATHS.rtkQuery, label: 'RTK Query' },
+      { href: APP_PATHS.takeEvery, label: 'Saga takeEvery' },
+      { href: APP_PATHS.takeLatest, label: 'Saga takeLatest' },
+      { href: APP_PATHS.debounce, label: 'Saga debounce' },
     ],
   },
   {
     title: 'React Performance',
     links: [
+      { href: APP_PATHS.performanceGuide, label: 'Why and how to test' },
       { href: APP_PATHS.useMemoTest, label: 'useMemo' },
-      { href: APP_PATHS.performance, label: 'Performance Testing' },
+      { href: APP_PATHS.reactMemo, label: 'React.memo' },
+      { href: APP_PATHS.performance, label: 'Render profiling demo' },
       { href: APP_PATHS.ssr, label: 'SSR rendering' },
       { href: APP_PATHS.csr, label: 'CSR rendering' },
     ],
@@ -94,7 +93,7 @@ const REACT_SECTIONS: SidebarSection[] = [
 const JAVA_SECTIONS: SidebarSection[] = [
   {
     title: 'Java for the Impatient',
-    links: [{ href: APP_PATHS.javaExamples, label: 'Chapters 1 and 2' }],
+    links: [{ href: APP_PATHS.javaExamples, label: 'Chapter notes' }],
   },
 ];
 

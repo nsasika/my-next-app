@@ -128,19 +128,20 @@ inputRef.current?.focus();`,
   customHooks: {
     header: {
       description:
-        'Extract reusable stateful behavior into custom hooks while keeping UI components focused.',
-      eyebrow: 'Hooks',
-      tags: ['React', 'Client Component', 'Custom Hook'],
-      title: 'Custom Hooks',
+        'Learn the rules of hooks, then extract reusable stateful behavior into custom hooks.',
+      eyebrow: 'React Hooks',
+      tags: ['React', 'Rules of Hooks', 'Custom Hook'],
+      title: 'React Hooks and Custom Hooks',
     },
     theory: {
-      title: 'Why custom hooks exist',
+      title: 'Rules of hooks first',
       summary:
-        'A custom hook is a JavaScript function that uses React hooks internally and returns reusable stateful behavior to a component.',
+        'React hooks depend on call order. Keep hooks at the top level of function components and custom hooks so React can match state to the same hook call on every render.',
       points: [
-        'Name it with the use prefix so React hook rules and linting can understand it.',
+        'Call hooks only from React function components or custom hooks.',
+        'Do not call hooks inside conditions, loops, nested functions, or event handlers.',
+        'Name custom hooks with the use prefix so React hook rules and linting can understand them.',
         'Move behavior into a custom hook when multiple components need the same state logic.',
-        'Keep the component focused on rendering while the hook owns the state transitions.',
       ],
       code: `function useCounter() {
   const [count, setCount] = useState(0);
@@ -238,9 +239,9 @@ startTransition(() => {
     header: {
       description:
         'Redux Thunk is a practical fit for one-shot async requests and logic that needs dispatch or state access.',
-      eyebrow: 'Redux Toolkit',
-      tags: ['Redux Thunk', 'Client Component', 'Async State'],
-      title: 'Redux Thunk Example',
+      eyebrow: 'RTK Middleware',
+      tags: ['Redux Toolkit', 'Thunk', 'Async State'],
+      title: 'RTK Middleware: Thunk',
     },
     theory: {
       title: 'How thunk middleware works',
@@ -266,9 +267,9 @@ builder
     header: {
       description:
         'Redux Saga is useful when async workflows need cancellation, orchestration, retries, or deterministic control.',
-      eyebrow: 'Redux Saga',
-      tags: ['Redux Saga', 'Client Component', 'Side Effects'],
-      title: 'Redux Saga Example',
+      eyebrow: 'RTK Middleware',
+      tags: ['Redux Toolkit', 'Redux Saga', 'Side Effects'],
+      title: 'RTK Middleware: Saga',
     },
     theory: {
       title: 'How saga middleware works',
@@ -369,19 +370,19 @@ yield put(fetchUsersSagaSuccess(users));`,
   performance: {
     header: {
       description:
-        'Practice rerenders, memoization, API debounce, and large-list reasoning with small focused examples.',
+        'Practice render profiling with a parent update and a memoized child component.',
       eyebrow: 'Performance',
-      tags: ['React', 'Client Component', 'Memoization'],
-      title: 'React Performance Practice',
+      tags: ['React', 'Profiler', 'Memoization'],
+      title: 'Render Profiling Demo',
     },
     theory: {
-      title: 'What performance work means in React',
+      title: 'What to inspect in this demo',
       summary:
-        'React performance is usually about avoiding unnecessary work while keeping the UI correct. You first identify what renders, then decide whether memoization, splitting components, or moving state helps.',
+        'React performance work starts by observing what renders. This page creates parent renders while the UserCard is wrapped with React.memo.',
       points: [
         'A parent state update can cause child components to render.',
         'Memoization is useful when repeated rendering or calculation is expensive enough to matter.',
-        'Measure first, then optimize the smallest piece that creates user-visible delay.',
+        'Use this beside the React DevTools Profiler to compare parent and child renders.',
       ],
       code: `const MemoizedUserCard = memo(UserCard);
 const expensiveValue = useMemo(calculate, [input]);`,

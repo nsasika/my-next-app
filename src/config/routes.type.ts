@@ -8,6 +8,7 @@ export const APP_PATHS = {
 
   useRefTest: '/use-ref',
   useMemoTest: '/use-memo',
+  useCallback: '/use-callback',
   customHooks: '/custom-hooks',
 
   react18Batching: '/react18/batching',
@@ -23,6 +24,7 @@ export const APP_PATHS = {
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
   reduxSaga: '/redux-saga',
+  rtkQuery: '/rtk-query',
   zustand: '/zustand',
 
   takeEvery: '/practice/take-every',
@@ -30,6 +32,8 @@ export const APP_PATHS = {
   debounce: '/practice/debounce',
 
   performance: '/performance',
+  performanceGuide: '/performance-guide',
+  reactMemo: '/react-memo',
   ssr: '/ssr',
   csr: '/csr',
 
