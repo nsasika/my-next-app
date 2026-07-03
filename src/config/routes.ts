@@ -45,6 +45,18 @@ const REACT_SECTIONS: SidebarSection[] = [
         href: APP_PATHS.react18Transitions,
         label: 'Transitions (useTransition)',
       },
+      { href: APP_PATHS.react18DeferredValue, label: 'useDeferredValue' },
+      { href: APP_PATHS.react18Id, label: 'useId' },
+      { href: APP_PATHS.react18ExternalStore, label: 'useSyncExternalStore' },
+    ],
+  },
+  {
+    title: 'React 19 Changes',
+    links: [
+      {
+        href: APP_PATHS.react19Changes,
+        label: 'Actions, Optimistic UI, use()',
+      },
     ],
   },
   {
@@ -81,8 +93,20 @@ const REACT_SECTIONS: SidebarSection[] = [
 
 const JAVA_SECTIONS: SidebarSection[] = [
   {
-    title: 'Java fundamentals',
-    links: [{ href: APP_PATHS.javaExamples, label: 'Java Overview' }],
+    title: 'Java for the Impatient',
+    links: [{ href: APP_PATHS.javaExamples, label: 'Chapters 1 and 2' }],
+  },
+];
+
+const INTERVIEW_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Real interviews',
+    links: [
+      {
+        href: APP_PATHS.interviewPractice,
+        label: 'Virtusa Singapore',
+      },
+    ],
   },
 ];
 
@@ -107,6 +131,13 @@ export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
     sections: [],
     status: 'planned',
     value: 'angular',
+  },
+  {
+    description: 'Real questions faced in interviews, with answer notes.',
+    href: APP_PATHS.interviewPractice,
+    label: 'Interviews',
+    sections: INTERVIEW_SECTIONS,
+    value: 'interviews',
   },
 ];
 

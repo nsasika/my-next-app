@@ -11,9 +11,14 @@ export const APP_PATHS = {
   customHooks: '/custom-hooks',
 
   react18Batching: '/react18/batching',
+  react18DeferredValue: '/react18/deferred-value',
+  react18ExternalStore: '/react18/external-store',
+  react18Id: '/react18/id',
   react18Transitions: '/react18/transitions',
+  react19Changes: '/react19',
 
   javaExamples: '/java-examples',
+  interviewPractice: '/interview-practice',
   authStrategy: '/authentication-strategy',
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
@@ -49,5 +54,5 @@ export type SidebarTechnology = {
   label: string;
   sections: SidebarSection[];
   status?: 'available' | 'planned';
-  value: 'react' | 'java' | 'angular';
+  value: 'react' | 'java' | 'angular' | 'interviews';
 };

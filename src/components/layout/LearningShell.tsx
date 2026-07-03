@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import SearchIcon from '@mui/icons-material/Search';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import Link from 'next/link';
@@ -23,6 +24,7 @@ import AppButton from '@/components/ui/AppButton';
 
 const technologyIcons = {
   angular: DataObjectIcon,
+  interviews: QuestionAnswerIcon,
   java: TerminalIcon,
   react: CodeIcon,
 } as const;
