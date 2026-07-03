@@ -25,9 +25,9 @@ export default function React19Page() {
   return (
     <>
       <PageHeader
-        description="React 19 changes are split into separate lessons so each API can be learned and demoed independently."
+        description="React 19 was released on December 05, 2024. These lessons split Actions, optimistic updates, and the use() API so each feature can be learned independently."
         eyebrow="React"
-        tags={['React 19', 'Actions', 'Optimistic UI', 'use()']}
+        tags={['React 19', 'Released December 05, 2024', 'Actions']}
         title="React 19 Changes"
       />
 

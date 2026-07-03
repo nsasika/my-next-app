@@ -21,7 +21,7 @@ export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
   href: APP_PATHS.useRefTest,
-  label: 'Practical Examples',
+  label: 'Learning Workspace',
 };
 
 export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
@@ -41,6 +41,7 @@ const REACT_SECTIONS: SidebarSection[] = [
   {
     title: 'React 18 Changes',
     links: [
+      { href: APP_PATHS.react18Changes, label: 'React 18 Overview' },
       { href: APP_PATHS.react18Batching, label: 'Automatic Batching' },
       {
         href: APP_PATHS.react18Transitions,

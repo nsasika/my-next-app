@@ -11,6 +11,7 @@ export const APP_PATHS = {
   useCallback: '/use-callback',
   customHooks: '/custom-hooks',
 
+  react18Changes: '/react18',
   react18Batching: '/react18/batching',
   react18DeferredValue: '/react18/deferred-value',
   react18ExternalStore: '/react18/external-store',

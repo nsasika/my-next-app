@@ -7,9 +7,9 @@ const React18ChangesPage: React.FC = () => {
   return (
     <>
       <PageHeader
-        description="Explore React 18 rendering behavior through focused examples."
+        description="React 18 was released on March 29, 2022. It introduced the concurrent renderer foundation, automatic batching, transitions, new hooks, and stronger Suspense support."
         eyebrow="React"
-        tags={['React 18', 'Server Component', 'Learning Track']}
+        tags={['React 18', 'Released March 29, 2022', 'Concurrent Rendering']}
         title="React 18 Changes"
       />
 

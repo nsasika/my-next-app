@@ -13,12 +13,10 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Face2Icon from '@mui/icons-material/Face2';
 import FaceIcon from '@mui/icons-material/Face';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import SearchIcon from '@mui/icons-material/Search';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import Link from 'next/link';
@@ -26,6 +24,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import BrandMark from './BrandMark';
+import LessonSearch from '@/components/learning/LessonSearch';
 
 const technologyIcons = {
   angular: DataObjectIcon,
@@ -103,14 +102,21 @@ function SidebarSectionList({
               );
 
             return (
-              <div key={link.href}>
+              <div
+                key={link.href}
+                className={
+                  link.children
+                    ? 'rounded-lg border border-slate-200 bg-slate-50 p-1'
+                    : ''
+                }
+              >
                 {link.children ? (
                   <button
                     aria-expanded={childExpanded}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${
+                    className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-black transition ${
                       active
-                        ? 'bg-sky-100 text-sky-900'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                        ? 'bg-white text-sky-900 shadow-sm'
+                        : 'text-slate-800 hover:bg-white hover:text-slate-950'
                     }`}
                     onClick={() =>
                       setOpenChildHref(childExpanded ? null : link.href)
@@ -146,7 +152,7 @@ function SidebarSectionList({
                         : 'grid-rows-[0fr] opacity-0'
                     }`}
                   >
-                    <div className="ml-3 mt-1 min-h-0 space-y-1 overflow-hidden border-l border-slate-200 pl-3">
+                    <div className="ml-2 mt-1 min-h-0 space-y-1 overflow-hidden border-l border-slate-300 pl-3">
                       {link.children.map((child) => {
                         const childActive = isRouteActive(pathname, child.href);
 
@@ -213,24 +219,14 @@ function SidebarSectionGroup({
   );
 }
 
-function ProfileAvatar({
-  gender,
-  selected = false,
-}: {
-  gender: 'female' | 'male';
-  selected?: boolean;
-}) {
-  const Icon = gender === 'female' ? Face2Icon : FaceIcon;
-
+function ProfileAvatar({ selected = false }: { selected?: boolean }) {
   return (
     <span
-      className={`inline-flex size-10 items-center justify-center rounded-full border-2 ${
-        gender === 'female'
-          ? 'border-pink-200 bg-pink-100 text-pink-700'
-          : 'border-sky-200 bg-sky-100 text-sky-800'
-      } ${selected ? 'ring-2 ring-slate-950 ring-offset-2' : ''}`}
+      className={`inline-flex size-10 items-center justify-center rounded-full border-2 border-sky-200 bg-sky-100 text-sky-800 ${
+        selected ? 'ring-2 ring-slate-950 ring-offset-2' : ''
+      }`}
     >
-      <Icon fontSize="small" />
+      <FaceIcon fontSize="small" />
     </span>
   );
 }
@@ -252,13 +248,13 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
         onClick={() => setOpen((current) => !current)}
         type="button"
       >
-        <ProfileAvatar gender="male" selected />
+        <ProfileAvatar selected />
       </button>
 
       {open ? (
         <div className="absolute right-0 top-12 z-50 w-[min(19rem,calc(100vw-2rem))] rounded-lg border border-slate-200 bg-white p-4 shadow-xl">
           <div className="flex items-center gap-3">
-            <ProfileAvatar gender="male" selected />
+            <ProfileAvatar selected />
             <div className="min-w-0">
               <p className="truncate text-sm font-black text-slate-950">
                 Nalin Padmasiri
@@ -266,16 +262,6 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
               <p className="truncate text-xs font-semibold text-slate-500">
                 Learning account
               </p>
-            </div>
-          </div>
-
-          <div className="mt-4 rounded-lg bg-slate-50 p-3">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-              Default profile pictures
-            </p>
-            <div className="mt-3 flex gap-3">
-              <ProfileAvatar gender="male" selected />
-              <ProfileAvatar gender="female" />
             </div>
           </div>
 
@@ -471,7 +457,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
 
       <div className="min-w-0 lg:pl-72">
         <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-4 py-4 backdrop-blur sm:px-5">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 lg:gap-4">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 lg:gap-4">
             <button
               aria-label="Open navigation"
               className="shrink-0 rounded-lg border border-slate-200 bg-white p-2 text-slate-700 lg:hidden"
@@ -490,12 +476,15 @@ export default function LearningShell({ children }: { children: ReactNode }) {
               </p>
             </div>
 
-            <div className="hidden min-w-64 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 md:flex">
-              <SearchIcon fontSize="small" />
-              Search examples soon
+            <div className="hidden md:block">
+              <LessonSearch />
             </div>
 
             <HeaderProfileMenu onLogout={logout} />
+
+            <div className="w-full md:hidden">
+              <LessonSearch />
+            </div>
           </div>
         </header>
 
