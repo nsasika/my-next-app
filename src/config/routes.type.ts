@@ -17,8 +17,13 @@ export const APP_PATHS = {
   react18Id: '/react18/id',
   react18Transitions: '/react18/transitions',
   react19Changes: '/react19',
+  react19ActionState: '/react19/action-state',
+  react19Optimistic: '/react19/optimistic',
+  react19Use: '/react19/use',
 
   javaExamples: '/java-examples',
+  javaChapter1: '/java-examples/chapter-1',
+  javaChapter2: '/java-examples/chapter-2',
   interviewPractice: '/interview-practice',
   authStrategy: '/authentication-strategy',
   counterSlice: '/counter-slice',
@@ -43,6 +48,7 @@ export const APP_PATHS = {
 export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];
 
 export type NavItem = {
+  children?: NavItem[];
   href: AppPath;
   label: string;
 };

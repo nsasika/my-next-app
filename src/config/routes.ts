@@ -54,23 +54,42 @@ const REACT_SECTIONS: SidebarSection[] = [
   {
     title: 'React 19 Changes',
     links: [
+      { href: APP_PATHS.react19Changes, label: 'React 19 Overview' },
       {
-        href: APP_PATHS.react19Changes,
-        label: 'Actions, Optimistic UI, use()',
+        href: APP_PATHS.react19ActionState,
+        label: 'useActionState',
+      },
+      {
+        href: APP_PATHS.react19Optimistic,
+        label: 'useOptimistic',
+      },
+      {
+        href: APP_PATHS.react19Use,
+        label: 'use() API',
       },
     ],
   },
   {
     title: 'State management',
     links: [
-      { href: APP_PATHS.counterSlice, label: 'Redux Toolkit Slice' },
-      { href: APP_PATHS.zustand, label: 'Zustand Store' },
-      { href: APP_PATHS.reduxThunk, label: 'RTK Middleware: Thunk' },
-      { href: APP_PATHS.reduxSaga, label: 'RTK Middleware: Saga' },
-      { href: APP_PATHS.rtkQuery, label: 'RTK Query' },
-      { href: APP_PATHS.takeEvery, label: 'Saga takeEvery' },
-      { href: APP_PATHS.takeLatest, label: 'Saga takeLatest' },
-      { href: APP_PATHS.debounce, label: 'Saga debounce' },
+      {
+        href: APP_PATHS.counterSlice,
+        label: 'Redux Toolkit',
+        children: [
+          { href: APP_PATHS.counterSlice, label: 'Slice + reducers' },
+          { href: APP_PATHS.reduxThunk, label: 'Middleware: Thunk' },
+          { href: APP_PATHS.reduxSaga, label: 'Middleware: Saga' },
+          { href: APP_PATHS.rtkQuery, label: 'RTK Query' },
+          { href: APP_PATHS.takeEvery, label: 'Saga takeEvery' },
+          { href: APP_PATHS.takeLatest, label: 'Saga takeLatest' },
+          { href: APP_PATHS.debounce, label: 'Saga debounce' },
+        ],
+      },
+      {
+        href: APP_PATHS.zustand,
+        label: 'Zustand',
+        children: [{ href: APP_PATHS.zustand, label: 'Store example' }],
+      },
     ],
   },
   {
@@ -93,7 +112,11 @@ const REACT_SECTIONS: SidebarSection[] = [
 const JAVA_SECTIONS: SidebarSection[] = [
   {
     title: 'Java for the Impatient',
-    links: [{ href: APP_PATHS.javaExamples, label: 'Chapter notes' }],
+    links: [
+      { href: APP_PATHS.javaExamples, label: 'Book overview' },
+      { href: APP_PATHS.javaChapter1, label: 'Chapter 1' },
+      { href: APP_PATHS.javaChapter2, label: 'Chapter 2' },
+    ],
   },
 ];
 

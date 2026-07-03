@@ -10,17 +10,22 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CodeIcon from '@mui/icons-material/Code';
 import CloseIcon from '@mui/icons-material/Close';
 import DataObjectIcon from '@mui/icons-material/DataObject';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Face2Icon from '@mui/icons-material/Face2';
+import FaceIcon from '@mui/icons-material/Face';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import SearchIcon from '@mui/icons-material/Search';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import BrandMark from './BrandMark';
-import AppButton from '@/components/ui/AppButton';
 
 const technologyIcons = {
   angular: DataObjectIcon,
@@ -37,43 +42,269 @@ const technologyHasActiveRoute = (
   technology: SidebarTechnology,
 ) =>
   technology.sections.some((section) =>
-    section.links.some((link) => isRouteActive(pathname, link.href)),
+    section.links.some(
+      (link) =>
+        isRouteActive(pathname, link.href) ||
+        link.children?.some((child) => isRouteActive(pathname, child.href)),
+    ),
   );
 
 function SidebarSectionList({
+  expanded,
+  onToggle,
   onNavigate,
+  openChildHref,
   pathname,
   section,
+  setOpenChildHref,
 }: {
+  expanded: boolean;
+  onToggle: () => void;
   onNavigate?: () => void;
+  openChildHref: string | null;
   pathname: string;
   section: SidebarSection;
+  setOpenChildHref: (href: string | null) => void;
 }) {
   return (
     <div>
-      <p className="px-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+      <button
+        aria-expanded={expanded}
+        className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-bold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
+        onClick={onToggle}
+        type="button"
+      >
         {section.title}
-      </p>
-      <div className="mt-2 space-y-1">
-        {section.links.map((link) => {
-          const active = isRouteActive(pathname, link.href);
+        <ExpandMoreIcon
+          className={`transition ${expanded ? 'rotate-180' : ''}`}
+          fontSize="small"
+        />
+      </button>
+      <div
+        className={`grid transition-all duration-300 ${
+          expanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="mt-2 min-h-0 space-y-1 overflow-hidden">
+          {section.links.map((link) => {
+            const active =
+              isRouteActive(pathname, link.href) ||
+              Boolean(
+                link.children?.some((child) =>
+                  isRouteActive(pathname, child.href),
+                ),
+              );
+            const childExpanded =
+              openChildHref === link.href ||
+              Boolean(
+                link.children?.some((child) =>
+                  isRouteActive(pathname, child.href),
+                ),
+              );
 
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={onNavigate}
-              className={`block rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                active
-                  ? 'bg-sky-100 text-sky-900'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
-              }`}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
+            return (
+              <div key={link.href}>
+                {link.children ? (
+                  <button
+                    aria-expanded={childExpanded}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${
+                      active
+                        ? 'bg-sky-100 text-sky-900'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                    }`}
+                    onClick={() =>
+                      setOpenChildHref(childExpanded ? null : link.href)
+                    }
+                    type="button"
+                  >
+                    {link.label}
+                    <ExpandMoreIcon
+                      className={`transition ${
+                        childExpanded ? 'rotate-180' : ''
+                      }`}
+                      fontSize="small"
+                    />
+                  </button>
+                ) : (
+                  <Link
+                    href={link.href}
+                    onClick={onNavigate}
+                    className={`block rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                      active
+                        ? 'bg-sky-100 text-sky-900'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
+                {link.children ? (
+                  <div
+                    className={`grid transition-all duration-300 ${
+                      childExpanded
+                        ? 'grid-rows-[1fr] opacity-100'
+                        : 'grid-rows-[0fr] opacity-0'
+                    }`}
+                  >
+                    <div className="ml-3 mt-1 min-h-0 space-y-1 overflow-hidden border-l border-slate-200 pl-3">
+                      {link.children.map((child) => {
+                        const childActive = isRouteActive(pathname, child.href);
+
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={onNavigate}
+                            className={`block rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                              childActive
+                                ? 'bg-slate-950 text-white'
+                                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function SidebarSectionGroup({
+  activeSectionTitle,
+  onNavigate,
+  pathname,
+  sections,
+}: {
+  activeSectionTitle: string;
+  onNavigate?: () => void;
+  pathname: string;
+  sections: SidebarSection[];
+}) {
+  const [openSectionTitle, setOpenSectionTitle] = useState(activeSectionTitle);
+  const [openChildHref, setOpenChildHref] = useState<string | null>(null);
+
+  return (
+    <div className="space-y-3">
+      {sections.map((section) => (
+        <SidebarSectionList
+          key={section.title}
+          expanded={openSectionTitle === section.title}
+          onNavigate={onNavigate}
+          onToggle={() =>
+            setOpenSectionTitle((current) =>
+              current === section.title ? '' : section.title,
+            )
+          }
+          openChildHref={openChildHref}
+          pathname={pathname}
+          section={section}
+          setOpenChildHref={(href) => setOpenChildHref(href)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ProfileAvatar({
+  gender,
+  selected = false,
+}: {
+  gender: 'female' | 'male';
+  selected?: boolean;
+}) {
+  const Icon = gender === 'female' ? Face2Icon : FaceIcon;
+
+  return (
+    <span
+      className={`inline-flex size-10 items-center justify-center rounded-full border-2 ${
+        gender === 'female'
+          ? 'border-pink-200 bg-pink-100 text-pink-700'
+          : 'border-sky-200 bg-sky-100 text-sky-800'
+      } ${selected ? 'ring-2 ring-slate-950 ring-offset-2' : ''}`}
+    >
+      <Icon fontSize="small" />
+    </span>
+  );
+}
+
+function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
+  const [open, setOpen] = useState(false);
+  const profileActions = [
+    { icon: EditIcon, label: 'Edit profile' },
+    { icon: WorkspacePremiumIcon, label: 'Subscribe services' },
+    { icon: DeleteOutlineIcon, label: 'Delete account' },
+  ] as const;
+
+  return (
+    <div className="relative">
+      <button
+        aria-expanded={open}
+        aria-label="Open user profile"
+        className="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm transition hover:border-sky-300"
+        onClick={() => setOpen((current) => !current)}
+        type="button"
+      >
+        <ProfileAvatar gender="male" selected />
+      </button>
+
+      {open ? (
+        <div className="absolute right-0 top-12 z-50 w-[min(19rem,calc(100vw-2rem))] rounded-lg border border-slate-200 bg-white p-4 shadow-xl">
+          <div className="flex items-center gap-3">
+            <ProfileAvatar gender="male" selected />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-black text-slate-950">
+                Nalin Padmasiri
+              </p>
+              <p className="truncate text-xs font-semibold text-slate-500">
+                Learning account
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-lg bg-slate-50 p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              Default profile pictures
+            </p>
+            <div className="mt-3 flex gap-3">
+              <ProfileAvatar gender="male" selected />
+              <ProfileAvatar gender="female" />
+            </div>
+          </div>
+
+          <div className="mt-3 grid gap-1">
+            {profileActions.map((action) => {
+              const Icon = action.icon;
+
+              return (
+                <button
+                  key={action.label}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                  type="button"
+                >
+                  <Icon fontSize="small" />
+                  {action.label}
+                </button>
+              );
+            })}
+            <button
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-rose-700 transition hover:bg-rose-50"
+              onClick={onLogout}
+              type="button"
+            >
+              <LogoutIcon fontSize="small" />
+              Logout
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -93,7 +324,11 @@ export default function LearningShell({ children }: { children: ReactNode }) {
 
   const activeSectionTitle = useMemo(() => {
     const found = activeTechnology.sections.find((section) =>
-      section.links.some((link) => isRouteActive(pathname, link.href)),
+      section.links.some(
+        (link) =>
+          isRouteActive(pathname, link.href) ||
+          link.children?.some((child) => isRouteActive(pathname, child.href)),
+      ),
     );
 
     return found?.title ?? activeTechnology.label;
@@ -162,7 +397,9 @@ export default function LearningShell({ children }: { children: ReactNode }) {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2 text-sm font-black">
-                    {technology.label}
+                    <span className="text-sm font-bold">
+                      {technology.label}
+                    </span>
                     {isPlanned ? (
                       <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-slate-600">
                         Soon
@@ -204,23 +441,13 @@ export default function LearningShell({ children }: { children: ReactNode }) {
           })}
         </div>
 
-        <div className="space-y-6">
-          {activeTechnology.sections.map((section) => (
-            <SidebarSectionList
-              key={section.title}
-              onNavigate={onNavigate}
-              pathname={pathname}
-              section={section}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="shrink-0 border-t border-slate-200 bg-white p-4">
-        <AppButton className="w-full" onClick={logout} variant="danger">
-          <LogoutIcon fontSize="small" />
-          Logout
-        </AppButton>
+        <SidebarSectionGroup
+          key={`${activeTechnology.value}-${pathname}`}
+          activeSectionTitle={activeSectionTitle}
+          onNavigate={onNavigate}
+          pathname={pathname}
+          sections={activeTechnology.sections}
+        />
       </div>
     </aside>
   );
@@ -268,9 +495,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
               Search examples soon
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-sm font-black text-white">
-              NP
-            </div>
+            <HeaderProfileMenu onLogout={logout} />
           </div>
         </header>
 

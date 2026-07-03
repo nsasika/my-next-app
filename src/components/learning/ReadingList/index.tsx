@@ -18,12 +18,14 @@ type ReadingListProps = {
 };
 
 export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
     <div className="space-y-3">
       {items.map((item, index) => {
         const expanded = activeIndex === index;
+        const hasPrevious = index > 0;
+        const hasNext = index < items.length - 1;
 
         return (
           <article
@@ -37,7 +39,9 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
             <button
               aria-expanded={expanded}
               className="flex w-full items-start gap-4 px-5 py-4 text-left"
-              onClick={() => setActiveIndex(index)}
+              onClick={() =>
+                setActiveIndex((current) => (current === index ? null : index))
+              }
               type="button"
             >
               <span
@@ -57,6 +61,11 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
                 ) : null}
                 <span className="mt-1 block text-base font-black leading-6 text-slate-950">
                   {item.question}
+                </span>
+                <span className="mt-1 block text-xs font-semibold text-slate-500">
+                  {expanded
+                    ? `Reading ${index + 1} of ${items.length}`
+                    : 'Tap to expand'}
                 </span>
               </span>
               <ExpandMoreIcon
@@ -96,6 +105,24 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
                       <CodeBlock code={item.code} language={codeLanguage} />
                     </div>
                   ) : null}
+                  <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-4">
+                    <button
+                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      disabled={!hasPrevious}
+                      onClick={() => setActiveIndex(index - 1)}
+                      type="button"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+                      disabled={!hasNext}
+                      onClick={() => setActiveIndex(index + 1)}
+                      type="button"
+                    >
+                      Next question
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
