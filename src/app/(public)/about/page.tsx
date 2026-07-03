@@ -31,17 +31,17 @@ export default function AboutMePage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
       <section className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-[0.22em] text-sky-700">
+        <div className="animate-fade-rise">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">
             {heroContent.eyebrow}
           </p>
-          <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
+          <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl">
             {heroContent.heading}
           </h1>
           {heroContent.paragraphs.map((paragraph, index) => (
             <p
               key={paragraph}
-              className={`text-lg leading-8 text-slate-700 ${
+              className={`text-base leading-7 text-slate-700 sm:text-lg sm:leading-8 ${
                 index === 0 ? 'mt-6' : 'mt-4'
               }`}
             >
@@ -69,17 +69,18 @@ export default function AboutMePage() {
           </div>
         </div>
 
-        <ContentCard className="mx-auto w-full max-w-sm overflow-hidden p-0">
+        <ContentCard className="mx-auto w-full max-w-sm overflow-hidden p-0 animate-fade-rise [animation-delay:120ms]">
           <div className="relative">
+            <div className="pointer-events-none absolute inset-3 z-10 rounded-lg border border-white/40" />
             <Image
               src="/profilepic.png"
               alt="Nalin Padmasiri"
               width={420}
               height={420}
-              className="aspect-square w-full object-cover"
+              className="aspect-square w-full object-cover transition duration-500 hover:scale-105"
               priority
             />
-            <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/40 bg-white/90 p-4 shadow-sm backdrop-blur">
+            <div className="absolute inset-x-4 bottom-4 z-20 rounded-lg border border-white/40 bg-white/90 p-4 shadow-sm backdrop-blur animate-profile-float">
               <p className="text-sm font-bold text-slate-950">
                 React, TypeScript, Java
               </p>
@@ -91,15 +92,15 @@ export default function AboutMePage() {
         </ContentCard>
       </section>
 
-      <section className="mt-12 grid min-w-0 gap-5 rounded-lg border border-sky-200 bg-sky-50 p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
+      <section className="mt-12 grid min-w-0 gap-5 rounded-lg border border-sky-200 bg-sky-50 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-700">
             Academy purpose
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
+          <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-slate-950">
             {academyOriginContent.title}
           </h2>
-          <p className="mt-4 leading-7 text-slate-700">
+          <p className="mt-4 text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
             {academyOriginContent.body}
           </p>
         </div>
@@ -107,7 +108,7 @@ export default function AboutMePage() {
           {academyImpactStats.map((stat) => (
             <article
               key={stat.label}
-              className="rounded-lg border border-white/70 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="rounded-lg border border-white/70 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-md"
             >
               <p className="text-3xl font-black text-slate-950">{stat.value}</p>
               <p className="mt-1 text-sm font-bold text-slate-600">
@@ -129,7 +130,7 @@ export default function AboutMePage() {
           <h2 className="text-2xl font-bold text-slate-950">
             {targetRoleContent.title}
           </h2>
-          <p className="mt-4 leading-7 text-slate-700">
+          <p className="mt-4 text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
             {targetRoleContent.body}
           </p>
           <ul className="mt-6 space-y-3">

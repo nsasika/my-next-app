@@ -21,7 +21,7 @@ export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
   href: APP_PATHS.useRefTest,
-  label: 'Practical Examples',
+  label: 'Learning Workspace',
 };
 
 export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
@@ -31,44 +31,75 @@ export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
 
 const REACT_SECTIONS: SidebarSection[] = [
   {
-    title: 'React fundamentals',
+    title: 'React Hooks',
     links: [
+      { href: APP_PATHS.customHooks, label: 'Rules of Hooks' },
       { href: APP_PATHS.useRefTest, label: 'useRef' },
-      { href: APP_PATHS.customHooks, label: 'Custom Hooks' },
+      { href: APP_PATHS.useCallback, label: 'useCallback' },
     ],
   },
   {
     title: 'React 18 Changes',
     links: [
+      { href: APP_PATHS.react18Changes, label: 'React 18 Overview' },
       { href: APP_PATHS.react18Batching, label: 'Automatic Batching' },
       {
         href: APP_PATHS.react18Transitions,
         label: 'Transitions (useTransition)',
+      },
+      { href: APP_PATHS.react18DeferredValue, label: 'useDeferredValue' },
+      { href: APP_PATHS.react18Id, label: 'useId' },
+      { href: APP_PATHS.react18ExternalStore, label: 'useSyncExternalStore' },
+    ],
+  },
+  {
+    title: 'React 19 Changes',
+    links: [
+      { href: APP_PATHS.react19Changes, label: 'React 19 Overview' },
+      {
+        href: APP_PATHS.react19ActionState,
+        label: 'useActionState',
+      },
+      {
+        href: APP_PATHS.react19Optimistic,
+        label: 'useOptimistic',
+      },
+      {
+        href: APP_PATHS.react19Use,
+        label: 'use() API',
       },
     ],
   },
   {
     title: 'State management',
     links: [
-      { href: APP_PATHS.counterSlice, label: 'Counter Example' },
-      { href: APP_PATHS.reduxThunk, label: 'Redux Thunk Example' },
-      { href: APP_PATHS.reduxSaga, label: 'Redux Saga Example' },
-      { href: APP_PATHS.zustand, label: 'Zustand Example' },
-    ],
-  },
-  {
-    title: 'RTK SAGA',
-    links: [
-      { href: APP_PATHS.takeEvery, label: 'Take Every' },
-      { href: APP_PATHS.takeLatest, label: 'Take Latest' },
-      { href: APP_PATHS.debounce, label: 'Debounce' },
+      {
+        href: APP_PATHS.counterSlice,
+        label: 'Redux Toolkit',
+        children: [
+          { href: APP_PATHS.counterSlice, label: 'Slice + reducers' },
+          { href: APP_PATHS.reduxThunk, label: 'Middleware: Thunk' },
+          { href: APP_PATHS.reduxSaga, label: 'Middleware: Saga' },
+          { href: APP_PATHS.rtkQuery, label: 'RTK Query' },
+          { href: APP_PATHS.takeEvery, label: 'Saga takeEvery' },
+          { href: APP_PATHS.takeLatest, label: 'Saga takeLatest' },
+          { href: APP_PATHS.debounce, label: 'Saga debounce' },
+        ],
+      },
+      {
+        href: APP_PATHS.zustand,
+        label: 'Zustand',
+        children: [{ href: APP_PATHS.zustand, label: 'Store example' }],
+      },
     ],
   },
   {
     title: 'React Performance',
     links: [
+      { href: APP_PATHS.performanceGuide, label: 'Why and how to test' },
       { href: APP_PATHS.useMemoTest, label: 'useMemo' },
-      { href: APP_PATHS.performance, label: 'Performance Testing' },
+      { href: APP_PATHS.reactMemo, label: 'React.memo' },
+      { href: APP_PATHS.performance, label: 'Render profiling demo' },
       { href: APP_PATHS.ssr, label: 'SSR rendering' },
       { href: APP_PATHS.csr, label: 'CSR rendering' },
     ],
@@ -81,8 +112,24 @@ const REACT_SECTIONS: SidebarSection[] = [
 
 const JAVA_SECTIONS: SidebarSection[] = [
   {
-    title: 'Java fundamentals',
-    links: [{ href: APP_PATHS.javaExamples, label: 'Java Overview' }],
+    title: 'Java for the Impatient',
+    links: [
+      { href: APP_PATHS.javaExamples, label: 'Book overview' },
+      { href: APP_PATHS.javaChapter1, label: 'Chapter 1' },
+      { href: APP_PATHS.javaChapter2, label: 'Chapter 2' },
+    ],
+  },
+];
+
+const INTERVIEW_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Real interviews',
+    links: [
+      {
+        href: APP_PATHS.interviewPractice,
+        label: 'Virtusa Singapore',
+      },
+    ],
   },
 ];
 
@@ -107,6 +154,13 @@ export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
     sections: [],
     status: 'planned',
     value: 'angular',
+  },
+  {
+    description: 'Real questions faced in interviews, with answer notes.',
+    href: APP_PATHS.interviewPractice,
+    label: 'Interviews',
+    sections: INTERVIEW_SECTIONS,
+    value: 'interviews',
   },
 ];
 

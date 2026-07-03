@@ -7,38 +7,52 @@ const React18ChangesPage: React.FC = () => {
   return (
     <>
       <PageHeader
-        description="Explore React 18 rendering behavior through focused examples."
+        description="React 18 was released on March 29, 2022. It introduced the concurrent renderer foundation, automatic batching, transitions, new hooks, and stronger Suspense support."
         eyebrow="React"
-        tags={['React 18', 'Server Component', 'Learning Track']}
+        tags={['React 18', 'Released March 29, 2022', 'Concurrent Rendering']}
         title="React 18 Changes"
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <ContentCard>
-          <h2 className="text-lg font-bold text-slate-950">
-            Automatic Batching
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            See how multiple state updates can be batched into one render.
-          </p>
-          <div className="mt-5">
-            <AppButton href={APP_PATHS.react18Batching} variant="secondary">
-              Open batching demo
-            </AppButton>
-          </div>
-        </ContentCard>
-
-        <ContentCard>
-          <h2 className="text-lg font-bold text-slate-950">Transitions</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            Keep urgent input responsive while lower-priority work updates.
-          </p>
-          <div className="mt-5">
-            <AppButton href={APP_PATHS.react18Transitions} variant="secondary">
-              Open transition demo
-            </AppButton>
-          </div>
-        </ContentCard>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {[
+          {
+            body: 'See how multiple state updates can be batched into one render.',
+            href: APP_PATHS.react18Batching,
+            title: 'Automatic Batching',
+          },
+          {
+            body: 'Keep urgent input responsive while lower-priority work updates.',
+            href: APP_PATHS.react18Transitions,
+            title: 'Transitions',
+          },
+          {
+            body: 'Let an expensive result lag behind immediate typing without blocking the input.',
+            href: APP_PATHS.react18DeferredValue,
+            title: 'useDeferredValue',
+          },
+          {
+            body: 'Generate stable, hydration-safe IDs for labels, hints, and repeated form fields.',
+            href: APP_PATHS.react18Id,
+            title: 'useId',
+          },
+          {
+            body: 'Subscribe to external mutable stores without tearing in concurrent rendering.',
+            href: APP_PATHS.react18ExternalStore,
+            title: 'useSyncExternalStore',
+          },
+        ].map((change) => (
+          <ContentCard key={change.href}>
+            <h2 className="text-lg font-bold text-slate-950">{change.title}</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              {change.body}
+            </p>
+            <div className="mt-5">
+              <AppButton href={change.href} variant="secondary">
+                Open demo
+              </AppButton>
+            </div>
+          </ContentCard>
+        ))}
       </div>
     </>
   );
