@@ -6,6 +6,13 @@ export const APP_PATHS = {
 
   interviewQuestions: '/interview-questions',
 
+  angular: '/angular',
+  interviews: '/interviews',
+  java: '/java',
+  javaBook: '/java/book',
+  nextjs: '/nextjs',
+  react: '/react',
+
   useRefTest: '/use-ref',
   useMemoTest: '/use-memo',
   useCallback: '/use-callback',
@@ -23,8 +30,8 @@ export const APP_PATHS = {
   react19Use: '/react19/use',
 
   javaExamples: '/java-examples',
-  javaChapter1: '/java-examples/chapter-1',
-  javaChapter2: '/java-examples/chapter-2',
+  javaChapter1: '/java/chapter-1',
+  javaChapter2: '/java/chapter-2',
   interviewPractice: '/interview-practice',
   authStrategy: '/authentication-strategy',
   counterSlice: '/counter-slice',
@@ -65,5 +72,5 @@ export type SidebarTechnology = {
   label: string;
   sections: SidebarSection[];
   status?: 'available' | 'planned';
-  value: 'react' | 'java' | 'angular' | 'interviews';
+  value: 'react' | 'java' | 'nextjs' | 'angular' | 'interviews';
 };

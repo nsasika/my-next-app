@@ -20,6 +20,20 @@ type SearchableLesson = LessonSearchResult & {
   searchText: string;
 };
 
+const technologyIndex = SIDEBAR_TECHNOLOGIES.flatMap((technology) =>
+  technology.href
+    ? [
+        {
+          href: technology.href,
+          label: technology.label,
+          searchText: `${technology.label} ${technology.description} technology landing page`,
+          section: 'Technology landing',
+          technology: technology.label,
+        },
+      ]
+    : [],
+);
+
 const lessonIndex = SIDEBAR_TECHNOLOGIES.flatMap((technology) =>
   technology.sections.flatMap((section) =>
     section.links.flatMap((link) => {
@@ -64,7 +78,11 @@ const javaTopicIndex: SearchableLesson[] = [
   })),
 ];
 
-const searchableLessons = [...lessonIndex, ...javaTopicIndex];
+const searchableLessons = [
+  ...technologyIndex,
+  ...lessonIndex,
+  ...javaTopicIndex,
+];
 
 const normalize = (value: string) => value.trim().toLowerCase();
 

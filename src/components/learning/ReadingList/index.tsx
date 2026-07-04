@@ -84,46 +84,54 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
               }`}
             >
               <div className="min-h-0 overflow-hidden">
-                <div className="border-t border-slate-100 px-5 py-5">
-                  {item.answer ? (
-                    <p className="text-sm leading-6 text-slate-600">
-                      {item.answer}
-                    </p>
-                  ) : null}
-                  {item.points ? (
-                    <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600">
-                      {item.points.map((point) => (
-                        <li key={point} className="flex gap-2">
-                          <span className="mt-2 size-1.5 shrink-0 rounded-full bg-sky-500" />
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {item.code ? (
-                    <div className="mt-4">
-                      <CodeBlock code={item.code} language={codeLanguage} />
-                    </div>
-                  ) : null}
-                  <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-4">
-                    <button
-                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
-                      disabled={!hasPrevious}
-                      onClick={() => setActiveIndex(index - 1)}
-                      type="button"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
-                      disabled={!hasNext}
-                      onClick={() => setActiveIndex(index + 1)}
-                      type="button"
-                    >
-                      Next question
-                    </button>
+                {expanded ? (
+                  <div className="border-t border-slate-100 px-5 py-5">
+                    {item.answer ? (
+                      <p className="text-sm leading-6 text-slate-600">
+                        {item.answer}
+                      </p>
+                    ) : null}
+                    {item.points ? (
+                      <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600">
+                        {item.points.map((point) => (
+                          <li key={point} className="flex gap-2">
+                            <span className="mt-2 size-1.5 shrink-0 rounded-full bg-sky-500" />
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {item.code ? (
+                      <div className="mt-4">
+                        <CodeBlock code={item.code} language={codeLanguage} />
+                      </div>
+                    ) : null}
+                    {hasPrevious || hasNext ? (
+                      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-4">
+                        {hasPrevious ? (
+                          <button
+                            className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-sky-300 hover:bg-sky-50"
+                            onClick={() => setActiveIndex(index - 1)}
+                            type="button"
+                          >
+                            Previous
+                          </button>
+                        ) : (
+                          <span aria-hidden="true" />
+                        )}
+                        {hasNext ? (
+                          <button
+                            className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800"
+                            onClick={() => setActiveIndex(index + 1)}
+                            type="button"
+                          >
+                            Next question
+                          </button>
+                        ) : null}
+                      </div>
+                    ) : null}
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </article>
