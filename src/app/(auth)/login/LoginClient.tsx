@@ -38,6 +38,10 @@ export default function LoginClient() {
       return;
     }
 
+    const formData = new FormData(event.currentTarget);
+    const submittedEmail = String(formData.get('email') ?? '');
+    const submittedPassword = String(formData.get('password') ?? '');
+
     setIsLoggingIn(true);
     setMessage('');
 
@@ -47,7 +51,10 @@ export default function LoginClient() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: submittedEmail,
+          password: submittedPassword,
+        }),
       });
 
       const data = await res.json();
@@ -57,7 +64,7 @@ export default function LoginClient() {
         setMessage(`${data.message}. Redirecting to the learning workspace...`);
         window.setTimeout(() => {
           router.replace(APP_PATHS.authStrategy);
-        }, 650);
+        }, 1000);
 
         return;
       }
@@ -110,6 +117,7 @@ export default function LoginClient() {
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                   disabled={isLoggingIn}
+                  name="email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={authContent.login.emailLabel}
                   type="email"
@@ -122,6 +130,7 @@ export default function LoginClient() {
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                   disabled={isLoggingIn}
+                  name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={authContent.login.passwordLabel}
                   type="password"
