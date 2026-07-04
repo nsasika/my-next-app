@@ -20,7 +20,7 @@ export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
 ];
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
-  href: APP_PATHS.useRefTest,
+  href: APP_PATHS.react,
   label: 'Learning Workspace',
 };
 
@@ -114,7 +114,7 @@ const JAVA_SECTIONS: SidebarSection[] = [
   {
     title: 'Java for the Impatient',
     links: [
-      { href: APP_PATHS.javaExamples, label: 'Book overview' },
+      { href: APP_PATHS.javaBook, label: 'Book overview' },
       { href: APP_PATHS.javaChapter1, label: 'Chapter 1' },
       { href: APP_PATHS.javaChapter2, label: 'Chapter 2' },
     ],
@@ -136,28 +136,35 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
 export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
   {
     description: 'Hooks, rendering, state, side effects, and performance.',
-    href: APP_PATHS.useRefTest,
+    href: APP_PATHS.react,
     label: 'React',
     sections: REACT_SECTIONS,
     value: 'react',
   },
   {
     description: 'Core Java examples and interview-ready fundamentals.',
-    href: APP_PATHS.javaExamples,
+    href: APP_PATHS.java,
     label: 'Java',
     sections: JAVA_SECTIONS,
     value: 'java',
   },
   {
-    description: 'Angular examples will live here when the track is added.',
+    description: 'Production React routing, rendering, APIs, and deployment.',
+    href: APP_PATHS.nextjs,
+    label: 'Next.js',
+    sections: [],
+    value: 'nextjs',
+  },
+  {
+    description: 'Component architecture, TypeScript, templates, and services.',
+    href: APP_PATHS.angular,
     label: 'Angular',
     sections: [],
-    status: 'planned',
     value: 'angular',
   },
   {
     description: 'Real questions faced in interviews, with answer notes.',
-    href: APP_PATHS.interviewPractice,
+    href: APP_PATHS.interviews,
     label: 'Interviews',
     sections: INTERVIEW_SECTIONS,
     value: 'interviews',

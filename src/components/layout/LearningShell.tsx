@@ -16,13 +16,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FaceIcon from '@mui/icons-material/Face';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import BrandMark from './BrandMark';
 import LessonSearch from '@/components/learning/LessonSearch';
 
@@ -30,6 +31,7 @@ const technologyIcons = {
   angular: DataObjectIcon,
   interviews: QuestionAnswerIcon,
   java: TerminalIcon,
+  nextjs: RocketLaunchIcon,
   react: CodeIcon,
 } as const;
 
@@ -40,6 +42,7 @@ const technologyHasActiveRoute = (
   pathname: string,
   technology: SidebarTechnology,
 ) =>
+  Boolean(technology.href && isRouteActive(pathname, technology.href)) ||
   technology.sections.some((section) =>
     section.links.some(
       (link) =>
@@ -233,14 +236,36 @@ function ProfileAvatar({ selected = false }: { selected?: boolean }) {
 
 function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const profileActions = [
     { icon: EditIcon, label: 'Edit profile' },
     { icon: WorkspacePremiumIcon, label: 'Subscribe services' },
     { icon: DeleteOutlineIcon, label: 'Delete account' },
   ] as const;
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeWhenClickingOutside = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !menuRef.current?.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeWhenClickingOutside);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeWhenClickingOutside);
+    };
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button
         aria-expanded={open}
         aria-label="Open user profile"
@@ -480,7 +505,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
               <LessonSearch />
             </div>
 
-            <HeaderProfileMenu onLogout={logout} />
+            <HeaderProfileMenu key={pathname} onLogout={logout} />
 
             <div className="w-full md:hidden">
               <LessonSearch />

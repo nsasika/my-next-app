@@ -9,7 +9,8 @@ import { authContent, dummyAuthUser } from '@/content/auth';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import type { ElementType } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import type { ElementType, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -25,21 +26,51 @@ export default function LoginClient() {
   const [email, setEmail] = useState<string>(dummyAuthUser.email);
   const [password, setPassword] = useState<string>(dummyAuthUser.password);
   const [message, setMessage] = useState('');
+  const [messageTone, setMessageTone] = useState<'error' | 'success'>(
+    'success',
+  );
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  async function login() {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  async function login(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-    const data = await res.json();
-    setMessage(data.message);
+    if (isLoggingIn) {
+      return;
+    }
 
-    if (res.ok) {
-      router.replace(APP_PATHS.authStrategy);
+    setIsLoggingIn(true);
+    setMessage('');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessageTone('success');
+        setMessage(`${data.message}. Redirecting to the learning workspace...`);
+        window.setTimeout(() => {
+          router.replace(APP_PATHS.authStrategy);
+        }, 650);
+
+        return;
+      }
+
+      setMessageTone('error');
+      setMessage(
+        `${data.message}. To test failure, use any email or password different from the demo credentials.`,
+      );
+      setIsLoggingIn(false);
+    } catch {
+      setMessageTone('error');
+      setMessage('Login failed. Please check your connection and try again.');
+      setIsLoggingIn(false);
     }
   }
 
@@ -73,14 +104,16 @@ export default function LoginClient() {
               <p>Password: {dummyAuthUser.password}</p>
             </div>
 
-            <div className="grid gap-4">
+            <form className="grid gap-4" onSubmit={login}>
               <label className="grid gap-2 text-sm font-bold text-slate-700">
                 {authContent.login.emailLabel}
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                  value={email}
+                  disabled={isLoggingIn}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={authContent.login.emailLabel}
+                  type="email"
+                  value={email}
                 />
               </label>
 
@@ -88,21 +121,31 @@ export default function LoginClient() {
                 {authContent.login.passwordLabel}
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                  value={password}
-                  type="password"
+                  disabled={isLoggingIn}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={authContent.login.passwordLabel}
+                  type="password"
+                  value={password}
                 />
               </label>
 
-              <AppButton className="w-full py-3" onClick={login}>
-                {authContent.login.loginButtonLabel}
+              <AppButton
+                className="w-full py-3"
+                disabled={isLoggingIn}
+                type="submit"
+              >
+                {isLoggingIn ? (
+                  <CircularProgress color="inherit" size={18} />
+                ) : null}
+                {isLoggingIn
+                  ? 'Checking credentials...'
+                  : authContent.login.loginButtonLabel}
               </AppButton>
-            </div>
+            </form>
 
             {message ? (
-              <div className="mt-4">
-                <StatusMessage tone="info">{message}</StatusMessage>
+              <div aria-live="polite" className="mt-4">
+                <StatusMessage tone={messageTone}>{message}</StatusMessage>
               </div>
             ) : null}
           </ContentCard>
