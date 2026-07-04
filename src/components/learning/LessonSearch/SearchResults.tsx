@@ -12,14 +12,17 @@ export type LessonSearchResult = {
 };
 
 const ResultItem = memo(function ResultItem({
+  onSelect,
   result,
 }: {
+  onSelect?: () => void;
   result: LessonSearchResult;
 }) {
   return (
     <Link
       className="block rounded-lg border border-slate-200 bg-white px-3 py-2 transition hover:border-sky-300 hover:bg-sky-50"
       href={result.href}
+      onClick={onSelect}
     >
       <span className="block text-sm font-black text-slate-950">
         {result.label}
@@ -33,9 +36,11 @@ const ResultItem = memo(function ResultItem({
 
 function SearchResults({
   hasQuery,
+  onSelect,
   results,
 }: {
   hasQuery: boolean;
+  onSelect?: () => void;
   results: readonly LessonSearchResult[];
 }) {
   if (!hasQuery) {
@@ -59,7 +64,11 @@ function SearchResults({
   return (
     <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
       {results.map((result) => (
-        <ResultItem key={`${result.href}-${result.section}`} result={result} />
+        <ResultItem
+          key={`${result.href}-${result.section}`}
+          onSelect={onSelect}
+          result={result}
+        />
       ))}
     </div>
   );
