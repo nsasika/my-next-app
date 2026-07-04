@@ -1,6 +1,6 @@
 export const engineeringHeroContent = {
   eyebrow: 'Engineering capability showcase',
-  heading: 'Engineering Blueprint',
+  heading: 'Build Lab',
   body: "A transparent view of how Nalin's Academy is designed, implemented, tested, versioned, and deployed through preview and production delivery lanes.",
 } as const;
 

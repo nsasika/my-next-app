@@ -1,5 +1,6 @@
-import EngineeringBlueprintClient from './EngineeringBlueprintClient';
+import { redirect } from 'next/navigation';
+import { APP_PATHS } from '@/config/routes';
 
-export default function EngineeringBlueprintPage() {
-  return <EngineeringBlueprintClient />;
+export default function EngineeringBlueprintRedirectPage() {
+  redirect(APP_PATHS.buildLab);
 }

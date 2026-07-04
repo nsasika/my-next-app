@@ -28,10 +28,12 @@ export default function SiteHeader({
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-        <BrandMark />
+      <nav className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8">
+        <div className="md:justify-self-start">
+          <BrandMark />
+        </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:justify-self-center">
           {navItems.map((item) => {
             const isActive =
               item.href === APP_PATHS.home

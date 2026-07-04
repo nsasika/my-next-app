@@ -1,6 +1,7 @@
 export const APP_PATHS = {
   home: '/',
   about: '/about',
+  buildLab: '/build-lab',
   engineeringBlueprint: '/engineering-blueprint',
   login: '/login',
 

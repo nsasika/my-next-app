@@ -9,6 +9,7 @@ const viewports = [
 const publicRoutes = [
   '/',
   '/about',
+  '/build-lab',
   '/engineering-blueprint',
   '/interview-questions',
   '/login',
@@ -139,7 +140,13 @@ for (const viewport of viewports) {
   await page.goto(`${baseUrl}/login`, { waitUntil: 'domcontentloaded' });
   await emailInput.fill('wrong@example.com');
   await passwordInput.fill('WrongPass123');
+  const failedLoginResponse = page.waitForResponse(
+    (response) =>
+      response.url().includes('/api/auth/login') && response.status() === 401,
+    { timeout: 5000 },
+  );
   await page.getByRole('button', { name: 'Login' }).click();
+  await failedLoginResponse.catch(() => {});
   await page
     .getByText(/To test failure/i)
     .waitFor({ timeout: 5000 })

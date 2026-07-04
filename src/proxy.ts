@@ -4,6 +4,7 @@ import { verifyToken } from '@/lib/auth';
 const publicRoutes = [
   '/',
   '/about',
+  '/build-lab',
   '/engineering-blueprint',
   '/interview-questions',
   '/login',

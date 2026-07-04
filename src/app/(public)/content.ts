@@ -6,8 +6,8 @@ export const homeHeroContent = {
     "Nalin's Academy helps candidates turn technical knowledge into interview confidence.",
   body: 'The ambition is simple: build a practical interview-preparation platform where job seekers can learn Java, React, frontend architecture, and full-stack trade-offs through clear explanations, recruiter-ready examples, and guided practice.',
   primaryAction: {
-    href: APP_PATHS.engineeringBlueprint,
-    label: 'View engineering blueprint',
+    href: APP_PATHS.buildLab,
+    label: 'Explore Build Lab',
   },
   secondaryAction: {
     href: APP_PATHS.about,
