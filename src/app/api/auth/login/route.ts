@@ -1,9 +1,17 @@
-import { dummyAuthUser } from '@/content/auth';
-import { createToken } from '@/lib/auth';
+import { demoAuthUser } from '@/config/demoAuth';
+import { createToken } from '@/server/auth/session';
+import { setAuthSessionCookie } from '@/server/auth/sessionCookie';
+import { rejectCrossOriginMutation } from '@/server/http/security';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
+    const crossOriginResponse = rejectCrossOriginMutation(request);
+
+    if (crossOriginResponse) {
+      return crossOriginResponse;
+    }
+
     const { email, password } = await request.json();
 
     if (!email || !password) {
@@ -13,7 +21,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (email !== dummyAuthUser.email || password !== dummyAuthUser.password) {
+    if (email !== demoAuthUser.email || password !== demoAuthUser.password) {
       return NextResponse.json(
         { message: 'Invalid credentials' },
         { status: 401 },
@@ -22,28 +30,21 @@ export async function POST(request: Request) {
 
     // In a real application, you would look up the user in the database and verify the password, then create a token with the user's actual information
     const token = await createToken({
-      id: dummyAuthUser.id,
+      id: demoAuthUser.id,
       email,
-      role: dummyAuthUser.role,
+      role: demoAuthUser.role,
     });
 
     const response = NextResponse.json({
       message: 'Login successful',
       user: {
-        id: dummyAuthUser.id,
+        id: demoAuthUser.id,
         email,
-        role: dummyAuthUser.role,
+        role: demoAuthUser.role,
       },
     });
 
-    // Set the token in an HTTP-only cookie
-    response.cookies.set('access_token', token, {
-      httpOnly: true, // Prevent client-side JavaScript from reading the cookie
-      secure: process.env.NODE_ENV === 'production', // Send only over HTTPS in production
-      sameSite: 'strict', // Reduce CSRF risk by blocking cross-site cookie sending
-      path: '/',
-      maxAge: 60 * 15, // 15 minutes
-    });
+    setAuthSessionCookie(response, token);
 
     return response;
   } catch (error) {

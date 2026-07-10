@@ -1,47 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
-
-const publicRoutes = [
-  '/',
-  '/about',
-  '/build-lab',
-  '/engineering-blueprint',
-  '/interview-questions',
-  '/login',
-  '/api/auth/login',
-  '/nalinsacademy.png',
-  '/profilepic.png',
-  '/resume/',
-];
+import { AUTH_COOKIE_NAME } from '@/config/auth';
+import { PUBLIC_ROUTE_PREFIXES } from '@/config/publicAccess';
+import { APP_PATHS } from '@/config/routes';
+import { verifyToken } from '@/server/auth/session';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some((route) => {
-    if (route === '/') {
+  const isPublicRoute = PUBLIC_ROUTE_PREFIXES.some((route) => {
+    if (route === APP_PATHS.home) {
       return pathname === route;
     }
 
     return pathname.startsWith(route);
   });
 
-  const token = request.cookies.get('access_token')?.value;
+  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   const verifiedUser = token ? await verifyToken(token) : null;
   const isAuthenticated = Boolean(verifiedUser);
 
   if (!isAuthenticated && !isPublicRoute) {
-    const response = NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL(APP_PATHS.login, request.url);
+    loginUrl.searchParams.set('next', pathname);
+
+    const response = NextResponse.redirect(loginUrl);
+    response.headers.set('Cache-Control', 'no-store');
 
     // Clear invalid or expired tokens so route gating cannot be bypassed.
     if (token) {
-      response.cookies.delete('access_token');
+      response.cookies.delete(AUTH_COOKIE_NAME);
     }
 
     return response;
   }
 
-  if (isAuthenticated && pathname === '/login') {
-    return NextResponse.redirect(new URL('/', request.url));
+  if (isAuthenticated && pathname === APP_PATHS.login) {
+    const response = NextResponse.redirect(
+      new URL(APP_PATHS.home, request.url),
+    );
+    response.headers.set('Cache-Control', 'no-store');
+
+    return response;
   }
 
   return NextResponse.next();

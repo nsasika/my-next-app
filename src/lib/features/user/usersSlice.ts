@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { EXTERNAL_API_BASE_URLS, EXTERNAL_API_ENDPOINTS } from '@/config/api';
 
 export type User = {
   id: number;
@@ -27,7 +28,7 @@ export const fetchUsers = createAsyncThunk<User[]>(
   async () => {
     try {
       const res = await axios.get<JsonPlaceholderUser[]>(
-        'https://jsonplaceholder.typicode.com/users',
+        `${EXTERNAL_API_BASE_URLS.jsonPlaceholder}${EXTERNAL_API_ENDPOINTS.jsonPlaceholder.users}`,
       );
       return res.data.map((user) => ({
         id: user.id,

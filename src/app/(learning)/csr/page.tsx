@@ -3,6 +3,8 @@ import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
 import { learningContent } from '@/content/learning';
 
+export const dynamic = 'force-static';
+
 export default function CSRPage() {
   return (
     <LearningExamplePage

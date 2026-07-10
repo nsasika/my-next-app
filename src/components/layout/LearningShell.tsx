@@ -2,10 +2,14 @@
 
 import {
   APP_PATHS,
-  SIDEBAR_TECHNOLOGIES,
+  LESSON_NAV_ITEMS,
+  SIDEBAR_NAV_GROUPS,
+  SIDEBAR_TRACKS,
+  type SidebarNavGroup,
   type SidebarSection,
   type SidebarTechnology,
 } from '@/config/routes';
+import { API_ROUTES } from '@/config/api';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CodeIcon from '@mui/icons-material/Code';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,6 +18,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FaceIcon from '@mui/icons-material/Face';
+import HubIcon from '@mui/icons-material/Hub';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
@@ -26,9 +31,11 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import BrandMark from './BrandMark';
 import LessonSearch from '@/components/learning/LessonSearch';
+import LessonPager from '@/components/learning/LessonPager';
 
 const technologyIcons = {
   angular: DataObjectIcon,
+  foundations: HubIcon,
   interviews: QuestionAnswerIcon,
   java: TerminalIcon,
   nextjs: RocketLaunchIcon,
@@ -50,6 +57,16 @@ const technologyHasActiveRoute = (
         link.children?.some((child) => isRouteActive(pathname, child.href)),
     ),
   );
+
+const getActiveGroupLabel = (
+  pathname: string,
+  groups: readonly SidebarNavGroup[],
+) =>
+  groups.find((group) =>
+    group.technologies.some((technology) =>
+      technologyHasActiveRoute(pathname, technology),
+    ),
+  )?.label ?? 'Foundations';
 
 function SidebarSectionList({
   expanded,
@@ -324,12 +341,24 @@ export default function LearningShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const activeGroupLabel = useMemo(
+    () => getActiveGroupLabel(pathname, SIDEBAR_NAV_GROUPS),
+    [pathname],
+  );
+  const [manuallyOpenGroup, setManuallyOpenGroup] = useState<{
+    label: SidebarNavGroup['label'];
+    pathname: string;
+  } | null>(null);
+  const openGroupLabel =
+    manuallyOpenGroup?.pathname === pathname
+      ? manuallyOpenGroup.label
+      : activeGroupLabel;
 
   const activeTechnology = useMemo(() => {
     return (
-      SIDEBAR_TECHNOLOGIES.find((technology) =>
+      SIDEBAR_TRACKS.find((technology) =>
         technologyHasActiveRoute(pathname, technology),
-      ) ?? SIDEBAR_TECHNOLOGIES[0]
+      ) ?? SIDEBAR_TRACKS[0]
     );
   }, [pathname]);
 
@@ -346,7 +375,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
   }, [activeTechnology, pathname]);
 
   const logout = async () => {
-    await fetch(APP_PATHS.authLogout, {
+    await fetch(API_ROUTES.auth.logout, {
       method: 'POST',
     });
 
@@ -384,69 +413,115 @@ export default function LearningShell({ children }: { children: ReactNode }) {
         <div className="mb-5 rounded-lg border border-sky-100 bg-sky-50 p-3">
           <div className="flex items-center gap-2 text-sm font-bold text-sky-900">
             <AutoAwesomeIcon fontSize="small" />
-            Technology tracks
+            Learning map
           </div>
           <p className="mt-2 text-xs leading-5 text-slate-600">
-            Pick a technology, then move through theory, code, and live demos.
+            Start with foundations, review real interviews, then move through
+            technology tracks in order.
           </p>
         </div>
 
-        <div className="mb-6 space-y-2">
-          {SIDEBAR_TECHNOLOGIES.map((technology) => {
-            const Icon = technologyIcons[technology.value];
-            const active = technologyHasActiveRoute(pathname, technology);
-            const isPlanned = technology.status === 'planned';
+        <div className="mb-6 space-y-3">
+          {SIDEBAR_NAV_GROUPS.map((group) => {
+            const expanded = openGroupLabel === group.label;
 
-            const content = (
-              <>
-                <span
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                    active ? 'bg-white/15' : 'bg-slate-100 text-slate-700'
+            return (
+              <div
+                key={group.label}
+                className="rounded-lg border border-slate-200 bg-slate-50 p-1"
+              >
+                <button
+                  aria-expanded={expanded}
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[11px] font-black uppercase tracking-[0.16em] text-slate-600 transition hover:bg-white hover:text-slate-950"
+                  onClick={() =>
+                    setManuallyOpenGroup({
+                      label: expanded ? 'Foundations' : group.label,
+                      pathname,
+                    })
+                  }
+                  type="button"
+                >
+                  {group.label}
+                  <ExpandMoreIcon
+                    className={`transition ${expanded ? 'rotate-180' : ''}`}
+                    fontSize="small"
+                  />
+                </button>
+                <div
+                  className={`grid transition-all duration-300 ${
+                    expanded
+                      ? 'grid-rows-[1fr] opacity-100'
+                      : 'grid-rows-[0fr] opacity-0'
                   }`}
                 >
-                  <Icon fontSize="small" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-2 text-sm font-black">
-                    <span className="text-sm font-bold">
-                      {technology.label}
-                    </span>
-                    {isPlanned ? (
-                      <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-slate-600">
-                        Soon
-                      </span>
-                    ) : null}
-                  </span>
-                  <span
-                    className={`mt-1 block text-xs leading-5 ${
-                      active ? 'text-slate-200' : 'text-slate-500'
-                    }`}
-                  >
-                    {technology.description}
-                  </span>
-                </span>
-              </>
-            );
+                  <div className="min-h-0 space-y-2 overflow-hidden">
+                    <div className="pt-2">
+                      {group.technologies.map((technology) => {
+                        const Icon = technologyIcons[technology.value];
+                        const active = technologyHasActiveRoute(
+                          pathname,
+                          technology,
+                        );
+                        const isPlanned = technology.status === 'planned';
 
-            return technology.href ? (
-              <Link
-                key={technology.value}
-                href={technology.href}
-                onClick={onNavigate}
-                className={`flex items-start gap-3 rounded-lg p-3 transition ${
-                  active
-                    ? 'bg-slate-950 text-white'
-                    : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
-                }`}
-              >
-                {content}
-              </Link>
-            ) : (
-              <div
-                key={technology.value}
-                className="flex items-start gap-3 rounded-lg border border-dashed border-slate-200 p-3 text-slate-500"
-              >
-                {content}
+                        const content = (
+                          <>
+                            <span
+                              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                                active
+                                  ? 'bg-white/15'
+                                  : 'bg-slate-100 text-slate-700'
+                              }`}
+                            >
+                              <Icon fontSize="small" />
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="flex items-center gap-2 text-sm font-black">
+                                <span className="text-sm font-bold">
+                                  {technology.label}
+                                </span>
+                                {isPlanned ? (
+                                  <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-slate-600">
+                                    Soon
+                                  </span>
+                                ) : null}
+                              </span>
+                              <span
+                                className={`mt-1 block text-xs leading-5 ${
+                                  active ? 'text-slate-200' : 'text-slate-500'
+                                }`}
+                              >
+                                {technology.description}
+                              </span>
+                            </span>
+                          </>
+                        );
+
+                        return technology.href ? (
+                          <Link
+                            key={technology.value}
+                            href={technology.href}
+                            onClick={onNavigate}
+                            className={`flex items-start gap-3 rounded-lg p-3 transition ${
+                              active
+                                ? 'bg-slate-950 text-white'
+                                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                            }`}
+                          >
+                            {content}
+                          </Link>
+                        ) : (
+                          <div
+                            key={technology.value}
+                            className="flex items-start gap-3 rounded-lg border border-dashed border-slate-200 p-3 text-slate-500"
+                          >
+                            {content}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -515,6 +590,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
 
         <main className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 sm:px-5 lg:px-8">
           {children}
+          <LessonPager currentPath={pathname} items={LESSON_NAV_ITEMS} />
         </main>
       </div>
     </div>

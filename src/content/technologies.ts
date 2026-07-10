@@ -1,7 +1,13 @@
 import { APP_PATHS, type AppPath } from '@/config/routes';
 
 export type TechnologyLandingContent = {
-  accent: 'react' | 'java' | 'nextjs' | 'angular' | 'interviews';
+  accent:
+    | 'react'
+    | 'java'
+    | 'nextjs'
+    | 'foundations'
+    | 'angular'
+    | 'interviews';
   description: string;
   history: readonly {
     body: string;
@@ -61,6 +67,49 @@ export const technologyLandingContent = {
       'Form-heavy business applications',
       'Applications that benefit from strong project conventions',
       'Teams that want framework-level routing, dependency injection, and testing tools',
+    ],
+  },
+  foundations: {
+    accent: 'foundations',
+    description:
+      'Foundations collects engineering concepts that are useful across frameworks, languages, interviews, and production systems.',
+    history: [
+      {
+        body: 'Every framework changes, but core ideas such as identity, sessions, authorization, HTTP, browser security, and deployment trade-offs keep showing up.',
+        title: 'Concepts outlive tools',
+      },
+      {
+        body: 'This area keeps those reusable ideas separate from React, Next.js, Java, and interview tracks so they can be studied once and applied everywhere.',
+        title: 'Shared learning space',
+      },
+    ],
+    officialLinks: [
+      { href: 'https://oauth.net/2/', label: 'OAuth 2.0' },
+      {
+        href: 'https://openid.net/developers/how-connect-works/',
+        label: 'OpenID Connect',
+      },
+      {
+        href: 'https://cheatsheetseries.owasp.org/',
+        label: 'OWASP Cheat Sheet Series',
+      },
+    ],
+    primaryAction: {
+      href: APP_PATHS.currentAuthenticationFlow,
+      label: 'Open authentication',
+    },
+    summary: [
+      'Use Foundations when the topic is bigger than one frontend framework.',
+      'Authentication answers who the user is. Authorization answers what that user, client, or service is allowed to do.',
+      'OAuth 2.0 belongs under Authorization. OpenID Connect adds the authentication identity layer commonly used for login.',
+    ],
+    tags: ['Security', 'Identity', 'Architecture'],
+    title: 'Foundations',
+    usages: [
+      'Explaining login, sessions, cookies, and tokens clearly',
+      'Understanding OAuth consent, scopes, and delegated access',
+      'Preparing interview answers that are not tied to one framework',
+      'Designing production features with security and user trust in mind',
     ],
   },
   java: {
@@ -132,6 +181,10 @@ export const technologyLandingContent = {
     logo: {
       alt: 'Next.js logo',
       src: 'https://cdn.simpleicons.org/nextdotjs/000000',
+    },
+    primaryAction: {
+      href: APP_PATHS.nextjsIntro,
+      label: 'Start with intro',
     },
     summary: [
       'React builds the UI model; Next.js adds application structure around routing, rendering, caching, APIs, and deployment.',

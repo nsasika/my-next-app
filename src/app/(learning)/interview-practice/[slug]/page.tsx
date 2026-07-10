@@ -11,6 +11,9 @@ type InterviewExperiencePageProps = {
   }>;
 };
 
+export const dynamicParams = false;
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return interviewExperiences.map((experience) => ({
     slug: experience.slug,

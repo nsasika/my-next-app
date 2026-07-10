@@ -1,5 +1,6 @@
 import LearningExamplePage from '@/components/learning/LearningExamplePage';
 import ContentCard from '@/components/ui/ContentCard';
+import { EXTERNAL_API_BASE_URLS, EXTERNAL_API_ENDPOINTS } from '@/config/api';
 import { learningContent } from '@/content/learning';
 
 type User = {
@@ -8,10 +9,15 @@ type User = {
   email: string;
 };
 
+export const dynamic = 'force-dynamic';
+
 const SSRPage = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/users', {
-    cache: 'no-store',
-  });
+  const res = await fetch(
+    `${EXTERNAL_API_BASE_URLS.jsonPlaceholder}${EXTERNAL_API_ENDPOINTS.jsonPlaceholder.users}`,
+    {
+      cache: 'no-store',
+    },
+  );
   const users: User[] = await res.json();
 
   return (

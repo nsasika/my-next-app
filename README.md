@@ -187,3 +187,51 @@ The current coverage threshold is configured in `vitest.config.ts`:
 - Lines: 80%
 
 As more of the application becomes unit-tested, expand the coverage scope in `vitest.config.ts` so the 80% target covers more of the codebase.
+
+---
+
+## **Environment Configuration**
+
+Real environment files are intentionally ignored by Git. Use the committed templates as references:
+
+- `.env.example`
+- `.env.development.example`
+- `.env.production.example`
+
+For local development, create `.env.local` and set:
+
+```bash
+JWT_SECRET=replace-with-at-least-32-characters
+NEXT_PUBLIC_JSON_PLACEHOLDER_BASE_URL=https://jsonplaceholder.typicode.com
+```
+
+For Vercel production, store the same values in Vercel Environment Variables rather than committing them.
+
+Global app constants live in `src/config/app.ts`, API route/base URL constants live in `src/config/api.ts`, and auth cookie/session constants live in `src/config/auth.ts`.
+
+---
+
+## **SonarQube Cloud**
+
+Because this app is hosted on Vercel, the recommended setup is SonarQube Cloud through GitHub Actions. Vercel should keep handling deployment; Sonar should run as a repository quality/security scan in CI.
+
+This repo includes:
+
+- `sonar-project.properties`
+- `.github/workflows/sonarqube.yml`
+- LCOV coverage output from `npm run test:coverage`
+
+### SonarQube TODO
+
+1. Create or import the GitHub project in SonarQube Cloud.
+2. Confirm `sonar.projectKey` in `sonar-project.properties` matches the project key shown by SonarQube Cloud.
+3. Confirm `sonar.organization` in `sonar-project.properties` matches the SonarQube Cloud organization key.
+4. Generate a Sonar token from SonarQube Cloud.
+5. Add the token to GitHub as a repository secret named `SONAR_TOKEN`.
+6. Push to `development` or open a pull request.
+7. Open the GitHub Actions run named `SonarQube` and confirm the scan completes.
+8. In SonarQube Cloud, review the Quality Gate, coverage import, security hotspots, code smells, duplication, and maintainability issues.
+9. If the Quality Gate is too loose or strict, adjust it inside SonarQube Cloud rather than hard-coding quality decisions in the app.
+10. Keep Vercel deployment separate: Vercel deploys the app, GitHub Actions runs SonarQube analysis.
+
+SonarQube Server is the self-hosted option. For this project, SonarQube Cloud is simpler because the repo already uses GitHub and Vercel, and there is no need to maintain a separate Sonar server.

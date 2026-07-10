@@ -9,6 +9,7 @@ import {
 } from '@/components/public/CompactPublicLayout';
 import CompactPublicSlider from '@/components/public/CompactPublicSlider';
 import { HighlightBadge, SocialLink } from '@/components/ProfileLinks/index';
+import { PUBLIC_ASSETS } from '@/config/app';
 import {
   academyImpactStats,
   academyOriginContent,
@@ -55,7 +56,7 @@ export default function AboutMePage() {
                   className="aspect-square h-full w-full object-cover"
                   height={180}
                   priority
-                  src="/profilepic.png"
+                  src={PUBLIC_ASSETS.profilePhoto}
                   width={180}
                 />
               </div>

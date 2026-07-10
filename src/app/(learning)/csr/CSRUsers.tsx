@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import StatusMessage from '@/components/ui/StatusMessage';
+import { EXTERNAL_API_BASE_URLS, EXTERNAL_API_ENDPOINTS } from '@/config/api';
 
 type User = {
   id: number;
@@ -16,9 +17,12 @@ export default function CSRUsers() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch('https://jsonplaceholder.typicode.com/users', {
-      signal: controller.signal,
-    })
+    fetch(
+      `${EXTERNAL_API_BASE_URLS.jsonPlaceholder}${EXTERNAL_API_ENDPOINTS.jsonPlaceholder.users}`,
+      {
+        signal: controller.signal,
+      },
+    )
       .then((res) => res.json())
       .then((data: User[]) => {
         setUsers(data);

@@ -12,6 +12,7 @@ export const APP_PATHS = {
   java: '/java',
   javaBook: '/java/book',
   nextjs: '/nextjs',
+  foundations: '/foundations',
   react: '/react',
 
   useRefTest: '/use-ref',
@@ -37,6 +38,18 @@ export const APP_PATHS = {
   bankOfSingaporeInterview: '/interview-practice/bank-of-singapore',
   virtusaSingaporeInterview: '/interview-practice/virtusa-singapore',
   authStrategy: '/authentication-strategy',
+  currentAuthenticationFlow: '/authentication/current-flow',
+  oauth2Authorization: '/authorization/oauth2',
+  nextjsIntro: '/nextjs/intro',
+  nextjsRouters: '/nextjs/app-router-vs-pages-router',
+  nextjsComponents: '/nextjs/server-client-components',
+  nextjsRendering: '/nextjs/rendering',
+  nextjsCaching: '/nextjs/caching',
+  nextjsMiddleware: '/nextjs/middleware',
+  nextjsLayouts: '/nextjs/layouts',
+  nextjsAuthentication: '/nextjs/authentication',
+  nextjsSeo: '/nextjs/seo',
+  nextjsDeploymentMonitoring: '/nextjs/deployment-monitoring',
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',
   reduxSaga: '/redux-saga',
@@ -52,14 +65,17 @@ export const APP_PATHS = {
   reactMemo: '/react-memo',
   ssr: '/ssr',
   csr: '/csr',
-
-  authLogout: '/api/auth/logout',
 } as const;
 
 export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];
 
 export type NavItem = {
   children?: NavItem[];
+  href: AppPath;
+  label: string;
+};
+
+export type LessonNavItem = {
   href: AppPath;
   label: string;
 };
@@ -75,5 +91,10 @@ export type SidebarTechnology = {
   label: string;
   sections: SidebarSection[];
   status?: 'available' | 'planned';
-  value: 'react' | 'java' | 'nextjs' | 'angular' | 'interviews';
+  value: 'react' | 'java' | 'nextjs' | 'foundations' | 'angular' | 'interviews';
+};
+
+export type SidebarNavGroup = {
+  label: 'Foundations' | 'Interviews' | 'Technologies';
+  technologies: SidebarTechnology[];
 };
