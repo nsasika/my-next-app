@@ -15,7 +15,7 @@ export type {
 
 export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
   { href: APP_PATHS.home, label: 'Home' },
-  { href: APP_PATHS.engineeringBlueprint, label: 'Engineering Blueprint' },
+  { href: APP_PATHS.buildLab, label: 'Build Lab' },
   { href: APP_PATHS.about, label: 'Nalin & Academy' },
 ];
 
@@ -126,7 +126,11 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
     title: 'Real interviews',
     links: [
       {
-        href: APP_PATHS.interviewPractice,
+        href: APP_PATHS.bankOfSingaporeInterview,
+        label: 'Bank of Singapore',
+      },
+      {
+        href: APP_PATHS.virtusaSingaporeInterview,
         label: 'Virtusa Singapore',
       },
     ],

@@ -1,9 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Image from 'next/image';
-import ContentCard from '@/components/ui/ContentCard';
-import DownloadPanel from '@/components/DownloadPanel/index';
-import InfoCard from '@/components/InfoCard';
+import {
+  PublicHero,
+  PublicPageShell,
+  SectionIntro,
+  StatStrip,
+} from '@/components/public/CompactPublicLayout';
+import CompactPublicSlider from '@/components/public/CompactPublicSlider';
 import { HighlightBadge, SocialLink } from '@/components/ProfileLinks/index';
 import {
   academyImpactStats,
@@ -29,26 +33,10 @@ export default function AboutMePage() {
     }));
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16 lg:px-8">
-      <section className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
-        <div className="animate-fade-rise">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">
-            {heroContent.eyebrow}
-          </p>
-          <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl">
-            {heroContent.heading}
-          </h1>
-          {heroContent.paragraphs.map((paragraph, index) => (
-            <p
-              key={paragraph}
-              className={`text-base leading-7 text-slate-700 sm:text-lg sm:leading-8 ${
-                index === 0 ? 'mt-6' : 'mt-4'
-              }`}
-            >
-              {paragraph}
-            </p>
-          ))}
-          <div className="mt-6 flex flex-wrap gap-2">
+    <PublicPageShell>
+      <PublicHero
+        actions={
+          <>
             {highlightLinks.map((highlight) => (
               <HighlightBadge
                 key={highlight.label}
@@ -56,101 +44,117 @@ export default function AboutMePage() {
                 label={highlight.label}
               />
             ))}
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {socialLinks.map((link) => (
-              <SocialLink
-                key={link.label}
-                href={link.href}
-                icon={link.icon}
-                label={link.label}
-              />
-            ))}
-          </div>
-        </div>
-
-        <ContentCard className="mx-auto w-full max-w-sm overflow-hidden p-0 animate-fade-rise [animation-delay:120ms]">
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-3 z-10 rounded-lg border border-white/40" />
-            <Image
-              src="/profilepic.png"
-              alt="Nalin Padmasiri"
-              width={420}
-              height={420}
-              className="aspect-square w-full object-cover transition duration-500 hover:scale-105"
-              priority
-            />
-            <div className="absolute inset-x-4 bottom-4 z-20 rounded-lg border border-white/40 bg-white/90 p-4 shadow-sm backdrop-blur animate-profile-float">
-              <p className="text-sm font-bold text-slate-950">
-                React, TypeScript, Java
-              </p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
-                Enterprise delivery
-              </p>
+          </>
+        }
+        aside={
+          <section className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div className="grid grid-cols-[8rem_minmax(0,1fr)] gap-4 p-4">
+              <div className="relative overflow-hidden rounded-lg bg-slate-100">
+                <Image
+                  alt="Nalin Padmasiri"
+                  className="aspect-square h-full w-full object-cover"
+                  height={180}
+                  priority
+                  src="/profilepic.png"
+                  width={180}
+                />
+              </div>
+              <div className="min-w-0 self-center">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
+                  Enterprise delivery
+                </p>
+                <h2 className="mt-2 text-xl font-black leading-tight text-slate-950">
+                  React, TypeScript, Java
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Practical engineering experience shaped into academy lessons.
+                </p>
+              </div>
             </div>
-          </div>
-        </ContentCard>
-      </section>
+            <div className="border-t border-slate-100 p-4">
+              <div className="flex flex-wrap gap-2">
+                {socialLinks.map((link) => (
+                  <SocialLink
+                    key={link.label}
+                    href={link.href}
+                    icon={link.icon}
+                    iconOnly
+                    label={link.label}
+                  />
+                ))}
+                {availableResumeOptions.map((resume) => (
+                  <SocialLink
+                    key={resume.href}
+                    download
+                    href={resume.href}
+                    icon="resume"
+                    label={`Resume ${resume.label}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        }
+        body={heroContent.paragraphs.join(' ')}
+        eyebrow={heroContent.eyebrow}
+        title={heroContent.heading}
+      />
 
-      <section className="mt-12 grid min-w-0 gap-5 rounded-lg border border-sky-200 bg-sky-50 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-700">
-            Academy purpose
-          </p>
-          <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-slate-950">
-            {academyOriginContent.title}
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
-            {academyOriginContent.body}
-          </p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-          {academyImpactStats.map((stat) => (
-            <article
-              key={stat.label}
-              className="rounded-lg border border-white/70 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-md"
-            >
-              <p className="text-3xl font-black text-slate-950">{stat.value}</p>
-              <p className="mt-1 text-sm font-bold text-slate-600">
-                {stat.label}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-14 grid gap-4 md:grid-cols-3">
-        {expertiseCards.map((item) => (
-          <InfoCard key={item.title} body={item.body} title={item.title} />
-        ))}
-      </section>
-
-      <section className="mt-14">
-        <ContentCard className="p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-slate-950">
-            {targetRoleContent.title}
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
-            {targetRoleContent.body}
-          </p>
-          <ul className="mt-6 space-y-3">
-            {targetRoles.map((role) => (
-              <li
-                key={role}
-                className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
-              >
-                {role}
-              </li>
-            ))}
-          </ul>
-          <DownloadPanel
-            emptyHint="Resume upload pending. Add a PDF or DOCX to enable downloads."
-            emptyPathLabel="public/resume/"
-            options={availableResumeOptions}
-            title="Resume"
+      <section className="mt-10 rounded-lg border border-sky-200 bg-sky-50 p-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
+          <SectionIntro
+            body={academyOriginContent.body}
+            eyebrow="Academy purpose"
+            title={academyOriginContent.title}
           />
-        </ContentCard>
+          <StatStrip stats={academyImpactStats} />
+        </div>
       </section>
-    </div>
+
+      <section className="mt-8 min-w-0">
+        <CompactPublicSlider
+          eyebrow="Engineering profile"
+          panels={[
+            {
+              body: expertiseCards[0].body,
+              icon: 'code',
+              id: expertiseCards[0].title,
+              items: ['React', 'TypeScript', 'Modern UI'],
+              label: expertiseCards[0].title,
+              tone: 'typescript',
+              title: expertiseCards[0].title,
+            },
+            {
+              body: expertiseCards[1].body,
+              icon: 'architecture',
+              id: expertiseCards[1].title,
+              items: ['Java', 'Spring Boot', 'Node.js'],
+              label: expertiseCards[1].title,
+              tone: 'emerald',
+              title: expertiseCards[1].title,
+            },
+            {
+              body: expertiseCards[2].body,
+              icon: 'business',
+              id: expertiseCards[2].title,
+              items: ['DBS Bank', 'GIC', 'EMC Singapore'],
+              label: expertiseCards[2].title,
+              tone: 'blue',
+              title: expertiseCards[2].title,
+            },
+            {
+              body: targetRoleContent.body,
+              icon: 'psychology',
+              id: targetRoleContent.title,
+              items: targetRoles,
+              label: 'Target roles',
+              tone: 'purple',
+              title: targetRoleContent.title,
+            },
+          ]}
+          title="Capability map"
+        />
+      </section>
+    </PublicPageShell>
   );
 }

@@ -8,6 +8,7 @@ import { APP_PATHS } from '@/config/routes';
 import { authContent, dummyAuthUser } from '@/content/auth';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { ElementType, FormEvent } from 'react';
@@ -86,8 +87,14 @@ export default function LoginClient() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
         <header className="flex items-center justify-between">
           <BrandMark />
-          <AppButton href={APP_PATHS.home} variant="secondary">
-            {authContent.login.backLinkLabel}
+          <AppButton
+            aria-label={authContent.login.backLinkLabel}
+            className="shrink-0 px-3"
+            href={APP_PATHS.home}
+            variant="secondary"
+          >
+            <HomeRoundedIcon fontSize="small" />
+            <span className="hidden sm:inline">Public site</span>
           </AppButton>
         </header>
 
