@@ -1,6 +1,8 @@
 import {
   APP_PATHS,
+  type LessonNavItem,
   type NavItem,
+  type SidebarNavGroup,
   type SidebarSection,
   type SidebarTechnology,
 } from './routes.type';
@@ -8,7 +10,9 @@ import {
 export { APP_PATHS };
 export type {
   AppPath,
+  LessonNavItem,
   NavItem,
+  SidebarNavGroup,
   SidebarSection,
   SidebarTechnology,
 } from './routes.type';
@@ -178,20 +182,36 @@ const FOUNDATIONS_SECTIONS: SidebarSection[] = [
   },
 ];
 
+const FOUNDATIONS_TRACK: SidebarTechnology = {
+  description: 'Common engineering theory beyond a single framework.',
+  href: APP_PATHS.foundations,
+  label: 'Foundations',
+  sections: FOUNDATIONS_SECTIONS,
+  value: 'foundations',
+};
+
+const INTERVIEWS_TRACK: SidebarTechnology = {
+  description: 'Real questions faced in interviews, with answer notes.',
+  href: APP_PATHS.interviews,
+  label: 'Interviews',
+  sections: INTERVIEW_SECTIONS,
+  value: 'interviews',
+};
+
 export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
-  {
-    description: 'Hooks, rendering, state, side effects, and performance.',
-    href: APP_PATHS.react,
-    label: 'React',
-    sections: REACT_SECTIONS,
-    value: 'react',
-  },
   {
     description: 'Core Java examples and interview-ready fundamentals.',
     href: APP_PATHS.java,
     label: 'Java',
     sections: JAVA_SECTIONS,
     value: 'java',
+  },
+  {
+    description: 'Hooks, rendering, state, side effects, and performance.',
+    href: APP_PATHS.react,
+    label: 'React',
+    sections: REACT_SECTIONS,
+    value: 'react',
   },
   {
     description: 'Production React routing, rendering, APIs, and deployment.',
@@ -201,28 +221,84 @@ export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
     value: 'nextjs',
   },
   {
-    description: 'Common engineering theory beyond a single framework.',
-    href: APP_PATHS.foundations,
-    label: 'Foundations',
-    sections: FOUNDATIONS_SECTIONS,
-    value: 'foundations',
-  },
-  {
     description: 'Component architecture, TypeScript, templates, and services.',
     href: APP_PATHS.angular,
     label: 'Angular',
     sections: [],
     value: 'angular',
   },
+];
+
+export const SIDEBAR_NAV_GROUPS: SidebarNavGroup[] = [
   {
-    description: 'Real questions faced in interviews, with answer notes.',
-    href: APP_PATHS.interviews,
+    label: 'Foundations',
+    technologies: [FOUNDATIONS_TRACK],
+  },
+  {
     label: 'Interviews',
-    sections: INTERVIEW_SECTIONS,
-    value: 'interviews',
+    technologies: [INTERVIEWS_TRACK],
+  },
+  {
+    label: 'Technologies',
+    technologies: SIDEBAR_TECHNOLOGIES,
   },
 ];
 
-export const SIDEBAR_ROUTES: SidebarSection[] = SIDEBAR_TECHNOLOGIES.flatMap(
+export const SIDEBAR_TRACKS: SidebarTechnology[] = SIDEBAR_NAV_GROUPS.flatMap(
+  (group) => group.technologies,
+);
+
+export const SIDEBAR_ROUTES: SidebarSection[] = SIDEBAR_TRACKS.flatMap(
   (technology) => technology.sections,
 );
+
+function addUniqueLessonNavItem(
+  items: LessonNavItem[],
+  seenHrefs: Set<string>,
+  item: LessonNavItem,
+) {
+  if (seenHrefs.has(item.href)) {
+    return;
+  }
+
+  seenHrefs.add(item.href);
+  items.push(item);
+}
+
+export function createLessonNavigationItems(
+  groups: SidebarNavGroup[],
+): LessonNavItem[] {
+  const items: LessonNavItem[] = [];
+  const seenHrefs = new Set<string>();
+
+  groups.forEach((group) => {
+    group.technologies.forEach((technology) => {
+      if (technology.href) {
+        addUniqueLessonNavItem(items, seenHrefs, {
+          href: technology.href,
+          label: technology.label,
+        });
+      }
+
+      technology.sections.forEach((section) => {
+        section.links.forEach((link) => {
+          addUniqueLessonNavItem(items, seenHrefs, {
+            href: link.href,
+            label: link.label,
+          });
+
+          link.children?.forEach((child) => {
+            addUniqueLessonNavItem(items, seenHrefs, {
+              href: child.href,
+              label: child.label,
+            });
+          });
+        });
+      });
+    });
+  });
+
+  return items;
+}
+
+export const LESSON_NAV_ITEMS = createLessonNavigationItems(SIDEBAR_NAV_GROUPS);

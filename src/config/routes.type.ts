@@ -75,6 +75,11 @@ export type NavItem = {
   label: string;
 };
 
+export type LessonNavItem = {
+  href: AppPath;
+  label: string;
+};
+
 export type SidebarSection = {
   title: string;
   links: NavItem[];
@@ -87,4 +92,9 @@ export type SidebarTechnology = {
   sections: SidebarSection[];
   status?: 'available' | 'planned';
   value: 'react' | 'java' | 'nextjs' | 'foundations' | 'angular' | 'interviews';
+};
+
+export type SidebarNavGroup = {
+  label: 'Foundations' | 'Interviews' | 'Technologies';
+  technologies: SidebarTechnology[];
 };

@@ -9,6 +9,8 @@ type User = {
   email: string;
 };
 
+export const dynamic = 'force-dynamic';
+
 const SSRPage = async () => {
   const res = await fetch(
     `${EXTERNAL_API_BASE_URLS.jsonPlaceholder}${EXTERNAL_API_ENDPOINTS.jsonPlaceholder.users}`,
