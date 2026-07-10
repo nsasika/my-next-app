@@ -1,6 +1,6 @@
 'use client';
 
-import { APP_PATHS, SIDEBAR_TECHNOLOGIES } from '@/config/routes';
+import { APP_PATHS, SIDEBAR_TRACKS } from '@/config/routes';
 import { chapterOneTopics, chapterTwoTopics } from '@/content/java/coreJava';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,15 +12,11 @@ import {
   useState,
   useTransition,
 } from 'react';
-import type { LessonSearchResult } from './SearchResults';
+import { searchLessons, type SearchableLesson } from './search';
 
 const SearchResults = lazy(() => import('./SearchResults'));
 
-type SearchableLesson = LessonSearchResult & {
-  searchText: string;
-};
-
-const technologyIndex = SIDEBAR_TECHNOLOGIES.flatMap((technology) =>
+const trackIndex = SIDEBAR_TRACKS.flatMap((technology) =>
   technology.href
     ? [
         {
@@ -34,7 +30,7 @@ const technologyIndex = SIDEBAR_TECHNOLOGIES.flatMap((technology) =>
     : [],
 );
 
-const lessonIndex = SIDEBAR_TECHNOLOGIES.flatMap((technology) =>
+const lessonIndex = SIDEBAR_TRACKS.flatMap((technology) =>
   technology.sections.flatMap((section) =>
     section.links.flatMap((link) => {
       const parent: SearchableLesson = {
@@ -78,46 +74,7 @@ const javaTopicIndex: SearchableLesson[] = [
   })),
 ];
 
-const searchableLessons = [
-  ...technologyIndex,
-  ...lessonIndex,
-  ...javaTopicIndex,
-];
-
-const normalize = (value: string) => value.trim().toLowerCase();
-
-const getMatchScore = (lesson: SearchableLesson, query: string) => {
-  const label = normalize(lesson.label);
-  const section = normalize(lesson.section);
-  const technology = normalize(lesson.technology);
-  const searchText = normalize(lesson.searchText);
-
-  if (label === query) {
-    return 100;
-  }
-
-  if (label.startsWith(query)) {
-    return 90;
-  }
-
-  if (label.includes(query)) {
-    return 80;
-  }
-
-  if (section.includes(query)) {
-    return 65;
-  }
-
-  if (technology.includes(query)) {
-    return 55;
-  }
-
-  if (searchText.includes(query)) {
-    return 40;
-  }
-
-  return 0;
-};
+const searchableLessons = [...trackIndex, ...lessonIndex, ...javaTopicIndex];
 
 export default function LessonSearch() {
   const [query, setQuery] = useState('');
@@ -126,27 +83,7 @@ export default function LessonSearch() {
   const deferredQuery = useDeferredValue(searchTerm);
 
   const results = useMemo(() => {
-    const normalizedQuery = normalize(deferredQuery);
-
-    if (!normalizedQuery) {
-      return [];
-    }
-
-    return searchableLessons
-      .map((lesson) => ({
-        lesson,
-        score: getMatchScore(lesson, normalizedQuery),
-      }))
-      .filter(({ score }) => score > 0)
-      .sort((first, second) => {
-        if (second.score !== first.score) {
-          return second.score - first.score;
-        }
-
-        return first.lesson.label.localeCompare(second.lesson.label);
-      })
-      .map(({ lesson }) => lesson)
-      .slice(0, 12);
+    return searchLessons(searchableLessons, deferredQuery);
   }, [deferredQuery]);
 
   const updateQuery = (value: string) => {

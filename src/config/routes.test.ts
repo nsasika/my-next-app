@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   APP_PATHS,
   LESSON_NAV_ITEMS,
+  RECRUITER_AUTH_NAV_ITEM,
   SIDEBAR_NAV_GROUPS,
   SIDEBAR_TECHNOLOGIES,
   createLessonNavigationItems,
@@ -14,6 +15,10 @@ describe('learning navigation config', () => {
       'Interviews',
       'Technologies',
     ]);
+  });
+
+  it('opens the learning workspace on Foundations by default', () => {
+    expect(RECRUITER_AUTH_NAV_ITEM.href).toBe(APP_PATHS.foundations);
   });
 
   it('keeps technology tracks under Technologies in the requested order', () => {

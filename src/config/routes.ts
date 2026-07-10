@@ -24,7 +24,7 @@ export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
 ];
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
-  href: APP_PATHS.react,
+  href: APP_PATHS.foundations,
   label: 'Learning Workspace',
 };
 
