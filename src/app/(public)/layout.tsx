@@ -1,5 +1,5 @@
 import SiteHeader from '@/components/layout/SiteHeader';
-import { verifyToken } from '@/lib/auth';
+import { verifyToken } from '@/server/auth/session';
 import { cookies } from 'next/headers';
 
 export default async function PublicLayout({

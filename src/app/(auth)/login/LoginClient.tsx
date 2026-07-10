@@ -4,8 +4,9 @@ import BrandMark from '@/components/layout/BrandMark';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import StatusMessage from '@/components/ui/StatusMessage';
+import { demoAuthUser } from '@/config/demoAuth';
 import { APP_PATHS } from '@/config/routes';
-import { authContent, dummyAuthUser } from '@/content/auth';
+import { authContent } from '@/content/auth';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
@@ -21,11 +22,21 @@ const oauthIcons: Record<string, ElementType> = {
   linkedin: LinkedInIcon,
 };
 
+function getPostLoginPath() {
+  const nextPath = new URLSearchParams(window.location.search).get('next');
+
+  if (!nextPath || !nextPath.startsWith('/') || nextPath.startsWith('//')) {
+    return APP_PATHS.authStrategy;
+  }
+
+  return nextPath;
+}
+
 export default function LoginClient() {
   const router = useRouter();
 
-  const [email, setEmail] = useState<string>(dummyAuthUser.email);
-  const [password, setPassword] = useState<string>(dummyAuthUser.password);
+  const [email, setEmail] = useState<string>(demoAuthUser.email);
+  const [password, setPassword] = useState<string>(demoAuthUser.password);
   const [message, setMessage] = useState('');
   const [messageTone, setMessageTone] = useState<'error' | 'success'>(
     'success',
@@ -63,9 +74,8 @@ export default function LoginClient() {
       if (res.ok) {
         setMessageTone('success');
         setMessage(`${data.message}. Redirecting to the learning workspace...`);
-        window.setTimeout(() => {
-          router.replace(APP_PATHS.authStrategy);
-        }, 1000);
+        router.refresh();
+        router.replace(getPostLoginPath());
 
         return;
       }
@@ -114,8 +124,8 @@ export default function LoginClient() {
               <p className="font-bold text-slate-950">
                 {authContent.login.credentialsTitle}
               </p>
-              <p className="mt-2">Email: {dummyAuthUser.email}</p>
-              <p>Password: {dummyAuthUser.password}</p>
+              <p className="mt-2">Email: {demoAuthUser.email}</p>
+              <p>Password: {demoAuthUser.password}</p>
             </div>
 
             <form className="grid gap-4" onSubmit={login}>

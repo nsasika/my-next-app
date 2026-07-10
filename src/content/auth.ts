@@ -1,10 +1,3 @@
-export const dummyAuthUser = {
-  email: 'analyst@aurorabank.test',
-  id: 'bank-user-001',
-  password: 'BankDemo@123',
-  role: 'ANALYST',
-} as const;
-
 export const authContent = {
   login: {
     eyebrow: 'Authentication demo',
@@ -20,7 +13,7 @@ export const authContent = {
     currentStrategyPoints: [
       'The login form posts dummy credentials to /api/auth/login.',
       'The API route signs a JWT with jose when the credentials match.',
-      'The JWT is stored in an HTTP-only access_token cookie for 15 minutes.',
+      'The JWT is stored in an HTTP-only access_token cookie for 8 hours.',
       'Next.js proxy checks that cookie before allowing protected learning routes.',
     ],
     oauthTitle: 'OAuth2 providers planned',
@@ -59,7 +52,7 @@ export const authContent = {
         title: 'Demo login route',
         filePath: 'src/app/api/auth/login/route.ts',
         language: 'ts',
-        code: `if (email !== dummyAuthUser.email || password !== dummyAuthUser.password) {
+        code: `if (email !== demoAuthUser.email || password !== demoAuthUser.password) {
   return NextResponse.json(
     { message: 'Invalid credentials' },
     { status: 401 },
@@ -67,22 +60,22 @@ export const authContent = {
 }
 
 const token = await createToken({
-  id: dummyAuthUser.id,
+  id: demoAuthUser.id,
   email,
-  role: dummyAuthUser.role,
+  role: demoAuthUser.role,
 });
 
 response.cookies.set('access_token', token, {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  sameSite: 'lax',
   path: '/',
-  maxAge: 60 * 15,
+  maxAge: 60 * 60 * 8,
 });`,
       },
       {
         title: 'JWT creation and verification',
-        filePath: 'src/lib/auth.ts',
+        filePath: 'src/server/auth/session.ts',
         language: 'ts',
         code: `export async function createToken(user: AuthUser) {
   const secret = getJwtSecret();
@@ -90,7 +83,7 @@ response.cookies.set('access_token', token, {
   return new SignJWT(user)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('15m')
+    .setExpirationTime('28800s')
     .sign(secret);
 }
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyToken } from '@/server/auth/session';
 
 const publicRoutes = [
   '/',
@@ -30,7 +30,11 @@ export async function proxy(request: NextRequest) {
   const isAuthenticated = Boolean(verifiedUser);
 
   if (!isAuthenticated && !isPublicRoute) {
-    const response = NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('next', pathname);
+
+    const response = NextResponse.redirect(loginUrl);
+    response.headers.set('Cache-Control', 'no-store');
 
     // Clear invalid or expired tokens so route gating cannot be bypassed.
     if (token) {
@@ -41,7 +45,10 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isAuthenticated && pathname === '/login') {
-    return NextResponse.redirect(new URL('/', request.url));
+    const response = NextResponse.redirect(new URL('/', request.url));
+    response.headers.set('Cache-Control', 'no-store');
+
+    return response;
   }
 
   return NextResponse.next();
