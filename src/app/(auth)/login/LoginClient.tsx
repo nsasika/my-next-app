@@ -4,6 +4,7 @@ import BrandMark from '@/components/layout/BrandMark';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import StatusMessage from '@/components/ui/StatusMessage';
+import { API_ROUTES } from '@/config/api';
 import { demoAuthUser } from '@/config/demoAuth';
 import { APP_PATHS } from '@/config/routes';
 import { authContent } from '@/content/auth';
@@ -58,7 +59,7 @@ export default function LoginClient() {
     setMessage('');
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(API_ROUTES.auth.login, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

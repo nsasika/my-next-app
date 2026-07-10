@@ -1,7 +1,5 @@
 import type { NextResponse } from 'next/server';
-import { AUTH_SESSION_MAX_AGE_SECONDS } from './session';
-
-const ACCESS_TOKEN_COOKIE = 'access_token';
+import { AUTH_COOKIE_NAME, AUTH_SESSION_MAX_AGE_SECONDS } from '@/config/auth';
 
 const authCookieBaseOptions = {
   httpOnly: true,
@@ -11,14 +9,14 @@ const authCookieBaseOptions = {
 } as const;
 
 export function setAuthSessionCookie(response: NextResponse, token: string) {
-  response.cookies.set(ACCESS_TOKEN_COOKIE, token, {
+  response.cookies.set(AUTH_COOKIE_NAME, token, {
     ...authCookieBaseOptions,
     maxAge: AUTH_SESSION_MAX_AGE_SECONDS,
   });
 }
 
 export function clearAuthSessionCookie(response: NextResponse) {
-  response.cookies.set(ACCESS_TOKEN_COOKIE, '', {
+  response.cookies.set(AUTH_COOKIE_NAME, '', {
     ...authCookieBaseOptions,
     maxAge: 0,
   });

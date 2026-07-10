@@ -6,6 +6,7 @@ import {
   type SidebarSection,
   type SidebarTechnology,
 } from '@/config/routes';
+import { API_ROUTES } from '@/config/api';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CodeIcon from '@mui/icons-material/Code';
 import CloseIcon from '@mui/icons-material/Close';
@@ -346,7 +347,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
   }, [activeTechnology, pathname]);
 
   const logout = async () => {
-    await fetch(APP_PATHS.authLogout, {
+    await fetch(API_ROUTES.auth.logout, {
       method: 'POST',
     });
 

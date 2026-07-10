@@ -1,15 +1,9 @@
 import { SignJWT, jwtVerify } from 'jose';
-
-export const AUTH_SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
+import { AUTH_SESSION_MAX_AGE_SECONDS } from '@/config/auth';
+import { serverEnv } from '@/server/env';
 
 function getJwtSecret() {
-  const rawSecret = process.env.JWT_SECRET;
-
-  if (!rawSecret) {
-    throw new Error('JWT_SECRET is not configured.');
-  }
-
-  const secret = new TextEncoder().encode(rawSecret);
+  const secret = new TextEncoder().encode(serverEnv.jwtSecret);
   if (secret.length < 32) {
     throw new Error('JWT_SECRET must be at least 32 characters for HS256.');
   }

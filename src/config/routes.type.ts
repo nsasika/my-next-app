@@ -52,8 +52,6 @@ export const APP_PATHS = {
   reactMemo: '/react-memo',
   ssr: '/ssr',
   csr: '/csr',
-
-  authLogout: '/api/auth/logout',
 } as const;
 
 export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];

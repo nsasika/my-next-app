@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { API_ROUTES } from '@/config/api';
+import { AUTH_COOKIE_NAME } from '@/config/auth';
 import { verifyToken } from '@/server/auth/session';
 
 const publicRoutes = [
@@ -8,7 +10,7 @@ const publicRoutes = [
   '/engineering-blueprint',
   '/interview-questions',
   '/login',
-  '/api/auth/login',
+  API_ROUTES.auth.login,
   '/nalinsacademy.png',
   '/profilepic.png',
   '/resume/',
@@ -25,7 +27,7 @@ export async function proxy(request: NextRequest) {
     return pathname.startsWith(route);
   });
 
-  const token = request.cookies.get('access_token')?.value;
+  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   const verifiedUser = token ? await verifyToken(token) : null;
   const isAuthenticated = Boolean(verifiedUser);
 
@@ -38,7 +40,7 @@ export async function proxy(request: NextRequest) {
 
     // Clear invalid or expired tokens so route gating cannot be bypassed.
     if (token) {
-      response.cookies.delete('access_token');
+      response.cookies.delete(AUTH_COOKIE_NAME);
     }
 
     return response;

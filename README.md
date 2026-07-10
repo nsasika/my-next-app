@@ -187,3 +187,45 @@ The current coverage threshold is configured in `vitest.config.ts`:
 - Lines: 80%
 
 As more of the application becomes unit-tested, expand the coverage scope in `vitest.config.ts` so the 80% target covers more of the codebase.
+
+---
+
+## **Environment Configuration**
+
+Real environment files are intentionally ignored by Git. Use the committed templates as references:
+
+- `.env.example`
+- `.env.development.example`
+- `.env.production.example`
+
+For local development, create `.env.local` and set:
+
+```bash
+JWT_SECRET=replace-with-at-least-32-characters
+NEXT_PUBLIC_JSON_PLACEHOLDER_BASE_URL=https://jsonplaceholder.typicode.com
+```
+
+For Vercel production, store the same values in Vercel Environment Variables rather than committing them.
+
+Global app constants live in `src/config/app.ts`, API route/base URL constants live in `src/config/api.ts`, and auth cookie/session constants live in `src/config/auth.ts`.
+
+---
+
+## **SonarQube Cloud**
+
+Because this app is hosted on Vercel, the recommended setup is SonarQube Cloud through GitHub Actions. Vercel should keep handling deployment; Sonar should run as a repository quality/security scan in CI.
+
+This repo includes:
+
+- `sonar-project.properties`
+- `.github/workflows/sonarqube.yml`
+- LCOV coverage output from `npm run test:coverage`
+
+To enable the scan:
+
+1. Create/import the project in SonarQube Cloud.
+2. Confirm `sonar.organization` in `sonar-project.properties` matches the SonarQube Cloud organization key.
+3. Add `SONAR_TOKEN` as a GitHub Actions repository secret.
+4. Push to `development` or open a pull request.
+
+SonarQube Server is the self-hosted option. For this project, SonarQube Cloud is simpler because the repo already uses GitHub and Vercel, and there is no need to maintain a separate Sonar server.
