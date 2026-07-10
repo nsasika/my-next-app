@@ -31,7 +31,6 @@ export default function AboutMePage() {
       href: file.filePath,
       label: file.label,
     }));
-  const primaryResume = availableResumeOptions[0];
 
   return (
     <PublicPageShell>
@@ -79,17 +78,19 @@ export default function AboutMePage() {
                     key={link.label}
                     href={link.href}
                     icon={link.icon}
+                    iconOnly
                     label={link.label}
                   />
                 ))}
-                {primaryResume ? (
+                {availableResumeOptions.map((resume) => (
                   <SocialLink
+                    key={resume.href}
                     download
-                    href={primaryResume.href}
+                    href={resume.href}
                     icon="resume"
-                    label={`Resume ${primaryResume.label}`}
+                    label={`Resume ${resume.label}`}
                   />
-                ) : null}
+                ))}
               </div>
             </div>
           </section>

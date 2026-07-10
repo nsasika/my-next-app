@@ -29,10 +29,17 @@ type SocialLinkProps = {
   download?: boolean;
   href: string;
   icon: SocialIconName;
+  iconOnly?: boolean;
   label: string;
 };
 
-export function SocialLink({ download, href, icon, label }: SocialLinkProps) {
+export function SocialLink({
+  download,
+  href,
+  icon,
+  iconOnly = false,
+  label,
+}: SocialLinkProps) {
   const Icon = icons[icon];
 
   return (
@@ -42,11 +49,13 @@ export function SocialLink({ download, href, icon, label }: SocialLinkProps) {
       target={download ? undefined : '_blank'}
       rel="noopener noreferrer"
       aria-label={label}
-      className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-black shadow-sm transition ${linkThemes[icon]}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg border text-sm font-black shadow-sm transition ${
+        iconOnly ? 'size-11 px-0 py-0' : 'px-4 py-2.5'
+      } ${linkThemes[icon]}`}
     >
       <Icon fontSize="small" aria-hidden="true" />
       {download ? <DownloadIcon fontSize="small" aria-hidden="true" /> : null}
-      {label}
+      {iconOnly ? <span className="sr-only">{label}</span> : label}
     </a>
   );
 }

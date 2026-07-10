@@ -126,7 +126,11 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
     title: 'Real interviews',
     links: [
       {
-        href: APP_PATHS.interviewPractice,
+        href: APP_PATHS.bankOfSingaporeInterview,
+        label: 'Bank of Singapore',
+      },
+      {
+        href: APP_PATHS.virtusaSingaporeInterview,
         label: 'Virtusa Singapore',
       },
     ],

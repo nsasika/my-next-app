@@ -34,6 +34,8 @@ export const APP_PATHS = {
   javaChapter1: '/java/chapter-1',
   javaChapter2: '/java/chapter-2',
   interviewPractice: '/interview-practice',
+  bankOfSingaporeInterview: '/interview-practice/bank-of-singapore',
+  virtusaSingaporeInterview: '/interview-practice/virtusa-singapore',
   authStrategy: '/authentication-strategy',
   counterSlice: '/counter-slice',
   reduxThunk: '/redux-thunk',

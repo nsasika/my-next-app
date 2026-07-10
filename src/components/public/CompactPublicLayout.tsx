@@ -9,6 +9,7 @@ type PublicHeroProps = {
   aside?: ReactNode;
   body: string;
   compact?: boolean;
+  density?: 'default' | 'tight';
   eyebrow: string;
   title: string;
 };
@@ -43,31 +44,46 @@ export function PublicHero({
   aside,
   body,
   compact = false,
+  density = 'default',
   eyebrow,
   title,
 }: PublicHeroProps) {
+  const tight = density === 'tight';
+
   return (
     <section
-      className={`grid min-w-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.75fr)] lg:items-center ${
-        compact ? 'gap-5' : 'gap-8'
-      }`}
+      className={`grid min-w-0 ${
+        tight
+          ? 'lg:grid-cols-[minmax(0,0.75fr)_minmax(22rem,1fr)] lg:items-start'
+          : 'lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.75fr)] lg:items-center'
+      } ${compact || tight ? 'gap-5' : 'gap-8'}`}
     >
-      <div className="min-w-0 animate-fade-rise">
+      <div
+        className={`min-w-0 animate-fade-rise ${
+          tight ? 'max-w-2xl lg:pt-2' : ''
+        }`}
+      >
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
           {eyebrow}
         </p>
         <h1
           className={`mt-3 max-w-4xl font-black leading-tight tracking-tight text-slate-950 ${
-            compact ? 'text-3xl sm:text-4xl' : 'text-4xl sm:text-5xl'
+            tight
+              ? 'text-2xl sm:text-3xl'
+              : compact
+                ? 'text-3xl sm:text-4xl'
+                : 'text-4xl sm:text-5xl'
           }`}
         >
           {title}
         </h1>
         <p
           className={`max-w-3xl text-slate-700 ${
-            compact
-              ? 'mt-3 text-sm leading-6 sm:text-base'
-              : 'mt-4 text-base leading-7 sm:text-lg'
+            tight
+              ? 'mt-2 text-sm leading-6'
+              : compact
+                ? 'mt-3 text-sm leading-6 sm:text-base'
+                : 'mt-4 text-base leading-7 sm:text-lg'
           }`}
         >
           {body}

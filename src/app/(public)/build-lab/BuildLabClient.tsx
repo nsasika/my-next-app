@@ -5,10 +5,7 @@ import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CommitIcon from '@mui/icons-material/Commit';
 import { useState } from 'react';
-import {
-  PublicHero,
-  PublicPageShell,
-} from '@/components/public/CompactPublicLayout';
+import { PublicPageShell } from '@/components/public/CompactPublicLayout';
 import CompactPublicSlider from '@/components/public/CompactPublicSlider';
 import {
   deliveryFlow,
@@ -126,66 +123,72 @@ export default function BuildLabClient() {
 
   return (
     <PublicPageShell>
-      <PublicHero
-        aside={
-          <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
-                  Delivery model
-                </p>
-                <h2 className="mt-1 text-lg font-black text-slate-950">
-                  {activeFlow.title}
-                </h2>
-              </div>
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white">
-                {flowIcons[activeStep]}
-              </span>
-            </div>
-            <div className="mt-3 grid gap-2">
-              {deliveryFlow.map((item, index) => {
-                const active = activeStep === index;
+      <section className="mb-5 grid min-w-0 gap-3 border-b border-slate-200 pb-5 lg:grid-cols-[minmax(0,0.45fr)_minmax(0,1fr)] lg:items-end">
+        <div className="min-w-0">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
+            {engineeringHeroContent.eyebrow}
+          </p>
+          <h1 className="mt-2 text-3xl font-black leading-tight tracking-tight text-slate-950">
+            {engineeringHeroContent.heading}
+          </h1>
+        </div>
+        <p className="max-w-3xl text-sm leading-6 text-slate-600 lg:justify-self-end">
+          {engineeringHeroContent.body}
+        </p>
+      </section>
 
-                return (
-                  <button
-                    key={item.title}
-                    aria-pressed={active}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-left transition ${
-                      active
-                        ? 'bg-sky-50 text-sky-950'
-                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
+                Delivery model
+              </p>
+              <h2 className="mt-1 text-lg font-black text-slate-950">
+                {activeFlow.title}
+              </h2>
+            </div>
+            <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white">
+              {flowIcons[activeStep]}
+            </span>
+          </div>
+          <div className="mt-3 grid gap-2">
+            {deliveryFlow.map((item, index) => {
+              const active = activeStep === index;
+
+              return (
+                <button
+                  key={item.title}
+                  aria-pressed={active}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-left transition ${
+                    active
+                      ? 'bg-sky-50 text-sky-950'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
+                  }`}
+                  onClick={() => setActiveStep(index)}
+                  type="button"
+                >
+                  <span
+                    className={`flex size-8 shrink-0 items-center justify-center rounded-md ${
+                      active ? 'bg-sky-700 text-white' : 'bg-slate-100'
                     }`}
-                    onClick={() => setActiveStep(index)}
-                    type="button"
                   >
-                    <span
-                      className={`flex size-8 shrink-0 items-center justify-center rounded-md ${
-                        active ? 'bg-sky-700 text-white' : 'bg-slate-100'
-                      }`}
-                    >
-                      {flowIcons[index]}
+                    {flowIcons[index]}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-black">
+                      {item.title}
                     </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-black">
-                        {item.title}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <p className="mt-4 rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">
-              {activeFlow.body}
-            </p>
-          </section>
-        }
-        body={engineeringHeroContent.body}
-        compact
-        eyebrow={engineeringHeroContent.eyebrow}
-        title={engineeringHeroContent.heading}
-      />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-4 rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">
+            {activeFlow.body}
+          </p>
+        </section>
 
-      <div className="mt-8 grid min-w-0 gap-4 lg:grid-cols-2">
         <CompactPublicSlider
           eyebrow="System snapshot"
           panels={stackPanels}
