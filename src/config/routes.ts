@@ -104,10 +104,6 @@ const REACT_SECTIONS: SidebarSection[] = [
       { href: APP_PATHS.csr, label: 'CSR rendering' },
     ],
   },
-  {
-    title: 'Application security',
-    links: [{ href: APP_PATHS.authStrategy, label: 'Authentication Strategy' }],
-  },
 ];
 
 const JAVA_SECTIONS: SidebarSection[] = [
@@ -137,6 +133,51 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
   },
 ];
 
+const NEXTJS_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Next.js Fundamentals',
+    links: [
+      { href: APP_PATHS.nextjsIntro, label: 'Intro to Next.js' },
+      { href: APP_PATHS.nextjsRouters, label: 'App Router vs Pages Router' },
+      {
+        href: APP_PATHS.nextjsComponents,
+        label: 'Server and Client Components',
+      },
+      { href: APP_PATHS.nextjsRendering, label: 'SSR, SSG, ISR' },
+      { href: APP_PATHS.nextjsCaching, label: 'Caching and revalidation' },
+    ],
+  },
+  {
+    title: 'Production Next.js',
+    links: [
+      { href: APP_PATHS.nextjsMiddleware, label: 'Middleware and proxy' },
+      { href: APP_PATHS.nextjsLayouts, label: 'Layouts and route groups' },
+      { href: APP_PATHS.nextjsAuthentication, label: 'Authentication' },
+      { href: APP_PATHS.nextjsSeo, label: 'SEO and metadata' },
+      {
+        href: APP_PATHS.nextjsDeploymentMonitoring,
+        label: 'Deployment and monitoring',
+      },
+    ],
+  },
+];
+
+const FOUNDATIONS_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Authentication',
+    links: [
+      {
+        href: APP_PATHS.currentAuthenticationFlow,
+        label: 'Current Authentication Flow',
+      },
+    ],
+  },
+  {
+    title: 'Authorization',
+    links: [{ href: APP_PATHS.oauth2Authorization, label: 'OAuth 2.0 + OIDC' }],
+  },
+];
+
 export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
   {
     description: 'Hooks, rendering, state, side effects, and performance.',
@@ -156,8 +197,15 @@ export const SIDEBAR_TECHNOLOGIES: SidebarTechnology[] = [
     description: 'Production React routing, rendering, APIs, and deployment.',
     href: APP_PATHS.nextjs,
     label: 'Next.js',
-    sections: [],
+    sections: NEXTJS_SECTIONS,
     value: 'nextjs',
+  },
+  {
+    description: 'Common engineering theory beyond a single framework.',
+    href: APP_PATHS.foundations,
+    label: 'Foundations',
+    sections: FOUNDATIONS_SECTIONS,
+    value: 'foundations',
   },
   {
     description: 'Component architecture, TypeScript, templates, and services.',

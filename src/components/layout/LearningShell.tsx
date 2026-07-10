@@ -15,6 +15,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FaceIcon from '@mui/icons-material/Face';
+import HubIcon from '@mui/icons-material/Hub';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
@@ -30,6 +31,7 @@ import LessonSearch from '@/components/learning/LessonSearch';
 
 const technologyIcons = {
   angular: DataObjectIcon,
+  foundations: HubIcon,
   interviews: QuestionAnswerIcon,
   java: TerminalIcon,
   nextjs: RocketLaunchIcon,

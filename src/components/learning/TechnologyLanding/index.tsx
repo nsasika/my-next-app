@@ -11,6 +11,7 @@ import type { TechnologyLandingContent } from '@/content/technologies';
 
 const logoClasses: Record<TechnologyLandingContent['accent'], string> = {
   angular: 'bg-red-50 text-red-700 ring-red-100',
+  foundations: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
   interviews: 'bg-violet-50 text-violet-700 ring-violet-100',
   java: 'bg-orange-50 text-orange-700 ring-orange-100',
   nextjs: 'bg-white text-slate-950 ring-slate-200',
