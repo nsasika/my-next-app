@@ -1,3 +1,7 @@
+import { API_ROUTES } from '@/config/api';
+import { AUTH_COOKIE_NAME, AUTH_SESSION_MAX_AGE_SECONDS } from '@/config/auth';
+import { APP_PATHS } from '@/config/routes';
+
 export const authContent = {
   login: {
     eyebrow: 'Authentication demo',
@@ -11,10 +15,11 @@ export const authContent = {
     loginButtonLabel: 'Login',
     currentStrategyTitle: 'Current authentication flow',
     currentStrategyPoints: [
-      'The login form posts dummy credentials to /api/auth/login.',
+      `The login form posts dummy credentials to ${API_ROUTES.auth.login}.`,
       'The API route signs a JWT with jose when the credentials match.',
-      'The JWT is stored in an HTTP-only access_token cookie for 8 hours.',
+      `The JWT is stored in an HTTP-only ${AUTH_COOKIE_NAME} cookie for ${AUTH_SESSION_MAX_AGE_SECONDS / 3600} hours.`,
       'Next.js proxy checks that cookie before allowing protected learning routes.',
+      `Unauthenticated users are redirected to ${APP_PATHS.login}.`,
     ],
     oauthTitle: 'OAuth2 providers planned',
     oauthDescription:
@@ -65,12 +70,12 @@ const token = await createToken({
   role: demoAuthUser.role,
 });
 
-response.cookies.set('access_token', token, {
+response.cookies.set(AUTH_COOKIE_NAME, token, {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',
   path: '/',
-  maxAge: 60 * 60 * 8,
+  maxAge: AUTH_SESSION_MAX_AGE_SECONDS,
 });`,
       },
       {
@@ -100,15 +105,15 @@ export async function verifyToken(token: string) {
         title: 'Protected route proxy',
         filePath: 'src/proxy.ts',
         language: 'ts',
-        code: `const token = request.cookies.get('access_token')?.value;
+        code: `const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
 const verifiedUser = token ? await verifyToken(token) : null;
 const isAuthenticated = Boolean(verifiedUser);
 
 if (!isAuthenticated && !isPublicRoute) {
-  const response = NextResponse.redirect(new URL('/login', request.url));
+  const response = NextResponse.redirect(new URL(APP_PATHS.login, request.url));
 
   if (token) {
-    response.cookies.delete('access_token');
+    response.cookies.delete(AUTH_COOKIE_NAME);
   }
 
   return response;
@@ -118,7 +123,7 @@ if (!isAuthenticated && !isPublicRoute) {
         title: 'Logout cookie clearing',
         filePath: 'src/app/api/auth/logout/route.ts',
         language: 'ts',
-        code: `response.cookies.set('access_token', '', {
+        code: `response.cookies.set(AUTH_COOKIE_NAME, '', {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',

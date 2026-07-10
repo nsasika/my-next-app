@@ -8,6 +8,7 @@ function requireEnv(name: string) {
   return value;
 }
 
+// Server-only environment facade. Do not import this from client components.
 export const serverEnv = {
   jwtSecret: requireEnv('JWT_SECRET'),
 } as const;

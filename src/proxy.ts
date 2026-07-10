@@ -1,26 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { API_ROUTES } from '@/config/api';
 import { AUTH_COOKIE_NAME } from '@/config/auth';
+import { PUBLIC_ROUTE_PREFIXES } from '@/config/publicAccess';
+import { APP_PATHS } from '@/config/routes';
 import { verifyToken } from '@/server/auth/session';
-
-const publicRoutes = [
-  '/',
-  '/about',
-  '/build-lab',
-  '/engineering-blueprint',
-  '/interview-questions',
-  '/login',
-  API_ROUTES.auth.login,
-  '/nalinsacademy.png',
-  '/profilepic.png',
-  '/resume/',
-];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some((route) => {
-    if (route === '/') {
+  const isPublicRoute = PUBLIC_ROUTE_PREFIXES.some((route) => {
+    if (route === APP_PATHS.home) {
       return pathname === route;
     }
 
@@ -32,7 +20,7 @@ export async function proxy(request: NextRequest) {
   const isAuthenticated = Boolean(verifiedUser);
 
   if (!isAuthenticated && !isPublicRoute) {
-    const loginUrl = new URL('/login', request.url);
+    const loginUrl = new URL(APP_PATHS.login, request.url);
     loginUrl.searchParams.set('next', pathname);
 
     const response = NextResponse.redirect(loginUrl);
@@ -46,8 +34,10 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  if (isAuthenticated && pathname === '/login') {
-    const response = NextResponse.redirect(new URL('/', request.url));
+  if (isAuthenticated && pathname === APP_PATHS.login) {
+    const response = NextResponse.redirect(
+      new URL(APP_PATHS.home, request.url),
+    );
     response.headers.set('Cache-Control', 'no-store');
 
     return response;

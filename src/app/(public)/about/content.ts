@@ -1,3 +1,5 @@
+import { PUBLIC_ASSETS } from '@/config/app';
+
 export const socialLinks = [
   {
     label: 'YouTube',
@@ -83,14 +85,14 @@ export const academyImpactStats = [
   { label: 'Delivery focus', value: 'Enterprise' },
 ] as const;
 
-export const resumePath = '/resume/nalin-padmasiri-resume.pdf';
+export const resumePath = PUBLIC_ASSETS.resumes.pdf;
 export const resumeFiles = [
   {
-    filePath: '/resume/nalin-padmasiri-resume.pdf',
+    filePath: PUBLIC_ASSETS.resumes.pdf,
     label: 'PDF',
   },
   {
-    filePath: '/resume/nalin-padmasiri-resume.docx',
+    filePath: PUBLIC_ASSETS.resumes.docx,
     label: 'DOCX',
   },
 ] as const;

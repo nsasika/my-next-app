@@ -221,11 +221,17 @@ This repo includes:
 - `.github/workflows/sonarqube.yml`
 - LCOV coverage output from `npm run test:coverage`
 
-To enable the scan:
+### SonarQube TODO
 
-1. Create/import the project in SonarQube Cloud.
-2. Confirm `sonar.organization` in `sonar-project.properties` matches the SonarQube Cloud organization key.
-3. Add `SONAR_TOKEN` as a GitHub Actions repository secret.
-4. Push to `development` or open a pull request.
+1. Create or import the GitHub project in SonarQube Cloud.
+2. Confirm `sonar.projectKey` in `sonar-project.properties` matches the project key shown by SonarQube Cloud.
+3. Confirm `sonar.organization` in `sonar-project.properties` matches the SonarQube Cloud organization key.
+4. Generate a Sonar token from SonarQube Cloud.
+5. Add the token to GitHub as a repository secret named `SONAR_TOKEN`.
+6. Push to `development` or open a pull request.
+7. Open the GitHub Actions run named `SonarQube` and confirm the scan completes.
+8. In SonarQube Cloud, review the Quality Gate, coverage import, security hotspots, code smells, duplication, and maintainability issues.
+9. If the Quality Gate is too loose or strict, adjust it inside SonarQube Cloud rather than hard-coding quality decisions in the app.
+10. Keep Vercel deployment separate: Vercel deploys the app, GitHub Actions runs SonarQube analysis.
 
 SonarQube Server is the self-hosted option. For this project, SonarQube Cloud is simpler because the repo already uses GitHub and Vercel, and there is no need to maintain a separate Sonar server.

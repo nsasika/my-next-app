@@ -1,3 +1,4 @@
+// Central location for internal API paths and external service endpoints.
 export const API_ROUTES = {
   auth: {
     login: '/api/auth/login',
