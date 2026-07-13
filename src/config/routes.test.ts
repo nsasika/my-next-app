@@ -3,6 +3,7 @@ import {
   APP_PATHS,
   LESSON_NAV_ITEMS,
   RECRUITER_AUTH_NAV_ITEM,
+  RECRUITER_NAV_BASE_ITEMS,
   SIDEBAR_NAV_GROUPS,
   SIDEBAR_TECHNOLOGIES,
   createLessonNavigationItems,
@@ -19,6 +20,15 @@ describe('learning navigation config', () => {
 
   it('opens the learning workspace on Foundations by default', () => {
     expect(RECRUITER_AUTH_NAV_ITEM.href).toBe(APP_PATHS.foundations);
+  });
+
+  it('keeps the portfolio and academy as separate public destinations', () => {
+    expect(RECRUITER_NAV_BASE_ITEMS).toEqual([
+      { href: APP_PATHS.home, label: 'Home' },
+      { href: APP_PATHS.nalin, label: 'Portfolio' },
+      { href: APP_PATHS.academy, label: 'Academy' },
+      { href: APP_PATHS.buildLab, label: 'Build Lab' },
+    ]);
   });
 
   it('keeps technology tracks under Technologies in the requested order', () => {

@@ -19,8 +19,9 @@ export type {
 
 export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
   { href: APP_PATHS.home, label: 'Home' },
+  { href: APP_PATHS.nalin, label: 'Portfolio' },
+  { href: APP_PATHS.academy, label: 'Academy' },
   { href: APP_PATHS.buildLab, label: 'Build Lab' },
-  { href: APP_PATHS.about, label: 'Nalin & Academy' },
 ];
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {

@@ -1,9 +1,10 @@
 export const APP_PATHS = {
   home: '/',
-  about: '/about',
+  academy: '/academy',
   buildLab: '/build-lab',
   engineeringBlueprint: '/engineering-blueprint',
   login: '/login',
+  nalin: '/nalin',
 
   interviewQuestions: '/interview-questions',
 

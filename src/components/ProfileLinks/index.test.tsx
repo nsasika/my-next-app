@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { HighlightBadge, SocialLink } from '.';
+import { HighlightBadge, ResumeDownloadLink, SocialLink } from '.';
 
-describe('AboutProfile components', () => {
+describe('ProfileLinks', () => {
   it('renders a social link with its profile URL', () => {
     render(
       <SocialLink
@@ -36,6 +36,22 @@ describe('AboutProfile components', () => {
     expect(screen.getByRole('link', { name: 'LinkedIn' })).toBeInTheDocument();
   });
 
+  it('renders a compact resume download link', () => {
+    render(
+      <ResumeDownloadLink
+        accessibleLabel="Download résumé as PDF"
+        format="pdf"
+        href="/resume/nalin-padmasiri-resume.pdf"
+      />,
+    );
+
+    const link = screen.getByRole('link', { name: 'Download résumé as PDF' });
+
+    expect(link).toHaveAttribute('download');
+    expect(link).not.toHaveAttribute('target');
+    expect(link).toHaveTextContent('PDF');
+  });
+
   it('renders company highlights as external links', () => {
     render(
       <HighlightBadge
@@ -44,9 +60,10 @@ describe('AboutProfile components', () => {
       />,
     );
 
-    const link = screen.getByRole('link', { name: 'DBS Bank' });
-
-    expect(link).toHaveAttribute('href', 'https://www.dbs.com/default.page');
+    expect(screen.getByRole('link', { name: 'DBS Bank' })).toHaveAttribute(
+      'href',
+      'https://www.dbs.com/default.page',
+    );
   });
 
   it('renders location highlights as text when no URL is provided', () => {

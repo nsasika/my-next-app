@@ -1,15 +1,17 @@
 'use client';
 
-import {
-  APP_PATHS,
-  RECRUITER_AUTH_NAV_ITEM,
-  RECRUITER_GUEST_NAV_ITEM,
-  RECRUITER_NAV_BASE_ITEMS,
-} from '@/config/routes';
+import { APP_PATHS } from '@/config/routes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+import {
+  getLocaleFromPathname,
+  isLocalizedPublicPath,
+  localizePath,
+} from '@/i18n/config';
+import { LOCALIZED_UI } from '@/i18n/ui';
 import BrandMark from './BrandMark';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function SiteHeader({
   isAuthenticated,
@@ -17,13 +19,20 @@ export default function SiteHeader({
   isAuthenticated: boolean;
 }) {
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const labels = LOCALIZED_UI[locale].nav;
 
   const navItems = useMemo(
     () => [
-      ...RECRUITER_NAV_BASE_ITEMS,
-      isAuthenticated ? RECRUITER_AUTH_NAV_ITEM : RECRUITER_GUEST_NAV_ITEM,
+      { href: localizePath(locale, APP_PATHS.home), label: labels.home },
+      { href: localizePath(locale, APP_PATHS.academy), label: labels.academy },
+      { href: localizePath(locale, APP_PATHS.nalin), label: labels.portfolio },
+      { href: APP_PATHS.buildLab, label: labels.buildLab },
+      ...(isAuthenticated
+        ? []
+        : [{ href: APP_PATHS.login, label: labels.login }]),
     ],
-    [isAuthenticated],
+    [isAuthenticated, labels, locale],
   );
 
   return (
@@ -36,7 +45,7 @@ export default function SiteHeader({
         <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:justify-self-center">
           {navItems.map((item) => {
             const isActive =
-              item.href === APP_PATHS.home
+              item.href === localizePath(locale, APP_PATHS.home)
                 ? pathname === item.href
                 : pathname.startsWith(item.href);
 
@@ -54,6 +63,9 @@ export default function SiteHeader({
               </Link>
             );
           })}
+        </div>
+        <div className="md:justify-self-end">
+          {isLocalizedPublicPath(pathname) ? <LanguageSwitcher /> : null}
         </div>
       </nav>
     </header>
