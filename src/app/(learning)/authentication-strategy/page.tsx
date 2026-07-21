@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation';
 import { legacyAuthStrategyRedirectPath } from '@/content/foundations';
+import { redirectToLocalizedPath } from '@/i18n/redirect';
 
-export default function AuthenticationStrategyPage() {
-  redirect(legacyAuthStrategyRedirectPath);
+export default async function AuthenticationStrategyPage() {
+  return redirectToLocalizedPath(legacyAuthStrategyRedirectPath);
 }

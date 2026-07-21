@@ -2,6 +2,7 @@
 
 import {
   APP_PATHS,
+  type AppPath,
   type SidebarNavGroup,
   type SidebarSection,
   type SidebarTechnology,
@@ -29,11 +30,17 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import BrandMark from './BrandMark';
 import LessonSearch from '@/components/learning/LessonSearch';
 import LessonPager from '@/components/learning/LessonPager';
+import ConceptLessonPage from '@/components/learning/ConceptLessonPage';
 import LanguageSwitcher from './LanguageSwitcher';
 import type { AppCopy } from '@/i18n/app/types';
-import { localizePath, type Locale } from '@/i18n/config';
+import {
+  localizePath,
+  stripLocaleFromPathname,
+  type Locale,
+} from '@/i18n/config';
 import { LEARNING_UI } from '@/i18n/learning/ui';
 import type { LocalizedLearningNavigation } from '@/i18n/learning/navigation';
+import { REACT_LESSONS_BY_LOCALE } from '@/content/react/localized';
 
 const technologyIcons = {
   angular: DataObjectIcon,
@@ -360,6 +367,8 @@ export default function LearningShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const applicationPath = stripLocaleFromPathname(pathname) as AppPath;
+  const localizedLesson = REACT_LESSONS_BY_LOCALE[applicationPath]?.[locale];
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const activeGroupLabel = useMemo(
     () => getActiveGroupLabel(pathname, navigation.groups),
@@ -619,7 +628,14 @@ export default function LearningShell({
         </header>
 
         <main className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 sm:px-5 lg:px-8">
-          {children}
+          {localizedLesson ? (
+            <ConceptLessonPage
+              content={localizedLesson}
+              labels={LEARNING_UI[locale]}
+            />
+          ) : (
+            children
+          )}
           <LessonPager
             currentPath={pathname}
             items={navigation.lessonItems}

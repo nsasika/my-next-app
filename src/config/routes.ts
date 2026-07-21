@@ -6,6 +6,7 @@ import {
   type SidebarSection,
   type SidebarTechnology,
 } from './routes.type';
+import { TechnicalTerm } from '@/i18n/technicalTerms';
 
 export { APP_PATHS };
 export type {
@@ -36,25 +37,34 @@ export const RECRUITER_GUEST_NAV_ITEM: NavItem = {
 
 const REACT_SECTIONS: SidebarSection[] = [
   {
-    title: 'React Hooks',
+    title: `${TechnicalTerm.REACT} ${TechnicalTerm.HOOKS}`,
     links: [
       { href: APP_PATHS.customHooks, label: 'Rules of Hooks' },
-      { href: APP_PATHS.useRefTest, label: 'useRef' },
-      { href: APP_PATHS.useCallback, label: 'useCallback' },
+      { href: APP_PATHS.useRefTest, label: TechnicalTerm.USE_REF },
+      { href: APP_PATHS.useCallback, label: TechnicalTerm.USE_CALLBACK },
     ],
   },
   {
     title: 'React 18 Changes',
     links: [
       { href: APP_PATHS.react18Changes, label: 'React 18 Overview' },
-      { href: APP_PATHS.react18Batching, label: 'Automatic Batching' },
+      {
+        href: APP_PATHS.react18Batching,
+        label: TechnicalTerm.AUTOMATIC_BATCHING,
+      },
       {
         href: APP_PATHS.react18Transitions,
         label: 'Transitions (useTransition)',
       },
-      { href: APP_PATHS.react18DeferredValue, label: 'useDeferredValue' },
-      { href: APP_PATHS.react18Id, label: 'useId' },
-      { href: APP_PATHS.react18ExternalStore, label: 'useSyncExternalStore' },
+      {
+        href: APP_PATHS.react18DeferredValue,
+        label: TechnicalTerm.USE_DEFERRED_VALUE,
+      },
+      { href: APP_PATHS.react18Id, label: TechnicalTerm.USE_ID },
+      {
+        href: APP_PATHS.react18ExternalStore,
+        label: TechnicalTerm.USE_SYNC_EXTERNAL_STORE,
+      },
     ],
   },
   {
@@ -63,11 +73,11 @@ const REACT_SECTIONS: SidebarSection[] = [
       { href: APP_PATHS.react19Changes, label: 'React 19 Overview' },
       {
         href: APP_PATHS.react19ActionState,
-        label: 'useActionState',
+        label: TechnicalTerm.USE_ACTION_STATE,
       },
       {
         href: APP_PATHS.react19Optimistic,
-        label: 'useOptimistic',
+        label: TechnicalTerm.USE_OPTIMISTIC,
       },
       {
         href: APP_PATHS.react19Use,
@@ -80,12 +90,12 @@ const REACT_SECTIONS: SidebarSection[] = [
     links: [
       {
         href: APP_PATHS.counterSlice,
-        label: 'Redux Toolkit',
+        label: TechnicalTerm.REDUX_TOOLKIT,
         children: [
           { href: APP_PATHS.counterSlice, label: 'Slice + reducers' },
           { href: APP_PATHS.reduxThunk, label: 'Middleware: Thunk' },
           { href: APP_PATHS.reduxSaga, label: 'Middleware: Saga' },
-          { href: APP_PATHS.rtkQuery, label: 'RTK Query' },
+          { href: APP_PATHS.rtkQuery, label: TechnicalTerm.RTK_QUERY },
           { href: APP_PATHS.takeEvery, label: 'Saga takeEvery' },
           { href: APP_PATHS.takeLatest, label: 'Saga takeLatest' },
           { href: APP_PATHS.debounce, label: 'Saga debounce' },
@@ -93,7 +103,7 @@ const REACT_SECTIONS: SidebarSection[] = [
       },
       {
         href: APP_PATHS.zustand,
-        label: 'Zustand',
+        label: TechnicalTerm.ZUSTAND,
         children: [{ href: APP_PATHS.zustand, label: 'Store example' }],
       },
     ],
@@ -102,11 +112,11 @@ const REACT_SECTIONS: SidebarSection[] = [
     title: 'React Performance',
     links: [
       { href: APP_PATHS.performanceGuide, label: 'Why and how to test' },
-      { href: APP_PATHS.useMemoTest, label: 'useMemo' },
-      { href: APP_PATHS.reactMemo, label: 'React.memo' },
+      { href: APP_PATHS.useMemoTest, label: TechnicalTerm.USE_MEMO },
+      { href: APP_PATHS.reactMemo, label: TechnicalTerm.REACT_MEMO },
       { href: APP_PATHS.performance, label: 'Render profiling demo' },
-      { href: APP_PATHS.ssr, label: 'SSR rendering' },
-      { href: APP_PATHS.csr, label: 'CSR rendering' },
+      { href: APP_PATHS.ssr, label: `${TechnicalTerm.SSR} rendering` },
+      { href: APP_PATHS.csr, label: `${TechnicalTerm.CSR} rendering` },
     ],
   },
 ];
