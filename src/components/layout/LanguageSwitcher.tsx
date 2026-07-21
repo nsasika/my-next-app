@@ -3,7 +3,6 @@
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import { Button, ListItemIcon, Menu, MenuItem } from '@mui/material';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, type MouseEvent } from 'react';
 import {
@@ -55,7 +54,10 @@ export default function LanguageSwitcher({
         {LOCALE_OPTIONS.map((option) => (
           <MenuItem
             key={option.locale}
-            component={Link}
+            // Locale switching changes an HTTP-only cookie in a Route Handler.
+            // A native navigation guarantees the redirected document and all
+            // Server Components are rendered from the new locale on one click.
+            component="a"
             href={createLocaleSwitchPath(option.locale, pathname)}
             onClick={() => setAnchorElement(null)}
             selected={option.locale === locale}

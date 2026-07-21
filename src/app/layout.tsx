@@ -25,6 +25,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getRequestLocale();
+  const isVercelDeployment = Boolean(process.env.VERCEL);
 
   return (
     <html lang={locale}>
@@ -35,8 +36,12 @@ export default async function RootLayout({
           </AppRouterCacheProvider>
         </StoreProvider>
         <ClientObservability />
-        <Analytics />
-        <SpeedInsights />
+        {isVercelDeployment ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );
