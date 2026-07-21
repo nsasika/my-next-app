@@ -1,6 +1,14 @@
-import ConceptLessonPage from '@/components/learning/ConceptLessonPage';
-import { nextjsLessons } from '@/content/nextjsLessons';
+import LocalizedConceptLessonPage from '@/components/learning/LocalizedConceptLessonPage';
+import { nextjsLessonsByLocale } from '@/content/nextjsLocalized';
 
 export default function NextjsCachingPage() {
-  return <ConceptLessonPage content={nextjsLessons.caching} />;
+  return (
+    <LocalizedConceptLessonPage
+      content={{
+        en: nextjsLessonsByLocale['en-US'].caching,
+        si: nextjsLessonsByLocale['si-LK'].caching,
+        ta: nextjsLessonsByLocale['ta-LK'].caching,
+      }}
+    />
+  );
 }

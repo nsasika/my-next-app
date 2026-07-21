@@ -1,17 +1,25 @@
 import ReadingList from '@/components/learning/ReadingList';
 import PageHeader from '@/components/ui/PageHeader';
-import { chapterOneTopics } from '@/content/java/coreJava';
+import { javaContentByLocale, javaPageCopy } from '@/content/java/localized';
+import { getRequestLocale } from '@/i18n/server';
+import { LEARNING_UI } from '@/i18n/learning/ui';
 
-export default function JavaChapterOnePage() {
+export default async function JavaChapterOnePage() {
+  const locale = await getRequestLocale();
+  const copy = javaPageCopy[locale];
   return (
     <>
       <PageHeader
-        description="Chapter 1 notes focus on the core building blocks used in small Java programs and interview examples."
+        description={copy.chapterOneDescription}
         eyebrow="Core Java for the Impatient"
         tags={['Chapter 1', 'Java basics', 'Syntax']}
-        title="Chapter 1: Fundamental Programming Structures"
+        title={copy.chapterOneTitle}
       />
-      <ReadingList codeLanguage="java" items={chapterOneTopics} />
+      <ReadingList
+        codeLanguage="java"
+        items={javaContentByLocale[locale].chapterOne}
+        labels={LEARNING_UI[locale]}
+      />
     </>
   );
 }

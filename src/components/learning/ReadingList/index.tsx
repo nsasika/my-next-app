@@ -3,6 +3,11 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import CodeBlock from '@/components/ui/CodeBlock';
+import {
+  formatReadingPosition,
+  LEARNING_UI,
+  type LearningUiCopy,
+} from '@/i18n/learning/ui';
 
 export type ReadingListItem = {
   answer?: string;
@@ -15,9 +20,14 @@ export type ReadingListItem = {
 type ReadingListProps = {
   codeLanguage?: string;
   items: readonly ReadingListItem[];
+  labels?: LearningUiCopy;
 };
 
-export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
+export default function ReadingList({
+  codeLanguage,
+  items,
+  labels = LEARNING_UI['en-US'],
+}: ReadingListProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
@@ -64,8 +74,12 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
                 </span>
                 <span className="mt-1 block text-xs font-semibold text-slate-500">
                   {expanded
-                    ? `Reading ${index + 1} of ${items.length}`
-                    : 'Tap to expand'}
+                    ? formatReadingPosition(
+                        labels.readingPosition,
+                        index + 1,
+                        items.length,
+                      )
+                    : labels.tapToExpand}
                 </span>
               </span>
               <ExpandMoreIcon
@@ -114,7 +128,7 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
                             onClick={() => setActiveIndex(index - 1)}
                             type="button"
                           >
-                            Previous
+                            {labels.previous}
                           </button>
                         ) : (
                           <span aria-hidden="true" />
@@ -125,7 +139,7 @@ export default function ReadingList({ codeLanguage, items }: ReadingListProps) {
                             onClick={() => setActiveIndex(index + 1)}
                             type="button"
                           >
-                            Next question
+                            {labels.nextQuestion}
                           </button>
                         ) : null}
                       </div>

@@ -1,11 +1,11 @@
 'use client';
 
-import type { AppPath } from '@/config/routes';
 import Link from 'next/link';
 import { memo } from 'react';
+import type { LearningUiCopy } from '@/i18n/learning/ui';
 
 export type LessonSearchResult = {
-  href: AppPath;
+  href: string;
   label: string;
   section: string;
   technology: string;
@@ -38,16 +38,17 @@ function SearchResults({
   hasQuery,
   onSelect,
   results,
+  labels,
 }: {
   hasQuery: boolean;
+  labels: LearningUiCopy;
   onSelect?: () => void;
   results: readonly LessonSearchResult[];
 }) {
   if (!hasQuery) {
     return (
       <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
-        Start typing to search lessons by technology, version, hook, state
-        management topic, Java chapter, or interview topic.
+        {labels.searchEmpty}
       </div>
     );
   }
@@ -55,8 +56,7 @@ function SearchResults({
   if (results.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
-        No lessons found. Try a broader search such as React, Java, state,
-        performance, or interview.
+        {labels.searchNoResults}
       </div>
     );
   }

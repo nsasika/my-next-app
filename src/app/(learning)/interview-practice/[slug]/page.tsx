@@ -4,6 +4,8 @@ import {
   getInterviewExperience,
   interviewExperiences,
 } from '@/content/interviewPractice';
+import { getLocalizedInterviewExperience } from '@/content/interviews';
+import { getRequestLocale } from '@/i18n/server';
 
 type InterviewExperiencePageProps = {
   params: Promise<{
@@ -24,11 +26,14 @@ export default async function InterviewExperiencePage({
   params,
 }: InterviewExperiencePageProps) {
   const { slug } = await params;
-  const experience = getInterviewExperience(slug);
+  const locale = await getRequestLocale();
+  const experience =
+    getLocalizedInterviewExperience(locale, slug) ??
+    getInterviewExperience(slug);
 
   if (!experience) {
     notFound();
   }
 
-  return <InterviewExperienceView experience={experience} />;
+  return <InterviewExperienceView experience={experience} locale={locale} />;
 }

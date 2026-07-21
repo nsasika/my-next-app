@@ -1,6 +1,5 @@
-import TechnologyLanding from '@/components/learning/TechnologyLanding';
-import { technologyLandingContent } from '@/content/technologies';
+import LocalizedTechnologyLanding from '@/components/learning/LocalizedTechnologyLanding';
 
 export default function FoundationsLandingPage() {
-  return <TechnologyLanding content={technologyLandingContent.foundations} />;
+  return <LocalizedTechnologyLanding landing="foundations" />;
 }

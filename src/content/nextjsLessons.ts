@@ -279,7 +279,8 @@ revalidatePath('/products');`,
       ],
       code: `src/app/(learning)/layout.tsx
 src/app/(auth)/login/page.tsx
-src/app/(public)/about/page.tsx`,
+src/app/(public)/nalin/page.tsx
+src/app/(public)/academy/page.tsx`,
     },
     references: [
       {

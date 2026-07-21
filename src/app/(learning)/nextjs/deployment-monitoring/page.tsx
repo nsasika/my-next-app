@@ -1,6 +1,14 @@
-import ConceptLessonPage from '@/components/learning/ConceptLessonPage';
-import { nextjsLessons } from '@/content/nextjsLessons';
+import LocalizedConceptLessonPage from '@/components/learning/LocalizedConceptLessonPage';
+import { nextjsLessonsByLocale } from '@/content/nextjsLocalized';
 
 export default function NextjsDeploymentMonitoringPage() {
-  return <ConceptLessonPage content={nextjsLessons.deploymentMonitoring} />;
+  return (
+    <LocalizedConceptLessonPage
+      content={{
+        en: nextjsLessonsByLocale['en-US'].deploymentMonitoring,
+        si: nextjsLessonsByLocale['si-LK'].deploymentMonitoring,
+        ta: nextjsLessonsByLocale['ta-LK'].deploymentMonitoring,
+      }}
+    />
+  );
 }

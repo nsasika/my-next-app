@@ -20,11 +20,14 @@ export default defineConfig({
       reporter: ['text', 'html', 'lcov'],
       include: [
         'src/lib/features/**/*Slice.ts',
-        'src/components/AboutProfile/index.tsx',
         'src/components/InfoCard/index.tsx',
+        'src/components/ProfileLinks/index.tsx',
         'src/components/learning/ReadingList/index.tsx',
         'src/components/ResumeDownload/index.tsx',
         'src/components/StepList/index.tsx',
+        'src/components/WorkExperienceTimeline/index.tsx',
+        'src/i18n/config.ts',
+        'src/i18n/dictionaries/index.ts',
       ],
       thresholds: {
         statements: APP_CONFIG.qualityGateCoveragePercent,
