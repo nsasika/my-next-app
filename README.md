@@ -9,10 +9,9 @@ the current request, making localized pages shareable and preserving language
 through login, logout, browser history, protected-route redirects, and lesson
 paging.
 
-Legacy `/en`, `/si`, and `/ta` bookmarks permanently redirect to their
-canonical equivalents while preserving the remaining path and query string.
-Legacy cookie values are migrated to `en-US`, `si-LK`, or `ta-LK` during the
-same request. Unprefixed page URLs redirect to the locale stored in the
+Only locales listed in `SUPPORTED_LOCALES` are recognized. This keeps regional
+variants explicit and makes future additions such as `en-GB` or `hi-IN`
+unambiguous. Unprefixed page URLs redirect to the locale stored in the
 preference cookie, with US English as the final fallback.
 
 The language menu links to `/api/locale?locale=...&redirect=...`. That route

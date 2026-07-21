@@ -31,16 +31,16 @@ describe('locale routing', () => {
 
   it('removes locale prefixes without changing ordinary paths', () => {
     expect(stripLocaleFromPathname('/si-LK/nalin')).toBe('/nalin');
-    expect(stripLocaleFromPathname('/en')).toBe('/');
+    expect(stripLocaleFromPathname('/en')).toBe('/en');
     expect(stripLocaleFromPathname('/build-lab')).toBe('/build-lab');
   });
 
   it('switches locales while preserving supported public routes', () => {
-    expect(localizePath('si-LK', '/en/nalin')).toBe('/si-LK/nalin');
+    expect(localizePath('si-LK', '/en/nalin')).toBe('/si-LK/en/nalin');
     expect(localizePath('ta-LK', '/academy')).toBe('/ta-LK/academy');
     expect(localizePath('en-US', '/')).toBe('/en-US');
     expect(localizePath('si-LK', '/build-lab')).toBe('/si-LK/build-lab');
-    expect(localizePath('ta-LK', '/si/login')).toBe('/ta-LK/login');
+    expect(localizePath('ta-LK', '/si/login')).toBe('/ta-LK/si/login');
   });
 
   it('builds a server-handled locale switch URL', () => {

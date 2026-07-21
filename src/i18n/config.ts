@@ -7,23 +7,14 @@ export const LOCALE_REQUEST_HEADER = 'x-nalins-academy-locale';
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 export type Language = 'en' | 'si' | 'ta';
 
-const LEGACY_LOCALE_MAPPINGS: Readonly<Record<Language, Locale>> = {
-  en: 'en-US',
-  si: 'si-LK',
-  ta: 'ta-LK',
-};
-
 export function isLocale(value: string): value is Locale {
   return SUPPORTED_LOCALES.includes(value as Locale);
 }
 
-export function normalizeLocale(
+export function getSupportedLocale(
   value: string | null | undefined,
 ): Locale | null {
-  if (!value) return null;
-  if (isLocale(value)) return value;
-
-  return LEGACY_LOCALE_MAPPINGS[value as Language] ?? null;
+  return value && isLocale(value) ? value : null;
 }
 
 export function getLanguageForLocale(locale: Locale): Language {
@@ -38,7 +29,7 @@ export function resolveLocale(
   pathname: string,
   initialLocale: Locale = DEFAULT_LOCALE,
 ): Locale {
-  const pathLocale = normalizeLocale(getLocaleSegment(pathname));
+  const pathLocale = getSupportedLocale(getLocaleSegment(pathname));
 
   return pathLocale ?? initialLocale;
 }
@@ -46,7 +37,7 @@ export function resolveLocale(
 export function stripLocaleFromPathname(pathname: string): string {
   const segments = pathname.split('/').filter(Boolean);
 
-  if (segments[0] && normalizeLocale(segments[0])) {
+  if (segments[0] && isLocale(segments[0])) {
     const pathWithoutLocale = `/${segments.slice(1).join('/')}`;
     return pathWithoutLocale === '/'
       ? '/'
@@ -60,12 +51,6 @@ export function getPathLocale(pathname: string): Locale | null {
   const locale = getLocaleSegment(pathname);
 
   return locale && isLocale(locale) ? locale : null;
-}
-
-export function getLegacyPathLocale(pathname: string): Locale | null {
-  const locale = getLocaleSegment(pathname);
-
-  return locale && !isLocale(locale) ? normalizeLocale(locale) : null;
 }
 
 export function localizePath(locale: Locale, pathname: string): string {

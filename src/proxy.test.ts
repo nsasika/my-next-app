@@ -68,28 +68,14 @@ describe('locale-aware proxy routing', () => {
     );
   });
 
-  it('permanently redirects legacy URLs and migrates the locale cookie', async () => {
-    const response = await proxy(
-      request('/si/academy?source=bookmark', {
-        'nalins-academy-locale': 'si',
-      }),
-    );
-
-    expect(response.status).toBe(308);
-    expect(response.headers.get('location')).toBe(
-      'https://academy.test/si-LK/academy?source=bookmark',
-    );
-    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('si-LK');
-  });
-
-  it('migrates a legacy cookie on an unprefixed URL', async () => {
+  it('falls back to US English when a cookie has an unsupported value', async () => {
     const response = await proxy(
       request('/login', { 'nalins-academy-locale': 'ta' }),
     );
 
     expect(response.headers.get('location')).toBe(
-      'https://academy.test/ta-LK/login',
+      'https://academy.test/en-US/login',
     );
-    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('ta-LK');
+    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('en-US');
   });
 });

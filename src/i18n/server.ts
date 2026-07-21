@@ -4,10 +4,10 @@ import { cookies } from 'next/headers';
 import { headers } from 'next/headers';
 import {
   FALLBACK_LOCALE,
+  getSupportedLocale,
   isLocale,
   LOCALE_COOKIE_NAME,
   LOCALE_REQUEST_HEADER,
-  normalizeLocale,
   type Locale,
 } from './config';
 
@@ -17,5 +17,5 @@ export async function getRequestLocale(): Promise<Locale> {
 
   const value = (await cookies()).get(LOCALE_COOKIE_NAME)?.value;
 
-  return normalizeLocale(value) ?? FALLBACK_LOCALE;
+  return getSupportedLocale(value) ?? FALLBACK_LOCALE;
 }
