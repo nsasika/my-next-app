@@ -250,7 +250,9 @@ export default function UseMemoTest() {
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                 {metric.label}
               </p>
-              <p className="mt-2 text-2xl font-black">{metric.value}</p>
+              <p className="mt-2 text-2xl font-black" suppressHydrationWarning>
+                {metric.value}
+              </p>
             </div>
           ))}
         </div>
@@ -260,13 +262,13 @@ export default function UseMemoTest() {
             {
               description: demoContent.normalCalculationDescription,
               runs: withoutMemoRuns,
-              time: withoutMemoResult.durationMs,
+              time: `${withoutMemoResult.durationMs.toFixed(2)}ms`,
               title: demoContent.withoutMemoTitle,
             },
             {
               description: demoContent.memoCalculationDescription,
               runs: withMemoRuns,
-              time: memoResult.durationMs,
+              time: `${memoResult.durationMs.toFixed(2)}ms`,
               title: demoContent.withMemoTitle,
             },
           ].map((item) => (
@@ -286,8 +288,11 @@ export default function UseMemoTest() {
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     {demoContent.calculationTimeLabel}
                   </p>
-                  <p className="mt-1 text-2xl font-black">
-                    {item.time.toFixed(2)}ms
+                  <p
+                    className="mt-1 text-2xl font-black"
+                    suppressHydrationWarning
+                  >
+                    {item.time}
                   </p>
                 </div>
               </div>

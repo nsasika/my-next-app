@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 
 const PerformancePage: React.FC = () => {
   const [count, setCount] = useState(0);
-  console.log('PerformancePage rendered');
+
   return (
     <LearningExamplePage
       codeFilePath="src/app/(learning)/performance/page.tsx"

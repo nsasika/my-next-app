@@ -7,14 +7,14 @@ import {
   fetchClientsSagaSuccess,
   updateQuery,
 } from '../clientsSlice';
-import { fetchClientsApi } from '../clientsApi';
+import { fetchJsonPlaceholderClients } from '@/services/api/jsonPlaceholder';
 
 function* fetchClientsWorker(
   action: ReturnType<typeof updateQuery>,
 ): Generator<unknown, void, AxiosResponse<Client[]>> {
   try {
     yield put(fetchClientsSagaRequest());
-    const response = yield call(fetchClientsApi, action.payload);
+    const response = yield call(fetchJsonPlaceholderClients, action.payload);
     yield put(fetchClientsSagaSuccess(response.data)); // Replace [] with actual data
   } catch (err: unknown) {
     const message =

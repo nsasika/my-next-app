@@ -11,8 +11,6 @@ const AutoBatchingDemo = () => {
   const [text, setText] = useState<string>('');
   const [msg, setMsg] = useState<string>('Hello World!');
 
-  console.log('Automatic batching component rendered');
-
   const runWithoutAsync = () => {
     // React has always batched updates inside React event handlers.
     setCount((c) => c + 1);

@@ -1,5 +1,6 @@
 import SiteHeader from '@/components/layout/SiteHeader';
-import { verifyToken } from '@/lib/auth';
+import { AUTH_COOKIE_NAME } from '@/config/auth';
+import { verifyToken } from '@/server/auth/session';
 import { cookies } from 'next/headers';
 
 export default async function PublicLayout({
@@ -8,7 +9,7 @@ export default async function PublicLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const token = cookieStore.get('access_token')?.value;
+  const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
   const verifiedUser = token ? await verifyToken(token) : null;
 
   return (

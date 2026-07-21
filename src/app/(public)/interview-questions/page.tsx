@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
+import { APP_PATHS } from '@/config/routes';
 
 export default function InterviewQuestionsPage() {
-  redirect('/engineering-blueprint');
+  redirect(APP_PATHS.interviewPractice);
 }

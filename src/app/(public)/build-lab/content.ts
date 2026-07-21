@@ -1,6 +1,6 @@
 export const engineeringHeroContent = {
   eyebrow: 'Engineering capability showcase',
-  heading: 'Engineering Blueprint',
+  heading: 'Build Lab',
   body: "A transparent view of how Nalin's Academy is designed, implemented, tested, versioned, and deployed through preview and production delivery lanes.",
 } as const;
 
@@ -44,26 +44,31 @@ export const deliveryFlow = [
 
 export const qualitySignals = [
   {
+    icon: 'eslint',
     metric: 'ESLint',
     label: 'Static quality checks',
     status: 'Required before merge',
   },
   {
+    icon: 'coverage',
     metric: '80%',
     label: 'Minimum unit coverage',
     status: 'Quality gate target',
   },
   {
+    icon: 'typescript',
     metric: 'TypeScript',
     label: 'Compile-time safety',
     status: 'No emit type-check',
   },
   {
+    icon: 'vercel',
     metric: 'Vercel',
     label: 'Preview + production',
     status: 'Branch-based releases',
   },
   {
+    icon: 'git',
     metric: 'Git',
     label: 'Meaningful commits',
     status: 'Readable project history',
@@ -86,10 +91,34 @@ export const deploymentLanes = [
 ] as const;
 
 export const pipelineChecks = [
-  'Meaningful commit message',
-  'ESLint and Prettier',
-  'TypeScript no-emit check',
-  'Vitest unit coverage >= 80%',
-  'Vercel preview deployment',
-  'Production promotion',
+  {
+    detail: 'Keep every change readable in project history.',
+    icon: 'git',
+    title: 'Meaningful commit message',
+  },
+  {
+    detail: 'Catch formatting and common code quality issues early.',
+    icon: 'eslint',
+    title: 'ESLint and Prettier',
+  },
+  {
+    detail: 'Run no-emit checks so contracts fail before runtime.',
+    icon: 'typescript',
+    title: 'TypeScript no-emit check',
+  },
+  {
+    detail: 'Keep unit coverage above the 80% quality gate.',
+    icon: 'coverage',
+    title: 'Vitest unit coverage >= 80%',
+  },
+  {
+    detail: 'Validate each branch in an isolated deployment.',
+    icon: 'vercel',
+    title: 'Vercel preview deployment',
+  },
+  {
+    detail: 'Promote only after checks and review signals pass.',
+    icon: 'release',
+    title: 'Production promotion',
+  },
 ] as const;

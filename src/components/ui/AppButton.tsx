@@ -33,7 +33,11 @@ export default function AppButton({
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link
+        aria-label={buttonProps['aria-label']}
+        href={href}
+        className={classes}
+      >
         {children}
       </Link>
     );

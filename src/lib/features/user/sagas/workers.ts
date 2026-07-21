@@ -6,7 +6,7 @@ import {
   userLogEvent,
 } from '../usersSlice';
 import { call, put } from 'redux-saga/effects';
-import { fetchUsersApi } from '../usersApi';
+import { fetchJsonPlaceholderUsers } from '@/services/api/jsonPlaceholder';
 
 function* userLogEventWorker(action: ReturnType<typeof userLogEvent>) {
   console.log('AUDIT EVENT: ', action.payload);
@@ -14,7 +14,7 @@ function* userLogEventWorker(action: ReturnType<typeof userLogEvent>) {
 
 function* fetchUsersWorker() {
   try {
-    const res: AxiosResponse<User[]> = yield call(fetchUsersApi);
+    const res: AxiosResponse<User[]> = yield call(fetchJsonPlaceholderUsers);
 
     const users = res.data.map((user) => ({
       id: user.id,
