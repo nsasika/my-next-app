@@ -1,27 +1,36 @@
 import { describe, expect, it } from 'vitest';
 import { LOCALE_COOKIE_NAME } from '@/i18n/config';
-import { POST } from './route';
+import { GET } from './route';
 
 describe('locale API', () => {
-  it('persists a supported locale in an HTTP-only cookie', async () => {
-    const response = await POST(
-      new Request('http://localhost/api/locale', {
-        body: JSON.stringify({ locale: 'si' }),
-        method: 'POST',
-      }),
+  it('persists a supported locale and redirects to the requested page', () => {
+    const response = GET(
+      new Request(
+        'http://localhost/api/locale?locale=si&redirect=%2Fsi%2Facademy',
+      ),
     );
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(307);
+    expect(response.headers.get('location')).toBe(
+      'http://localhost/si/academy',
+    );
     expect(response.cookies.get(LOCALE_COOKIE_NAME)?.value).toBe('si');
     expect(response.headers.get('set-cookie')).toContain('HttpOnly');
   });
 
-  it('rejects unsupported locales', async () => {
-    const response = await POST(
-      new Request('http://localhost/api/locale', {
-        body: JSON.stringify({ locale: 'fr' }),
-        method: 'POST',
-      }),
+  it('rejects unsupported locales', () => {
+    const response = GET(
+      new Request('http://localhost/api/locale?locale=fr&redirect=%2F'),
+    );
+
+    expect(response.status).toBe(400);
+  });
+
+  it('rejects cross-origin redirect attempts', () => {
+    const response = GET(
+      new Request(
+        'http://localhost/api/locale?locale=en&redirect=%2F%2Fevil.example',
+      ),
     );
 
     expect(response.status).toBe(400);

@@ -36,7 +36,7 @@ export default function AcademyPageContent({
       <PublicHero
         actions={
           <>
-            <AppButton href={APP_PATHS.buildLab}>
+            <AppButton href={localizePath(locale, APP_PATHS.buildLab)}>
               <BuildRoundedIcon fontSize="small" />
               {academy.hero.buildLabAction}
             </AppButton>

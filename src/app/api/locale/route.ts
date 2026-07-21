@@ -1,21 +1,23 @@
 import { NextResponse } from 'next/server';
 import { isLocale, LOCALE_COOKIE_NAME } from '@/i18n/config';
 
-export async function POST(request: Request) {
-  const body: unknown = await request.json();
-  const locale =
-    typeof body === 'object' && body !== null && 'locale' in body
-      ? body.locale
-      : null;
+function isSafeRedirect(pathname: string): boolean {
+  return pathname.startsWith('/') && !pathname.startsWith('//');
+}
 
-  if (typeof locale !== 'string' || !isLocale(locale)) {
+export function GET(request: Request) {
+  const requestUrl = new URL(request.url);
+  const locale = requestUrl.searchParams.get('locale');
+  const redirectPath = requestUrl.searchParams.get('redirect') ?? '/';
+
+  if (!locale || !isLocale(locale) || !isSafeRedirect(redirectPath)) {
     return NextResponse.json(
-      { message: 'Unsupported locale.' },
+      { message: 'Invalid locale switch request.' },
       { status: 400 },
     );
   }
 
-  const response = NextResponse.json({ locale });
+  const response = NextResponse.redirect(new URL(redirectPath, request.url));
   response.cookies.set(LOCALE_COOKIE_NAME, locale, {
     httpOnly: true,
     maxAge: 60 * 60 * 24 * 365,

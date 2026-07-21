@@ -1,5 +1,38 @@
 # Nalin's Academy
 
+## Locale-aware routing
+
+Every page has a canonical locale-prefixed URL, including `/si`,
+`/ta/build-lab`, `/si/login`, and `/en/foundations`. The URL is the source of
+truth for the current request, making localized pages shareable and preserving
+language through login, logout, browser history, protected-route redirects,
+and lesson paging. Legacy unprefixed page URLs redirect to the locale stored in
+the preference cookie, with English as the final fallback.
+
+The language menu links to `/api/locale?locale=...&redirect=...`. That route
+validates the locale and same-origin redirect, sets the cookie, and redirects
+in one response. The proxy then derives a trusted request locale from the URL
+prefix or cookie, internally rewrites canonical localized URLs to the existing
+App Router route files, and passes a trusted locale to server layouts. A locale
+in the URL also refreshes a stale preference cookie. Server components select
+the dictionary; client components receive only the copy they need.
+
+Relevant files:
+
+- `src/i18n/config.ts`: locale types and pure routing helpers
+- `src/app/api/locale/route.ts`: validated cookie + redirect boundary
+- `src/proxy.ts`: protected routing and trusted locale request header
+- `src/i18n/server.ts`: server-side request locale resolution
+- `src/i18n/learning/navigation.ts`: localized sidebar graph and canonical URLs
+
+## Production observability
+
+Vercel Analytics and Speed Insights are mounted in the root layout. A small
+client observer also sends sanitized Web Vitals and browser failure categories
+to `/api/observability/client-events`, which writes structured Vercel Runtime
+Logs. Telemetry intentionally excludes form values, tokens, personal data,
+request bodies, and arbitrary stack traces.
+
 Welcome to **Nalin's Academy**, a Next.js application designed to showcase my expertise in modern web development technologies. This project demonstrates my skills in building scalable, maintainable, and user-friendly web applications.
 
 ---

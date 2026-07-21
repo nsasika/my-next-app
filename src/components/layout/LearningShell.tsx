@@ -2,7 +2,6 @@
 
 import {
   APP_PATHS,
-  getLocalizedLearningNavigation,
   type SidebarNavGroup,
   type SidebarSection,
   type SidebarTechnology,
@@ -31,8 +30,10 @@ import BrandMark from './BrandMark';
 import LessonSearch from '@/components/learning/LessonSearch';
 import LessonPager from '@/components/learning/LessonPager';
 import LanguageSwitcher from './LanguageSwitcher';
-import { APP_COPY } from '@/i18n/app';
-import type { Locale } from '@/i18n/config';
+import type { AppCopy } from '@/i18n/app/types';
+import { localizePath, type Locale } from '@/i18n/config';
+import { LEARNING_UI } from '@/i18n/learning/ui';
+import type { LocalizedLearningNavigation } from '@/i18n/learning/navigation';
 
 const technologyIcons = {
   angular: DataObjectIcon,
@@ -258,7 +259,7 @@ function HeaderProfileMenu({
   copy,
   onLogout,
 }: {
-  copy: (typeof APP_COPY)[Locale]['shell'];
+  copy: AppCopy['shell'];
   onLogout: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -348,18 +349,17 @@ function HeaderProfileMenu({
 
 export default function LearningShell({
   children,
+  copy,
   locale,
+  navigation,
 }: {
   children: ReactNode;
+  copy: AppCopy['shell'];
   locale: Locale;
+  navigation: LocalizedLearningNavigation;
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const copy = APP_COPY[locale].shell;
-  const navigation = useMemo(
-    () => getLocalizedLearningNavigation(locale),
-    [locale],
-  );
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const activeGroupLabel = useMemo(
     () => getActiveGroupLabel(pathname, navigation.groups),
@@ -399,7 +399,7 @@ export default function LearningShell({
       method: 'POST',
     });
 
-    router.push(APP_PATHS.login);
+    router.push(localizePath(locale, APP_PATHS.login));
   };
 
   const renderSidebar = ({
@@ -412,7 +412,7 @@ export default function LearningShell({
     <aside className="flex h-full min-h-0 w-full flex-col border-r border-slate-200 bg-white">
       <div className="shrink-0 border-b border-slate-200 p-5">
         <div className="flex min-w-0 items-center justify-between gap-3">
-          <BrandMark />
+          <BrandMark locale={locale} />
           {showCloseButton ? (
             <button
               aria-label={copy.closeNavigation}
@@ -598,21 +598,33 @@ export default function LearningShell({
             </div>
 
             <div className="hidden md:block">
-              <LessonSearch />
+              <LessonSearch
+                labels={LEARNING_UI[locale]}
+                locale={locale}
+                navigation={navigation}
+              />
             </div>
 
-            <LanguageSwitcher persistedLocale={locale} />
+            <LanguageSwitcher initialLocale={locale} />
             <HeaderProfileMenu key={pathname} copy={copy} onLogout={logout} />
 
             <div className="w-full md:hidden">
-              <LessonSearch />
+              <LessonSearch
+                labels={LEARNING_UI[locale]}
+                locale={locale}
+                navigation={navigation}
+              />
             </div>
           </div>
         </header>
 
         <main className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 sm:px-5 lg:px-8">
           {children}
-          <LessonPager currentPath={pathname} items={navigation.lessonItems} />
+          <LessonPager
+            currentPath={pathname}
+            items={navigation.lessonItems}
+            labels={LEARNING_UI[locale]}
+          />
         </main>
       </div>
     </div>

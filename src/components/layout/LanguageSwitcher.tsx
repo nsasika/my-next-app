@@ -3,43 +3,25 @@
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import { Button, ListItemIcon, Menu, MenuItem } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, type MouseEvent } from 'react';
-import { localizePath, resolveLocale, type Locale } from '@/i18n/config';
-import { API_ROUTES } from '@/config/api';
+import {
+  createLocaleSwitchPath,
+  resolveLocale,
+  type Locale,
+} from '@/i18n/config';
 import { LOCALE_OPTIONS, LOCALIZED_UI } from '@/i18n/ui';
 
 export default function LanguageSwitcher({
-  persistedLocale = 'en',
+  initialLocale = 'en',
 }: {
-  persistedLocale?: Locale;
+  initialLocale?: Locale;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
-  const locale = resolveLocale(pathname, persistedLocale);
+  const locale = resolveLocale(pathname, initialLocale);
   const copy = LOCALIZED_UI[locale].language;
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
-
-  const selectLanguage = async (nextLocale: Locale) => {
-    setAnchorElement(null);
-
-    await fetch(API_ROUTES.locale, {
-      body: JSON.stringify({ locale: nextLocale }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    });
-
-    if (nextLocale === locale) return;
-
-    const nextPath = localizePath(nextLocale, pathname);
-
-    if (nextPath === `/${nextLocale}` && pathname !== '/') {
-      router.refresh();
-      return;
-    }
-
-    router.push(nextPath);
-  };
 
   return (
     <>
@@ -73,7 +55,9 @@ export default function LanguageSwitcher({
         {LOCALE_OPTIONS.map((option) => (
           <MenuItem
             key={option.locale}
-            onClick={() => selectLanguage(option.locale)}
+            component={Link}
+            href={createLocaleSwitchPath(option.locale, pathname)}
+            onClick={() => setAnchorElement(null)}
             selected={option.locale === locale}
           >
             <ListItemIcon sx={{ minWidth: 34 }}>{option.flag}</ListItemIcon>

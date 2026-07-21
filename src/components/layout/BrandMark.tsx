@@ -2,15 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { APP_CONFIG, PUBLIC_ASSETS } from '@/config/app';
 import { APP_PATHS } from '@/config/routes';
+import { localizePath, type Locale } from '@/i18n/config';
 
 type BrandMarkProps = {
   compact?: boolean;
+  locale?: Locale;
 };
 
-export default function BrandMark({ compact = false }: BrandMarkProps) {
+export default function BrandMark({
+  compact = false,
+  locale = 'en',
+}: BrandMarkProps) {
   return (
     <Link
-      href={APP_PATHS.home}
+      href={localizePath(locale, APP_PATHS.home)}
       className="inline-flex min-w-0 items-center gap-3"
     >
       <Image

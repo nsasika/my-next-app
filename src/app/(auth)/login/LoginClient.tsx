@@ -9,7 +9,7 @@ import { API_ROUTES } from '@/config/api';
 import { demoAuthUser } from '@/config/demoAuth';
 import { APP_PATHS } from '@/config/routes';
 import type { AppCopy } from '@/i18n/app/types';
-import type { Locale } from '@/i18n/config';
+import { localizePath, type Locale } from '@/i18n/config';
 import AppleIcon from '@mui/icons-material/Apple';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -75,11 +75,11 @@ const oauthProviders: Record<string, OAuthProvider> = {
   },
 };
 
-function getPostLoginPath() {
+export function getPostLoginPath(locale: Locale) {
   const nextPath = new URLSearchParams(window.location.search).get('next');
 
   if (!nextPath || !nextPath.startsWith('/') || nextPath.startsWith('//')) {
-    return APP_PATHS.currentAuthenticationFlow;
+    return localizePath(locale, APP_PATHS.currentAuthenticationFlow);
   }
 
   return nextPath;
@@ -134,7 +134,7 @@ export default function LoginClient({
         setMessageTone('success');
         setMessage(`${copy.loginSuccessLabel} ${copy.redirectingLabel}`);
         router.refresh();
-        router.replace(getPostLoginPath());
+        router.replace(getPostLoginPath(locale));
 
         return;
       }
@@ -153,13 +153,13 @@ export default function LoginClient({
     <main className="min-h-screen bg-slate-50 px-5 py-8 text-slate-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
         <header className="flex items-center justify-between">
-          <BrandMark />
+          <BrandMark locale={locale} />
           <div className="flex items-center gap-2">
-            <LanguageSwitcher persistedLocale={locale} />
+            <LanguageSwitcher initialLocale={locale} />
             <AppButton
               aria-label={copy.backLinkLabel}
               className="shrink-0 px-3"
-              href={APP_PATHS.home}
+              href={localizePath(locale, APP_PATHS.home)}
               variant="secondary"
             >
               <HomeRoundedIcon fontSize="small" />

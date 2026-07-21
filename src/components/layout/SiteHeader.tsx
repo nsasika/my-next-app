@@ -10,14 +10,12 @@ import BrandMark from './BrandMark';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function SiteHeader({
-  isAuthenticated,
-  persistedLocale,
+  initialLocale,
 }: {
-  isAuthenticated: boolean;
-  persistedLocale: Locale;
+  initialLocale: Locale;
 }) {
   const pathname = usePathname();
-  const locale = resolveLocale(pathname, persistedLocale);
+  const locale = resolveLocale(pathname, initialLocale);
   const labels = LOCALIZED_UI[locale].nav;
 
   const navItems = useMemo(
@@ -25,19 +23,22 @@ export default function SiteHeader({
       { href: localizePath(locale, APP_PATHS.home), label: labels.home },
       { href: localizePath(locale, APP_PATHS.academy), label: labels.academy },
       { href: localizePath(locale, APP_PATHS.nalin), label: labels.portfolio },
-      { href: APP_PATHS.buildLab, label: labels.buildLab },
-      ...(isAuthenticated
-        ? []
-        : [{ href: APP_PATHS.login, label: labels.login }]),
+      {
+        href: localizePath(locale, APP_PATHS.buildLab),
+        label: labels.buildLab,
+      },
+      // Keep the authentication entry point visible on every public page.
+      // Authentication still protects learning routes at the server boundary.
+      { href: localizePath(locale, APP_PATHS.login), label: labels.login },
     ],
-    [isAuthenticated, labels, locale],
+    [labels, locale],
   );
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8">
         <div className="md:justify-self-start">
-          <BrandMark />
+          <BrandMark locale={locale} />
         </div>
 
         <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:justify-self-center">
@@ -63,7 +64,7 @@ export default function SiteHeader({
           })}
         </div>
         <div className="md:justify-self-end">
-          <LanguageSwitcher persistedLocale={locale} />
+          <LanguageSwitcher initialLocale={locale} />
         </div>
       </nav>
     </header>

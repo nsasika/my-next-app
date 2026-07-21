@@ -1,57 +1,60 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const push = vi.fn();
-const refresh = vi.fn();
-const fetchMock = vi.fn().mockResolvedValue({ ok: true });
 let pathname = '/en/nalin';
 
 vi.mock('next/navigation', () => ({
   usePathname: () => pathname,
-  useRouter: () => ({ push, refresh }),
 }));
 
 describe('LanguageSwitcher', () => {
   beforeEach(() => {
     pathname = '/en/nalin';
-    push.mockClear();
-    refresh.mockClear();
-    fetchMock.mockClear();
-    vi.stubGlobal('fetch', fetchMock);
   });
 
-  it('shows all supported languages and preserves the current page', async () => {
+  it('shows all supported languages and preserves a localized page', () => {
     render(<LanguageSwitcher />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Change language' }));
-    fireEvent.click(screen.getByRole('menuitem', { name: '🇱🇰 සිංහල' }));
 
-    await waitFor(() => expect(push).toHaveBeenCalledWith('/si/nalin'));
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/api/locale',
-      expect.objectContaining({ body: JSON.stringify({ locale: 'si' }) }),
+    expect(screen.getByRole('menuitem', { name: '🇱🇰 සිංහල' })).toHaveAttribute(
+      'href',
+      '/api/locale?locale=si&redirect=%2Fsi%2Fnalin',
     );
   });
 
-  it('does not navigate when the active language is selected', async () => {
+  it('switches the home page to the selected localized route', () => {
+    pathname = '/';
+    render(<LanguageSwitcher initialLocale="en" />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Change language' }));
+
+    expect(screen.getByRole('menuitem', { name: '🇱🇰 සිංහල' })).toHaveAttribute(
+      'href',
+      '/api/locale?locale=si&redirect=%2Fsi',
+    );
+  });
+
+  it('marks the active language as selected', () => {
     render(<LanguageSwitcher />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Change language' }));
-    fireEvent.click(screen.getByRole('menuitem', { name: '🇬🇧 English' }));
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
-    expect(push).not.toHaveBeenCalled();
+    expect(screen.getByRole('menuitem', { name: '🇬🇧 English' })).toHaveClass(
+      'Mui-selected',
+    );
   });
 
-  it('refreshes an unprefixed application route in the selected locale', async () => {
+  it('prefixes an application route with the selected locale', () => {
     pathname = '/login';
-    render(<LanguageSwitcher persistedLocale="en" />);
+    render(<LanguageSwitcher initialLocale="en" />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Change language' }));
-    fireEvent.click(screen.getByRole('menuitem', { name: '🇱🇰 தமிழ்' }));
 
-    await waitFor(() => expect(refresh).toHaveBeenCalledOnce());
-    expect(push).not.toHaveBeenCalled();
+    expect(screen.getByRole('menuitem', { name: '🇱🇰 தமிழ்' })).toHaveAttribute(
+      'href',
+      '/api/locale?locale=ta&redirect=%2Fta%2Flogin',
+    );
   });
 });
