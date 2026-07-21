@@ -9,7 +9,7 @@ export type InterviewExperience = {
   title: string;
 };
 
-const virtusaSingaporeQuestions = [
+export const virtusaSingaporeQuestions = [
   {
     answer:
       'Start with your current role, strongest stack, recent domain, and one measurable project result. Keep it under one minute, then invite deeper questions. Example: I am a full-stack engineer focused on React, TypeScript, Java, and cloud delivery. Recently I worked on a digital platform where I improved frontend structure, backend API boundaries, testing confidence, and release quality.',
@@ -137,7 +137,7 @@ expect(await screen.findByText('Nalin')).toBeInTheDocument();`,
   },
 ] as const satisfies readonly ReadingListItem[];
 
-const bankOfSingaporeQuestions = [
+export const bankOfSingaporeQuestions = [
   {
     answer:
       'Use a short, role-focused answer: current role, years or depth in React/TypeScript, banking or enterprise exposure, strongest frontend areas, and one recent result. For a micro frontend role, mention independently deployable features, shared UI standards, API integration, performance, testing, and collaboration with platform teams.',

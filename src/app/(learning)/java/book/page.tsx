@@ -4,35 +4,35 @@ import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import { APP_PATHS } from '@/config/routes';
-import {
-  bookReference,
-  chapterOneTopics,
-  chapterTwoTopics,
-} from '@/content/java/coreJava';
+import { javaContentByLocale, javaPageCopy } from '@/content/java/localized';
+import { getRequestLocale } from '@/i18n/server';
+import { localizePath } from '@/i18n/config';
 
-const chapters = [
-  {
-    body: 'Primitive data types, variables, arithmetic operations, strings, input/output, arrays, and array lists.',
-    count: chapterOneTopics.length,
-    href: APP_PATHS.javaChapter1,
-    title: 'Chapter 1: Fundamental programming structures',
-  },
-  {
-    body: 'Functional decomposition, classes, object construction, records, factory methods, static members, and packages.',
-    count: chapterTwoTopics.length,
-    href: APP_PATHS.javaChapter2,
-    title: 'Chapter 2: Object-oriented programming',
-  },
-] as const;
-
-export default function JavaBookPage() {
+export default async function JavaBookPage() {
+  const locale = await getRequestLocale();
+  const content = javaContentByLocale[locale];
+  const copy = javaPageCopy[locale];
+  const chapters = [
+    {
+      body: copy.chapterOneBody,
+      count: content.chapterOne.length,
+      href: localizePath(locale, APP_PATHS.javaChapter1),
+      title: copy.chapterOneTitle,
+    },
+    {
+      body: copy.chapterTwoBody,
+      count: content.chapterTwo.length,
+      href: localizePath(locale, APP_PATHS.javaChapter2),
+      title: copy.chapterTwoTitle,
+    },
+  ];
   return (
     <>
       <PageHeader
-        description="This is one guided study option inside the Java track. The notes are split by chapter so each section can grow independently as you continue studying."
-        eyebrow="Java book option"
+        description={copy.bookDescription}
+        eyebrow={copy.bookEyebrow}
         tags={['Java', 'Book notes', 'Interview basics']}
-        title={bookReference.title}
+        title={content.bookReference.title}
       />
 
       <ContentCard className="mb-6 overflow-hidden border-sky-200 bg-white">
@@ -42,16 +42,16 @@ export default function JavaBookPage() {
           </div>
           <div className="min-w-0">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
-              Book reference
+              {copy.bookReference}
             </p>
             <h2 className="mt-2 text-2xl font-black leading-tight text-slate-950">
-              {bookReference.title}
+              {content.bookReference.title}
             </h2>
             <p className="mt-2 text-sm font-bold text-slate-700">
-              Author: {bookReference.author}
+              {copy.author}: {content.bookReference.author}
             </p>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              {bookReference.note}
+              {content.bookReference.note}
             </p>
           </div>
         </div>
@@ -70,11 +70,11 @@ export default function JavaBookPage() {
               {chapter.body}
             </p>
             <p className="mt-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
-              {chapter.count} topics
+              {chapter.count} {copy.topics}
             </p>
             <div className="mt-5">
               <AppButton href={chapter.href} variant="secondary">
-                Open chapter
+                {copy.openChapter}
               </AppButton>
             </div>
           </ContentCard>

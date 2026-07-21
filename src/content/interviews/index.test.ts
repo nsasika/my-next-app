@@ -30,4 +30,15 @@ describe('localized interview experiences', () => {
       expect(experience?.items.every((item) => item.answer?.trim())).toBe(true);
     },
   );
+
+  it('provides native content for every real interview route', () => {
+    for (const locale of ['si', 'ta'] as const) {
+      expect(
+        getLocalizedInterviewExperience(locale, 'bank-of-singapore')?.items,
+      ).toHaveLength(14);
+      expect(
+        getLocalizedInterviewExperience(locale, 'virtusa-singapore')?.items,
+      ).toHaveLength(12);
+    }
+  });
 });

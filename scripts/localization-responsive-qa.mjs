@@ -11,6 +11,12 @@ const localeScenarios = [
     buildLabHeading: 'ගොඩනැගීමේ පරීක්ෂණාගාරය',
     homeHeading: 'තාක්ෂණික දැනුම සම්මුඛ පරීක්ෂණ විශ්වාසය',
     interviewGroup: 'සම්මුඛ පරීක්ෂණ',
+    authenticationTitle: 'වත්මන් සත්‍යාපන ප්‍රවාහය',
+    frontendTestingTitle: 'Frontend යෙදුම් පරීක්ෂණ',
+    javaChapterTitle: 'Chapter 1: මූලික programming ව්‍යුහ',
+    oauthTitle: 'OAuth 2.0 සහ OpenID Connect',
+    nextjsTitle: 'Next.js හැඳින්වීම',
+    bankInterviewTitle: 'Bank of Singapore සම්මුඛ පරීක්ෂණ අත්දැකීම',
     locale: 'si',
     targetQuestions: 'ඉලක්කගත සම්මුඛ පරීක්ෂණ ප්‍රශ්න',
     targetTitle: 'ප්‍රධාන Micro Frontend සම්මුඛ පරීක්ෂණ ප්‍රශ්න 10',
@@ -19,6 +25,12 @@ const localeScenarios = [
     buildLabHeading: 'உருவாக்க ஆய்வகம்',
     homeHeading: 'தொழில்நுட்ப அறிவை நேர்முகத் தேர்வு தன்னம்பிக்கையாக',
     interviewGroup: 'நேர்காணல்கள்',
+    authenticationTitle: 'தற்போதைய அங்கீகார ஓட்டம்',
+    frontendTestingTitle: 'Frontend செயலி சோதனை',
+    javaChapterTitle: 'Chapter 1: அடிப்படை programming கட்டமைப்புகள்',
+    oauthTitle: 'OAuth 2.0 மற்றும் OpenID Connect',
+    nextjsTitle: 'Next.js அறிமுகம்',
+    bankInterviewTitle: 'Bank of Singapore நேர்காணல் அனுபவம்',
     locale: 'ta',
     targetQuestions: 'இலக்கு நேர்காணல் கேள்விகள்',
     targetTitle: 'முக்கிய 10 Micro Frontend நேர்காணல் கேள்விகள்',
@@ -69,6 +81,38 @@ for (const viewport of viewports) {
     await page.locator('input[type="password"]').fill('BankDemo@123');
     await page.locator('form button[type="submit"]').click();
     await page.waitForURL(/authentication\/current-flow/, { timeout: 5_000 });
+    const authenticationLocalized = await page
+      .getByRole('heading', { name: scenario.authenticationTitle })
+      .isVisible()
+      .catch(() => false);
+
+    const localizedLessonChecks = {};
+    for (const [checkName, path, title] of [
+      ['oauthLocalized', 'authorization/oauth2', scenario.oauthTitle],
+      [
+        'frontendTestingLocalized',
+        'foundations/frontend-testing',
+        scenario.frontendTestingTitle,
+      ],
+      ['javaLocalized', 'java/chapter-1', scenario.javaChapterTitle],
+      ['nextjsLocalized', 'nextjs/intro', scenario.nextjsTitle],
+      [
+        'bankInterviewLocalized',
+        'interview-practice/bank-of-singapore',
+        scenario.bankInterviewTitle,
+      ],
+    ]) {
+      await page.goto(`${baseUrl}/${scenario.locale}/${path}`, {
+        waitUntil: 'domcontentloaded',
+      });
+      localizedLessonChecks[checkName] = await page
+        .getByRole('heading', { name: title })
+        .isVisible()
+        .catch(() => false);
+      localizedLessonChecks[`${checkName}Overflow`] =
+        await hasHorizontalOverflow(page);
+    }
+
     await page.goto(`${baseUrl}/interviews`, {
       waitUntil: 'domcontentloaded',
     });
@@ -99,11 +143,13 @@ for (const viewport of viewports) {
 
     results.push({
       browserErrors: [...browserErrors],
+      authenticationLocalized,
       buildLabLocalized,
       homeLocalized,
       horizontalOverflow: await hasHorizontalOverflow(page),
       interviewGroupLocalized,
       locale: scenario.locale,
+      ...localizedLessonChecks,
       targetQuestionsLocalized,
       targetPageLocalized,
       viewport: viewport.name,
@@ -122,6 +168,17 @@ const issues = results.filter(
   (result) =>
     result.browserErrors.length > 0 ||
     !result.buildLabLocalized ||
+    !result.authenticationLocalized ||
+    !result.oauthLocalized ||
+    !result.frontendTestingLocalized ||
+    !result.javaLocalized ||
+    !result.nextjsLocalized ||
+    !result.bankInterviewLocalized ||
+    result.oauthLocalizedOverflow ||
+    result.frontendTestingLocalizedOverflow ||
+    result.javaLocalizedOverflow ||
+    result.nextjsLocalizedOverflow ||
+    result.bankInterviewLocalizedOverflow ||
     !result.homeLocalized ||
     result.horizontalOverflow ||
     !result.interviewGroupLocalized ||

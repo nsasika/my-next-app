@@ -1,7 +1,7 @@
 'use client';
 
 import { APP_PATHS } from '@/config/routes';
-import { chapterOneTopics, chapterTwoTopics } from '@/content/java/coreJava';
+import { javaContentByLocale } from '@/content/java/localized';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -13,28 +13,32 @@ import {
   useTransition,
 } from 'react';
 import { searchLessons, type SearchableLesson } from './search';
-import type { Locale } from '@/i18n/config';
+import { localizePath, type Locale } from '@/i18n/config';
 import type { LocalizedLearningNavigation } from '@/i18n/learning/navigation';
 import type { LearningUiCopy } from '@/i18n/learning/ui';
 
 const SearchResults = lazy(() => import('./SearchResults'));
 
-const javaTopicIndex: SearchableLesson[] = [
-  ...chapterOneTopics.map((topic) => ({
-    href: APP_PATHS.javaChapter1,
-    label: topic.question,
-    searchText: `Java Java for the Impatient Chapter 1 ${topic.question} ${topic.answer} ${topic.code}`,
-    section: 'Java for the Impatient / Chapter 1',
-    technology: 'Java',
-  })),
-  ...chapterTwoTopics.map((topic) => ({
-    href: APP_PATHS.javaChapter2,
-    label: topic.question,
-    searchText: `Java Java for the Impatient Chapter 2 ${topic.question} ${topic.answer} ${topic.code}`,
-    section: 'Java for the Impatient / Chapter 2',
-    technology: 'Java',
-  })),
-];
+function createJavaTopicIndex(locale: Locale): SearchableLesson[] {
+  const copy = javaContentByLocale[locale];
+
+  return [
+    ...copy.chapterOne.map((topic) => ({
+      href: localizePath(locale, APP_PATHS.javaChapter1),
+      label: topic.question,
+      searchText: `Java Java for the Impatient Chapter 1 ${topic.question} ${topic.answer} ${topic.code}`,
+      section: 'Java for the Impatient / Chapter 1',
+      technology: 'Java',
+    })),
+    ...copy.chapterTwo.map((topic) => ({
+      href: localizePath(locale, APP_PATHS.javaChapter2),
+      label: topic.question,
+      searchText: `Java Java for the Impatient Chapter 2 ${topic.question} ${topic.answer} ${topic.code}`,
+      section: 'Java for the Impatient / Chapter 2',
+      technology: 'Java',
+    })),
+  ];
+}
 
 function createSearchIndex(
   navigation: LocalizedLearningNavigation,
@@ -81,11 +85,7 @@ function createSearchIndex(
     ),
   );
 
-  // Java chapter topics are English-only source material. Excluding them from
-  // Sinhala/Tamil search prevents an unexpected English result from appearing.
-  return locale === 'en'
-    ? [...trackIndex, ...lessonIndex, ...javaTopicIndex]
-    : [...trackIndex, ...lessonIndex];
+  return [...trackIndex, ...lessonIndex, ...createJavaTopicIndex(locale)];
 }
 
 export default function LessonSearch({

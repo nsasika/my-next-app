@@ -1,10 +1,30 @@
 import {
   dbsReactLeadQuestions,
   mfeTargetQuestions,
+  bankOfSingaporeQuestions,
+  virtusaSingaporeQuestions,
   type InterviewExperience,
 } from '../interviewPractice';
 
 export const enInterviewExperiences = {
+  'bank-of-singapore': {
+    company: 'Bank of Singapore',
+    description:
+      'Real React and micro frontend interview questions covering architecture, hooks, browser APIs, Git, JavaScript, and performance.',
+    items: bankOfSingaporeQuestions,
+    slug: 'bank-of-singapore',
+    tags: ['React', 'Micro frontend', 'JavaScript', 'Banking'],
+    title: 'Bank of Singapore Interview Experience',
+  },
+  'virtusa-singapore': {
+    company: 'Virtusa Singapore',
+    description:
+      'A real full-stack interview covering frontend and backend architecture, transactions, databases, React migration, and testing.',
+    items: virtusaSingaporeQuestions,
+    slug: 'virtusa-singapore',
+    tags: ['Full stack', 'React', 'Java', 'Databases'],
+    title: 'Virtusa Singapore Interview Experience',
+  },
   'mfe-top-10': {
     company: 'Target interview questions',
     description:

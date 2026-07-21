@@ -1,6 +1,25 @@
 import type { LocalizedInterviewExperiences } from './types';
+import { taBankQuestions, taVirtusaQuestions } from './legacyLocalized';
 
 export const taInterviewExperiences = {
+  'bank-of-singapore': {
+    company: 'Bank of Singapore',
+    description:
+      'React, micro frontends, JavaScript, browser APIs, Git மற்றும் responsive UI பற்றிய உண்மையான நேர்காணல் கேள்விகளும் தெளிவான பதில்களும்.',
+    items: taBankQuestions,
+    slug: 'bank-of-singapore',
+    tags: ['React', 'Micro frontend', 'JavaScript', 'Banking'],
+    title: 'Bank of Singapore நேர்காணல் அனுபவம்',
+  },
+  'virtusa-singapore': {
+    company: 'Virtusa Singapore',
+    description:
+      'Frontend/backend architecture, transactions, database performance, React migration மற்றும் testing உள்ளடக்கிய உண்மையான full-stack நேர்காணல் அனுபவம்.',
+    items: taVirtusaQuestions,
+    slug: 'virtusa-singapore',
+    tags: ['Full stack', 'React', 'Java', 'Databases'],
+    title: 'Virtusa Singapore நேர்காணல் அனுபவம்',
+  },
   'mfe-top-10': {
     company: 'இலக்கு நேர்காணல் கேள்விகள்',
     description:
