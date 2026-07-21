@@ -480,6 +480,78 @@ window.addEventListener('native-message', (event) => {
   },
 ] as const satisfies readonly ReadingListItem[];
 
+export const mfeTargetQuestions = [
+  {
+    eyebrow: 'Architecture',
+    question: 'What is a micro frontend, and when should a team use one?',
+    answer:
+      'A micro frontend divides a large frontend into business-aligned applications that teams can develop, test, and deploy independently. Use it when organizational scale and independent release ownership justify the added runtime, governance, and operational complexity. A modular monolith is usually simpler for one small team or a product that always releases as one unit.',
+    points: [
+      'Split by stable business domain, not visual widgets.',
+      'The team and deployment boundaries are as important as the technical integration.',
+      'State the costs: duplicate code, consistency, routing, observability, and version coordination.',
+    ],
+  },
+  {
+    eyebrow: 'Composition',
+    question:
+      'How can micro frontends be composed, and how do you choose an approach?',
+    answer:
+      'Runtime composition loads independently deployed applications in the browser using Module Federation, single-spa, web components, or occasionally iframes. Build-time composition consumes versioned packages during the host build. Server-side composition joins fragments before HTML reaches the browser. Choose from deployment independence, isolation, SEO, performance, framework compatibility, security, and operational maturity—not popularity alone.',
+  },
+  {
+    eyebrow: 'Routing',
+    question: 'Who should own routing in a micro frontend system?',
+    answer:
+      'One shell should normally own browser history, authentication gates, top-level routes, and 404 behavior. A remote can own routes inside its assigned base path, such as /payments/*. The shell and remote agree on a versioned route contract. This prevents multiple routers from competing for the URL and keeps deep links, refresh, Back, and Forward predictable.',
+  },
+  {
+    eyebrow: 'Communication',
+    question: 'How should micro frontends communicate without tight coupling?',
+    answer:
+      'Prefer the URL for navigable state, explicit props or platform APIs for parent-child data, and typed domain events for loose cross-application notifications. Keep event names, payload schemas, ownership, and compatibility versioned. Avoid a single mutable global store shared by every remote because it removes independent ownership and makes deployments coordinate silently.',
+  },
+  {
+    eyebrow: 'Dependencies',
+    question: 'How do you share React and other dependencies safely?',
+    answer:
+      'Share only expensive or identity-sensitive dependencies that truly require one runtime instance, such as React and React DOM. Configure compatible singleton versions and test version negotiation. Keep domain libraries private unless they are stable platform contracts. Pinning everything centrally reduces duplication but also recreates a monolith where every remote must upgrade together.',
+  },
+  {
+    eyebrow: 'Security',
+    question:
+      'How do authentication and authorization work across micro frontends?',
+    answer:
+      'The shell can establish the user session and expose a narrow identity or token-access contract, but every backend must enforce authorization independently. Remotes may use permissions to hide unavailable UI, never as the security boundary. Protect remote origins, apply CSP, validate cross-app messages, avoid leaking tokens through URLs or storage, and treat every remote artifact as executable code in the host.',
+  },
+  {
+    eyebrow: 'Delivery',
+    question: 'How do independent deployment, versioning, and rollback work?',
+    answer:
+      'Each remote publishes an immutable versioned artifact and compatible manifest. Contract, integration, security, and smoke tests run before a controlled rollout. The host resolves an approved version or deployment channel. Keep backward-compatible contracts, feature flags, canary exposure, health signals, and an instant mapping rollback so one bad remote does not require rebuilding the entire platform.',
+  },
+  {
+    eyebrow: 'Performance',
+    question:
+      'How do you prevent micro frontends from making the application slow?',
+    answer:
+      'Set platform budgets for JavaScript, CSS, requests, Core Web Vitals, and route transitions. Deduplicate only safe shared dependencies, lazy-load remotes by route, prefetch from evidence, compress and cache immutable assets, prevent request waterfalls, and avoid every remote initializing analytics or design-system code again. Measure by route and remote in real-user monitoring rather than relying only on local Lighthouse runs.',
+  },
+  {
+    eyebrow: 'Resilience',
+    question: 'What happens when a remote fails to load?',
+    answer:
+      'The shell should apply a timeout and error boundary around each remote, show a useful localized fallback, log the remote name and version with a correlation ID, and allow unaffected navigation to continue. Retry only safe transient failures, use circuit-breaking or disablement when failures repeat, and keep a known-good artifact available for rollback.',
+  },
+  {
+    eyebrow: 'Quality and operations',
+    question:
+      'How do you test, observe, and govern a large micro frontend platform?',
+    answer:
+      'Teams own unit and component tests for their remote, contract tests for platform APIs and events, integration tests with the shell, and a small set of end-to-end business journeys. Standard telemetry must include route, remote, version, release, Web Vitals, errors, and correlation IDs. A platform team provides templates, design tokens, security rules, dependency policy, CI gates, and dashboards while domain teams retain delivery ownership.',
+  },
+] as const satisfies readonly ReadingListItem[];
+
 export const interviewExperiences = [
   {
     company: 'DBS via NCS',
@@ -489,6 +561,15 @@ export const interviewExperiences = [
     slug: 'dbs-ncs-react-lead',
     tags: ['DBS', 'NCS', 'React Lead', 'Micro frontend', 'Architecture'],
     title: 'DBS via NCS React Lead Interview Experience',
+  },
+  {
+    company: 'Target interview questions',
+    description:
+      'Ten common micro frontend architecture questions with concise, lead-level answers covering design, delivery, security, performance, resilience, and operations.',
+    items: mfeTargetQuestions,
+    slug: 'mfe-top-10',
+    tags: ['Micro frontend', 'Architecture', 'React Lead', 'Module Federation'],
+    title: 'Top 10 Micro Frontend Interview Questions',
   },
   {
     company: 'Bank of Singapore',

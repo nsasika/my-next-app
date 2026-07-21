@@ -1,6 +1,84 @@
 import type { LocalizedInterviewExperiences } from './types';
 
 export const taInterviewExperiences = {
+  'mfe-top-10': {
+    company: 'இலக்கு நேர்காணல் கேள்விகள்',
+    description:
+      'Architecture, delivery, security, performance, resilience மற்றும் operations பற்றிய முக்கிய 10 micro frontend கேள்விகளும் lead-level பதில்களும்.',
+    slug: 'mfe-top-10',
+    tags: ['Micro frontend', 'Architecture', 'React Lead', 'Module Federation'],
+    title: 'முக்கிய 10 Micro Frontend நேர்காணல் கேள்விகள்',
+    items: [
+      {
+        eyebrow: 'Architecture',
+        question: 'Micro frontend என்றால் என்ன? எப்போது பயன்படுத்த வேண்டும்?',
+        answer:
+          'பெரிய frontend-ஐ business domains அடிப்படையில் teams தனித்தனியாக develop, test மற்றும் deploy செய்யக்கூடிய applications ஆகப் பிரிப்பதே micro frontend architecture. Independent ownership மற்றும் release scale கூடுதல் runtime மற்றும் governance complexity-ஐ நியாயப்படுத்தும் போது பயன்படுத்தவும். ஒரு சிறிய team-க்கு modular monolith பொதுவாக எளிதானது.',
+      },
+      {
+        eyebrow: 'Composition',
+        question:
+          'Micro frontends-ஐ compose செய்யும் முறைகள் என்ன? சரியானதை எப்படித் தேர்வது?',
+        answer:
+          'Runtime composition-க்கு Module Federation, single-spa, web components அல்லது சிறப்பு நிலையில் iframes பயன்படும். Build-time composition versioned packages பயன்படுத்துகிறது; server composition HTML fragments-ஐ இணைக்கிறது. Deployment independence, isolation, SEO, performance, security மற்றும் team maturity அடிப்படையில் தேர்ந்தெடுக்கவும்.',
+      },
+      {
+        eyebrow: 'Routing',
+        question:
+          'Micro frontend system-ல் routing-ஐ யார் சொந்தமாக வைத்திருக்க வேண்டும்?',
+        answer:
+          'Shell பொதுவாக browser history, authentication gates, top-level routes மற்றும் 404 behavior-ஐ நிர்வகிக்க வேண்டும். Remote தன் base path கீழ் child routes-ஐ நிர்வகிக்கலாம். Versioned route contract deep links, refresh, Back மற்றும் Forward-ஐ predictable ஆக்குகிறது.',
+      },
+      {
+        eyebrow: 'Communication',
+        question:
+          'Tight coupling இல்லாமல் micro frontends எவ்வாறு communicate செய்ய வேண்டும்?',
+        answer:
+          'Navigable state-க்கு URL, parent-child data-க்கு explicit props அல்லது platform APIs, cross-app notifications-க்கு typed domain events பயன்படுத்தவும். Event names மற்றும் payload schemas-ஐ version செய்யவும். எல்லா remotes-ஐயும் ஒரு global mutable store-க்கு இணைப்பது independent ownership-ஐ அழிக்கிறது.',
+      },
+      {
+        eyebrow: 'Dependencies',
+        question:
+          'React மற்றும் பிற dependencies-ஐ பாதுகாப்பாக எவ்வாறு பகிர்வது?',
+        answer:
+          'React மற்றும் React DOM போன்ற ஒரே runtime instance தேவைப்படும் பெரிய dependencies மட்டும் compatible singletons ஆகப் பகிரவும். Version negotiation-ஐ test செய்யவும். எல்லா libraries-ஐ centrally pin செய்வது duplication-ஐக் குறைத்தாலும் எல்லா remotes-ம் ஒன்றாக upgrade செய்ய வேண்டிய monolith-ஐ மீண்டும் உருவாக்கும்.',
+      },
+      {
+        eyebrow: 'Security',
+        question:
+          'Micro frontends முழுவதும் authentication மற்றும் authorization எவ்வாறு இயங்கும்?',
+        answer:
+          'Shell session-ஐ உருவாக்கி narrow identity contract வழங்கலாம்; ஆனால் ஒவ்வொரு backend-மும் authorization-ஐ தனியாக enforce செய்ய வேண்டும். UI permissions security boundary அல்ல. CSP, trusted remote origins, validated messages மற்றும் secure token handling பயன்படுத்தவும்.',
+      },
+      {
+        eyebrow: 'Delivery',
+        question:
+          'Independent deployment, versioning மற்றும் rollback எவ்வாறு நிர்வகிக்கப்படும்?',
+        answer:
+          'ஒவ்வொரு remote-மும் immutable versioned artifact மற்றும் compatible manifest publish செய்ய வேண்டும். Contract, integration, security மற்றும் smoke tests பின் controlled rollout செய்யவும். Backward-compatible contracts, feature flags, canary exposure மற்றும் known-good mapping rollback வைத்திருக்கவும்.',
+      },
+      {
+        eyebrow: 'Performance',
+        question:
+          'Micro frontends application-ஐ slow ஆக்காமல் எவ்வாறு தடுப்பது?',
+        answer:
+          'JavaScript, CSS, requests, Core Web Vitals மற்றும் route transitions-க்கு budgets அமைக்கவும். Safe shared dependencies-ஐ deduplicate செய்து, route அடிப்படையில் remotes-ஐ lazy-load செய்து, immutable assets-ஐ compress/cache செய்து waterfalls-ஐ நீக்கவும். Real-user monitoring மூலம் route மற்றும் remote அடிப்படையில் அளவிடவும்.',
+      },
+      {
+        eyebrow: 'Resilience',
+        question: 'Remote load ஆகத் தவறினால் என்ன நடக்க வேண்டும்?',
+        answer:
+          'Shell timeout மற்றும் error boundary பயன்படுத்தி localized fallback காட்ட வேண்டும். Remote name, version மற்றும் correlation ID-ஐ log செய்து unaffected navigation தொடர்ந்து இயங்க வேண்டும். Safe transient failures மட்டும் retry செய்து known-good artifact-க்கு rollback செய்யவும்.',
+      },
+      {
+        eyebrow: 'Quality மற்றும் operations',
+        question:
+          'பெரிய micro frontend platform-ஐ எவ்வாறு test, observe மற்றும் govern செய்வது?',
+        answer:
+          'Remote teams unit மற்றும் component tests-ஐ சொந்தமாக வைத்திருக்கின்றன; platform contracts, shell integrations மற்றும் முக்கிய business journeys தனியாகச் சோதிக்கப்படுகின்றன. Telemetry-ல் route, remote, version, release, Web Vitals, errors மற்றும் correlation IDs இருக்க வேண்டும். Platform team templates, security rules, CI gates மற்றும் dashboards வழங்குகிறது.',
+      },
+    ],
+  },
   'dbs-ncs-react-lead': {
     company: 'NCS வழியாக DBS',
     description:

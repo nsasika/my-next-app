@@ -20,4 +20,14 @@ describe('localized interview experiences', () => {
   it('does not invent localized content for an unknown slug', () => {
     expect(getLocalizedInterviewExperience('si', 'missing')).toBeUndefined();
   });
+
+  it.each(['en', 'si', 'ta'] as const)(
+    'loads ten localized target MFE questions in %s',
+    (locale) => {
+      const experience = getLocalizedInterviewExperience(locale, 'mfe-top-10');
+
+      expect(experience?.items).toHaveLength(10);
+      expect(experience?.items.every((item) => item.answer?.trim())).toBe(true);
+    },
+  );
 });

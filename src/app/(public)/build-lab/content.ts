@@ -1,9 +1,3 @@
-export const engineeringHeroContent = {
-  eyebrow: 'Engineering capability showcase',
-  heading: 'Build Lab',
-  body: "A transparent view of how Nalin's Academy is designed, implemented, tested, versioned, and deployed through preview and production delivery lanes.",
-} as const;
-
 export const technologyStack = [
   {
     category: 'Frontend platform',
@@ -20,25 +14,6 @@ export const technologyStack = [
   {
     category: 'Delivery platform',
     items: ['GitHub repository', 'Vercel preview', 'Vercel production'],
-  },
-] as const;
-
-export const deliveryFlow = [
-  {
-    title: 'Plan and build',
-    body: 'Feature ideas are shaped into App Router pages, typed React components, reusable content modules, and Node.js-backed API routes.',
-  },
-  {
-    title: 'AI-assisted implementation',
-    body: 'Codex, GitHub Copilot, and ChatGPT accelerate iteration while engineering judgement keeps the code maintainable.',
-  },
-  {
-    title: 'Repository workflow',
-    body: 'Changes move through GitHub with meaningful commit messages, linting, type checks, unit coverage targets, and build validation.',
-  },
-  {
-    title: 'Vercel deployments',
-    body: 'Preview deployments validate feature branches before the production branch is promoted for public users.',
   },
 ] as const;
 

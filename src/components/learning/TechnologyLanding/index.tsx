@@ -8,6 +8,7 @@ import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
 import type { TechnologyLandingContent } from '@/content/technologies';
+import type { TechnologyLandingLabels } from '@/i18n/learning/types';
 
 const logoClasses: Record<TechnologyLandingContent['accent'], string> = {
   angular: 'bg-red-50 text-red-700 ring-red-100',
@@ -21,16 +22,18 @@ const logoClasses: Record<TechnologyLandingContent['accent'], string> = {
 function TechnologyLogo({
   accent,
   logo,
+  logoLabel,
   title,
 }: {
   accent: TechnologyLandingContent['accent'];
   logo?: TechnologyLandingContent['logo'];
+  logoLabel: string;
   title: string;
 }) {
   if (logo) {
     return (
       <div
-        aria-label={`${title} logo`}
+        aria-label={logoLabel.replace('{technology}', title)}
         className={`flex size-24 shrink-0 items-center justify-center rounded-lg p-5 ring-1 ${logoClasses[accent]}`}
         role="img"
       >
@@ -48,7 +51,7 @@ function TechnologyLogo({
 
   return (
     <div
-      aria-label={`${title} logo`}
+      aria-label={logoLabel.replace('{technology}', title)}
       className={`flex size-24 shrink-0 items-center justify-center rounded-lg ring-1 ${logoClasses[accent]}`}
       role="img"
     >
@@ -61,8 +64,10 @@ function TechnologyLogo({
 
 export default function TechnologyLanding({
   content,
+  labels,
 }: {
   content: TechnologyLandingContent;
+  labels: TechnologyLandingLabels;
 }) {
   return (
     <>
@@ -76,7 +81,7 @@ export default function TechnologyLanding({
           ) : null
         }
         description={content.description}
-        eyebrow="Technology landing"
+        eyebrow={labels.technologyLanding}
         tags={content.tags}
         title={content.title}
       />
@@ -87,14 +92,15 @@ export default function TechnologyLanding({
             <TechnologyLogo
               accent={content.accent}
               logo={content.logo}
+              logoLabel={labels.logoLabel}
               title={content.title}
             />
             <div className="min-w-0">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-                Start here
+                {labels.startHere}
               </p>
               <h2 className="mt-2 text-2xl font-black leading-tight text-slate-950">
-                What {content.title} is for
+                {labels.whatItIsFor(content.title)}
               </h2>
               <div className="mt-3 space-y-3 text-sm leading-6 text-slate-600">
                 {content.summary.map((paragraph) => (
@@ -108,7 +114,7 @@ export default function TechnologyLanding({
         <ContentCard>
           <div className="flex items-center gap-2 text-sm font-black text-slate-950">
             <PublicIcon className="text-sky-700" fontSize="small" />
-            Official websites
+            {labels.officialWebsites}
           </div>
           <div className="mt-4 grid gap-2">
             {content.officialLinks.map((link) => (
@@ -131,7 +137,7 @@ export default function TechnologyLanding({
         <ContentCard>
           <div className="flex items-center gap-2 text-sm font-black text-slate-950">
             <WorkspacesIcon className="text-sky-700" fontSize="small" />
-            Common usages
+            {labels.commonUsages}
           </div>
           <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600">
             {content.usages.map((usage) => (
@@ -146,7 +152,7 @@ export default function TechnologyLanding({
         <ContentCard>
           <div className="flex items-center gap-2 text-sm font-black text-slate-950">
             <HistoryIcon className="text-sky-700" fontSize="small" />
-            Evolution
+            {labels.evolution}
           </div>
           <div className="mt-4 space-y-4">
             {content.history.map((item) => (

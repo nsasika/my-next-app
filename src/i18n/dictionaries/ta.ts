@@ -46,7 +46,7 @@ export const ta = {
   academy: {
     hero: {
       body: 'React, Java, frontend architecture மற்றும் full-stack கருத்துகளைத் தெளிவாகக் கற்று, இயக்கிப் பார்த்து, நேர்முகத் தேர்வில் தன்னம்பிக்கையுடன் விவாதிக்க விரும்பும் வேலை தேடுபவர்களுக்கான கவனம் செலுத்தப்பட்ட கற்றல் தளம்.',
-      buildLabAction: 'Build Lab-ஐ பாருங்கள்',
+      buildLabAction: 'உருவாக்க ஆய்வகத்தைப் பாருங்கள்',
       eyebrow: 'நடைமுறை நேர்முகத் தேர்வு தயாரிப்பு',
       heading:
         "Nalin's Academy பொறியியல் அறிவை நேர்முகத் தேர்வு தன்னம்பிக்கையாக மாற்றுகிறது.",
@@ -105,7 +105,7 @@ export const ta = {
         {
           body: 'Architecture முடிவுகளை இயங்கும் application code உடன் இணைக்கும் வழிகாட்டப்பட்ட உருவாக்கச் சவால்கள்.',
           items: ['Architecture', 'Implementation', 'Review'],
-          label: 'Build Lab',
+          label: 'உருவாக்க ஆய்வகம்',
           title: 'உருவாக்கி விளக்குங்கள்',
         },
       ],

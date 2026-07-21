@@ -7,8 +7,9 @@ import {
   SIDEBAR_NAV_GROUPS,
   SIDEBAR_TECHNOLOGIES,
   createLessonNavigationItems,
-  getLocalizedLearningNavigation,
 } from './routes';
+import { getLocalizedLearningNavigation } from '@/i18n/learning/navigation';
+import { stripLocaleFromPathname } from '@/i18n/config';
 
 describe('learning navigation config', () => {
   it('keeps the requested sidebar group order', () => {
@@ -83,8 +84,12 @@ describe('learning navigation config', () => {
       'සැබෑ සම්මුඛ පරීක්ෂණ අත්දැකීම්',
     );
     expect(tamil.groups[0].label).toBe('அடிப்படைகள்');
-    expect(tamil.lessonItems.map((item) => item.href)).toEqual(
-      sinhala.lessonItems.map((item) => item.href),
+    expect(tamil.lessonItems[0].href).toBe('/ta/foundations');
+    expect(sinhala.lessonItems[0].href).toBe('/si/foundations');
+    expect(
+      tamil.lessonItems.map((item) => stripLocaleFromPathname(item.href)),
+    ).toEqual(
+      sinhala.lessonItems.map((item) => stripLocaleFromPathname(item.href)),
     );
   });
 });

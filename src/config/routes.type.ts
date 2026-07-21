@@ -38,6 +38,7 @@ export const APP_PATHS = {
   interviewPractice: '/interview-practice',
   bankOfSingaporeInterview: '/interview-practice/bank-of-singapore',
   dbsNcsReactLeadInterview: '/interview-practice/dbs-ncs-react-lead',
+  mfeTargetInterviewQuestions: '/interview-practice/mfe-top-10',
   virtusaSingaporeInterview: '/interview-practice/virtusa-singapore',
   authStrategy: '/authentication-strategy',
   currentAuthenticationFlow: '/authentication/current-flow',
@@ -68,6 +69,7 @@ export const APP_PATHS = {
   ssr: '/ssr',
   csr: '/csr',
   frontendTesting: '/foundations/frontend-testing',
+  frontendProductionDiagnostics: '/foundations/frontend-production-diagnostics',
   javaBackendTesting: '/java/backend-testing',
 } as const;
 
@@ -75,12 +77,12 @@ export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];
 
 export type NavItem = {
   children?: NavItem[];
-  href: AppPath;
+  href: string;
   label: string;
 };
 
 export type LessonNavItem = {
-  href: AppPath;
+  href: string;
   label: string;
 };
 
@@ -91,7 +93,7 @@ export type SidebarSection = {
 
 export type SidebarTechnology = {
   description: string;
-  href?: AppPath;
+  href?: string;
   label: string;
   sections: SidebarSection[];
   status?: 'available' | 'planned';

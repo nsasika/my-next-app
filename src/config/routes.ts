@@ -6,8 +6,6 @@ import {
   type SidebarSection,
   type SidebarTechnology,
 } from './routes.type';
-import type { Locale } from '@/i18n/config';
-import { APP_COPY } from '@/i18n/app';
 
 export { APP_PATHS };
 export type {
@@ -148,6 +146,15 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
       },
     ],
   },
+  {
+    title: 'Target interview questions',
+    links: [
+      {
+        href: APP_PATHS.mfeTargetInterviewQuestions,
+        label: 'Top 10 micro frontend questions',
+      },
+    ],
+  },
 ];
 
 const NEXTJS_SECTIONS: SidebarSection[] = [
@@ -180,6 +187,15 @@ const NEXTJS_SECTIONS: SidebarSection[] = [
 ];
 
 const FOUNDATIONS_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Observability',
+    links: [
+      {
+        href: APP_PATHS.frontendProductionDiagnostics,
+        label: 'Frontend production diagnostics',
+      },
+    ],
+  },
   {
     title: 'Testing',
     links: [{ href: APP_PATHS.frontendTesting, label: 'Frontend testing' }],
@@ -319,35 +335,3 @@ export function createLessonNavigationItems(
 }
 
 export const LESSON_NAV_ITEMS = createLessonNavigationItems(SIDEBAR_NAV_GROUPS);
-
-export function getLocalizedLearningNavigation(locale: Locale) {
-  const labels = APP_COPY[locale].sidebarLabels;
-  const translate = (value: string) => labels[value] ?? value;
-  const groups = SIDEBAR_NAV_GROUPS.map((group) => ({
-    ...group,
-    label: translate(group.label),
-    technologies: group.technologies.map((technology) => ({
-      ...technology,
-      description: translate(technology.description),
-      label: translate(technology.label),
-      sections: technology.sections.map((section) => ({
-        ...section,
-        title: translate(section.title),
-        links: section.links.map((link) => ({
-          ...link,
-          label: translate(link.label),
-          children: link.children?.map((child) => ({
-            ...child,
-            label: translate(child.label),
-          })),
-        })),
-      })),
-    })),
-  }));
-
-  return {
-    groups,
-    lessonItems: createLessonNavigationItems(groups),
-    tracks: groups.flatMap((group) => group.technologies),
-  };
-}

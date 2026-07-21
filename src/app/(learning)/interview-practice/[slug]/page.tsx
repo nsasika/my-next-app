@@ -35,5 +35,5 @@ export default async function InterviewExperiencePage({
     notFound();
   }
 
-  return <InterviewExperienceView experience={experience} />;
+  return <InterviewExperienceView experience={experience} locale={locale} />;
 }

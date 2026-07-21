@@ -33,7 +33,7 @@ export const LOCALIZED_UI: Record<
     language: { changeLanguage: 'භාෂාව වෙනස් කරන්න', currentLanguage: 'සිංහල' },
     nav: {
       academy: 'ඇකඩමිය',
-      buildLab: 'Build Lab',
+      buildLab: 'ගොඩනැගීමේ පරීක්ෂණාගාරය',
       home: 'මුල් පිටුව',
       login: 'පිවිසෙන්න',
       portfolio: 'වෘත්තීය ගොනුව',
@@ -43,7 +43,7 @@ export const LOCALIZED_UI: Record<
     language: { changeLanguage: 'மொழியை மாற்றவும்', currentLanguage: 'தமிழ்' },
     nav: {
       academy: 'அகாடமி',
-      buildLab: 'Build Lab',
+      buildLab: 'உருவாக்க ஆய்வகம்',
       home: 'முகப்பு',
       login: 'உள்நுழைவு',
       portfolio: 'தொழில்முறை தொகுப்பு',

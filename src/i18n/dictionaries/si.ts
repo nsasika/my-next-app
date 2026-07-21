@@ -45,7 +45,7 @@ export const si = {
   academy: {
     hero: {
       body: 'React, Java, frontend architecture සහ full-stack සංකල්ප පැහැදිලිව ඉගෙනගෙන, ක්‍රියාත්මක කර, සම්මුඛ පරීක්ෂණයකදී විශ්වාසයෙන් සාකච්ඡා කිරීමට කැමති රැකියා අපේක්ෂකයින් සඳහා නිර්මාණය කළ ඉගෙනුම් වේදිකාවකි.',
-      buildLabAction: 'Build Lab බලන්න',
+      buildLabAction: 'ගොඩනැගීමේ පරීක්ෂණාගාරය බලන්න',
       eyebrow: 'ප්‍රායෝගික සම්මුඛ පරීක්ෂණ සූදානම',
       heading:
         "Nalin's Academy ඉංජිනේරු දැනුම සම්මුඛ පරීක්ෂණ විශ්වාසය බවට පත් කරයි.",
@@ -104,7 +104,7 @@ export const si = {
         {
           body: 'Architecture තීරණ ක්‍රියාත්මක වන application code සමඟ සම්බන්ධ කරන මඟපෙන්වන අභියෝග.',
           items: ['Architecture', 'Implementation', 'Review'],
-          label: 'Build Lab',
+          label: 'ගොඩනැගීමේ පරීක්ෂණාගාරය',
           title: 'ගොඩනඟා පැහැදිලි කරන්න',
         },
       ],
