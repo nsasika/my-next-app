@@ -3,6 +3,7 @@ import FlowDiagram from '@/components/learning/FlowDiagram';
 import TheoryPanel from '@/components/learning/TheoryPanel';
 import ContentCard from '@/components/ui/ContentCard';
 import PageHeader from '@/components/ui/PageHeader';
+import { LEARNING_UI, type LearningUiCopy } from '@/i18n/learning/ui';
 
 export type ConceptLessonContent = {
   codeExamples?: readonly {
@@ -39,13 +40,15 @@ export type ConceptLessonContent = {
 
 export default function ConceptLessonPage({
   content,
+  labels = LEARNING_UI['en-US'],
 }: {
   content: ConceptLessonContent;
+  labels?: LearningUiCopy;
 }) {
   return (
     <>
       <PageHeader {...content.header} />
-      <TheoryPanel {...content.theory} />
+      <TheoryPanel {...content.theory} labels={labels} />
 
       {content.flow ? (
         <FlowDiagram steps={content.flow.steps} title={content.flow.title} />
@@ -64,7 +67,9 @@ export default function ConceptLessonPage({
 
       {content.references?.length ? (
         <ContentCard>
-          <h2 className="text-xl font-black text-slate-950">Reference links</h2>
+          <h2 className="text-xl font-black text-slate-950">
+            {labels.referenceLinks}
+          </h2>
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {content.references.map((reference) => (
               <a

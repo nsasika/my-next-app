@@ -1,13 +1,15 @@
 'use client';
 
 import BrandMark from '@/components/layout/BrandMark';
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher';
 import AppButton from '@/components/ui/AppButton';
 import ContentCard from '@/components/ui/ContentCard';
 import StatusMessage from '@/components/ui/StatusMessage';
 import { API_ROUTES } from '@/config/api';
 import { demoAuthUser } from '@/config/demoAuth';
 import { APP_PATHS } from '@/config/routes';
-import { authContent } from '@/content/auth';
+import type { AppCopy } from '@/i18n/app/types';
+import { localizePath, type Locale } from '@/i18n/config';
 import AppleIcon from '@mui/icons-material/Apple';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -73,17 +75,23 @@ const oauthProviders: Record<string, OAuthProvider> = {
   },
 };
 
-function getPostLoginPath() {
+export function getPostLoginPath(locale: Locale) {
   const nextPath = new URLSearchParams(window.location.search).get('next');
 
   if (!nextPath || !nextPath.startsWith('/') || nextPath.startsWith('//')) {
-    return APP_PATHS.currentAuthenticationFlow;
+    return localizePath(locale, APP_PATHS.currentAuthenticationFlow);
   }
 
   return nextPath;
 }
 
-export default function LoginClient() {
+export default function LoginClient({
+  copy,
+  locale,
+}: {
+  copy: AppCopy['auth'];
+  locale: Locale;
+}) {
   const router = useRouter();
 
   const [email, setEmail] = useState<string>(demoAuthUser.email);
@@ -120,25 +128,23 @@ export default function LoginClient() {
         }),
       });
 
-      const data = await res.json();
+      await res.json();
 
       if (res.ok) {
         setMessageTone('success');
-        setMessage(`${data.message}. Redirecting to the learning workspace...`);
+        setMessage(`${copy.loginSuccessLabel} ${copy.redirectingLabel}`);
         router.refresh();
-        router.replace(getPostLoginPath());
+        router.replace(getPostLoginPath(locale));
 
         return;
       }
 
       setMessageTone('error');
-      setMessage(
-        `${data.message}. To test failure, use any email or password different from the demo credentials.`,
-      );
+      setMessage(`${copy.loginFailureLabel} ${copy.credentialsHint}`);
       setIsLoggingIn(false);
     } catch {
       setMessageTone('error');
-      setMessage('Login failed. Please check your connection and try again.');
+      setMessage(copy.connectionError);
       setIsLoggingIn(false);
     }
   }
@@ -147,33 +153,36 @@ export default function LoginClient() {
     <main className="min-h-screen bg-slate-50 px-5 py-8 text-slate-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
         <header className="flex items-center justify-between">
-          <BrandMark />
-          <AppButton
-            aria-label={authContent.login.backLinkLabel}
-            className="shrink-0 px-3"
-            href={APP_PATHS.home}
-            variant="secondary"
-          >
-            <HomeRoundedIcon fontSize="small" />
-            <span className="hidden sm:inline">Public site</span>
-          </AppButton>
+          <BrandMark locale={locale} />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher initialLocale={locale} />
+            <AppButton
+              aria-label={copy.backLinkLabel}
+              className="shrink-0 px-3"
+              href={localizePath(locale, APP_PATHS.home)}
+              variant="secondary"
+            >
+              <HomeRoundedIcon fontSize="small" />
+              <span className="hidden sm:inline">{copy.publicSiteLabel}</span>
+            </AppButton>
+          </div>
         </header>
 
         <section className="mx-auto grid w-full max-w-2xl min-w-0 gap-6">
           <ContentCard className="p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-700">
-              {authContent.login.eyebrow}
+              {copy.eyebrow}
             </p>
             <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
-              {authContent.login.title}
+              {copy.title}
             </h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              {authContent.login.description}
+              {copy.description}
             </p>
 
             <div className="my-6 rounded-lg border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">
               <p className="font-bold text-slate-950">
-                {authContent.login.credentialsTitle}
+                {copy.credentialsTitle}
               </p>
               <p className="mt-2">Email: {demoAuthUser.email}</p>
               <p>Password: {demoAuthUser.password}</p>
@@ -181,26 +190,26 @@ export default function LoginClient() {
 
             <form className="grid gap-4" onSubmit={login}>
               <label className="grid gap-2 text-sm font-bold text-slate-700">
-                {authContent.login.emailLabel}
+                {copy.emailLabel}
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                   disabled={isLoggingIn}
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={authContent.login.emailLabel}
+                  placeholder={copy.emailLabel}
                   type="email"
                   value={email}
                 />
               </label>
 
               <label className="grid gap-2 text-sm font-bold text-slate-700">
-                {authContent.login.passwordLabel}
+                {copy.passwordLabel}
                 <input
                   className="rounded-lg border border-slate-300 bg-white p-3 text-slate-950 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                   disabled={isLoggingIn}
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={authContent.login.passwordLabel}
+                  placeholder={copy.passwordLabel}
                   type="password"
                   value={password}
                 />
@@ -214,20 +223,18 @@ export default function LoginClient() {
                 {isLoggingIn ? (
                   <CircularProgress color="inherit" size={18} />
                 ) : null}
-                {isLoggingIn
-                  ? 'Checking credentials...'
-                  : authContent.login.loginButtonLabel}
+                {isLoggingIn ? copy.checkingLabel : copy.loginButtonLabel}
               </AppButton>
             </form>
 
             <div className="my-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
               <span className="h-px bg-slate-200" />
-              <span>{authContent.login.oauthDividerLabel}</span>
+              <span>{copy.oauthDividerLabel}</span>
               <span className="h-px bg-slate-200" />
             </div>
 
             <div className="grid gap-3">
-              {authContent.login.oauthProviders.map((provider) => {
+              {copy.oauthProviders.map((provider) => {
                 const brand = oauthProviders[provider.id];
                 const Icon = brand.icon;
 
@@ -263,10 +270,8 @@ export default function LoginClient() {
             </div>
 
             <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">
-              <span className="font-black">
-                {authContent.login.oauthTodoLabel}
-              </span>{' '}
-              {authContent.login.oauthDescription}
+              <span className="font-black">{copy.oauthTodoLabel}</span>{' '}
+              {copy.oauthDescription}
             </div>
 
             {message ? (

@@ -19,8 +19,9 @@ export type {
 
 export const RECRUITER_NAV_BASE_ITEMS: NavItem[] = [
   { href: APP_PATHS.home, label: 'Home' },
+  { href: APP_PATHS.nalin, label: 'Portfolio' },
+  { href: APP_PATHS.academy, label: 'Academy' },
   { href: APP_PATHS.buildLab, label: 'Build Lab' },
-  { href: APP_PATHS.about, label: 'Nalin & Academy' },
 ];
 
 export const RECRUITER_AUTH_NAV_ITEM: NavItem = {
@@ -112,6 +113,12 @@ const REACT_SECTIONS: SidebarSection[] = [
 
 const JAVA_SECTIONS: SidebarSection[] = [
   {
+    title: 'Backend quality',
+    links: [
+      { href: APP_PATHS.javaBackendTesting, label: 'Java backend testing' },
+    ],
+  },
+  {
     title: 'Java for the Impatient',
     links: [
       { href: APP_PATHS.javaBook, label: 'Book overview' },
@@ -123,8 +130,12 @@ const JAVA_SECTIONS: SidebarSection[] = [
 
 const INTERVIEW_SECTIONS: SidebarSection[] = [
   {
-    title: 'Real interviews',
+    title: 'Real interview experience',
     links: [
+      {
+        href: APP_PATHS.dbsNcsReactLeadInterview,
+        label: 'DBS via NCS — React Lead',
+      },
       {
         href: APP_PATHS.bankOfSingaporeInterview,
         label: 'Bank of Singapore',
@@ -132,6 +143,15 @@ const INTERVIEW_SECTIONS: SidebarSection[] = [
       {
         href: APP_PATHS.virtusaSingaporeInterview,
         label: 'Virtusa Singapore',
+      },
+    ],
+  },
+  {
+    title: 'Target interview questions',
+    links: [
+      {
+        href: APP_PATHS.mfeTargetInterviewQuestions,
+        label: 'Top 10 micro frontend questions',
       },
     ],
   },
@@ -167,6 +187,19 @@ const NEXTJS_SECTIONS: SidebarSection[] = [
 ];
 
 const FOUNDATIONS_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Observability',
+    links: [
+      {
+        href: APP_PATHS.frontendProductionDiagnostics,
+        label: 'Frontend production diagnostics',
+      },
+    ],
+  },
+  {
+    title: 'Testing',
+    links: [{ href: APP_PATHS.frontendTesting, label: 'Frontend testing' }],
+  },
   {
     title: 'Authentication',
     links: [

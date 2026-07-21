@@ -4,6 +4,10 @@ export const API_ROUTES = {
     login: '/api/auth/login',
     logout: '/api/auth/logout',
   },
+  locale: '/api/locale',
+  observability: {
+    clientEvents: '/api/observability/client-events',
+  },
 } as const;
 
 export const EXTERNAL_API_BASE_URLS = {

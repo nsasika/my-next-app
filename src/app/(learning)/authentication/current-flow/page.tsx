@@ -1,8 +1,15 @@
 import ConceptLessonPage from '@/components/learning/ConceptLessonPage';
-import { foundationLessons } from '@/content/foundations';
+import { authenticationFlowByLocale } from '@/content/authenticationFlow';
+import { getRequestLocale } from '@/i18n/server';
+import { LEARNING_UI } from '@/i18n/learning/ui';
 
-export default function CurrentAuthenticationFlowPage() {
+export default async function CurrentAuthenticationFlowPage() {
+  const locale = await getRequestLocale();
+
   return (
-    <ConceptLessonPage content={foundationLessons.currentAuthenticationFlow} />
+    <ConceptLessonPage
+      content={authenticationFlowByLocale[locale]}
+      labels={LEARNING_UI[locale]}
+    />
   );
 }

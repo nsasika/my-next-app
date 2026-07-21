@@ -5,6 +5,10 @@ import theme from '../theme';
 import './globals.css';
 import StoreProvider from '@/lib/StoreProvider';
 import { APP_CONFIG, PUBLIC_ASSETS } from '@/config/app';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import ClientObservability from '@/components/observability/ClientObservability';
+import { getRequestLocale } from '@/i18n/server';
 
 export const metadata: Metadata = {
   title: APP_CONFIG.name,
@@ -20,14 +24,24 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getRequestLocale();
+  const isVercelDeployment = Boolean(process.env.VERCEL);
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
         <StoreProvider>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>{children}</ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
+        <ClientObservability />
+        {isVercelDeployment ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );

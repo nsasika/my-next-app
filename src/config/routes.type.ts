@@ -1,9 +1,10 @@
 export const APP_PATHS = {
   home: '/',
-  about: '/about',
+  academy: '/academy',
   buildLab: '/build-lab',
   engineeringBlueprint: '/engineering-blueprint',
   login: '/login',
+  nalin: '/nalin',
 
   interviewQuestions: '/interview-questions',
 
@@ -36,6 +37,8 @@ export const APP_PATHS = {
   javaChapter2: '/java/chapter-2',
   interviewPractice: '/interview-practice',
   bankOfSingaporeInterview: '/interview-practice/bank-of-singapore',
+  dbsNcsReactLeadInterview: '/interview-practice/dbs-ncs-react-lead',
+  mfeTargetInterviewQuestions: '/interview-practice/mfe-top-10',
   virtusaSingaporeInterview: '/interview-practice/virtusa-singapore',
   authStrategy: '/authentication-strategy',
   currentAuthenticationFlow: '/authentication/current-flow',
@@ -65,18 +68,21 @@ export const APP_PATHS = {
   reactMemo: '/react-memo',
   ssr: '/ssr',
   csr: '/csr',
+  frontendTesting: '/foundations/frontend-testing',
+  frontendProductionDiagnostics: '/foundations/frontend-production-diagnostics',
+  javaBackendTesting: '/java/backend-testing',
 } as const;
 
 export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];
 
 export type NavItem = {
   children?: NavItem[];
-  href: AppPath;
+  href: string;
   label: string;
 };
 
 export type LessonNavItem = {
-  href: AppPath;
+  href: string;
   label: string;
 };
 
@@ -87,7 +93,7 @@ export type SidebarSection = {
 
 export type SidebarTechnology = {
   description: string;
-  href?: AppPath;
+  href?: string;
   label: string;
   sections: SidebarSection[];
   status?: 'available' | 'planned';
@@ -95,6 +101,6 @@ export type SidebarTechnology = {
 };
 
 export type SidebarNavGroup = {
-  label: 'Foundations' | 'Interviews' | 'Technologies';
+  label: string;
   technologies: SidebarTechnology[];
 };
