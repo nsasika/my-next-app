@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation';
 import { APP_PATHS } from '@/config/routes';
+import { redirectToLocalizedPath } from '@/i18n/redirect';
 
-export default function JavaChapterOneRedirectPage() {
-  redirect(APP_PATHS.javaChapter1);
+export default async function JavaChapterOneRedirectPage() {
+  return redirectToLocalizedPath(APP_PATHS.javaChapter1);
 }

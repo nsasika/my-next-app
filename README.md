@@ -30,6 +30,14 @@ Relevant files:
 - `src/i18n/server.ts`: server-side request locale resolution
 - `src/i18n/learning/navigation.ts`: localized sidebar graph and canonical URLs
 
+### Technical terminology
+
+Sinhala and Tamil pages translate explanatory prose, instructions, and UI
+labels while retaining official technical names such as `Automatic Batching`,
+`Hooks`, `Redux Toolkit`, `SSR`, `CSR`, and API identifiers in English. Shared
+terms live in `src/i18n/technicalTerms.ts`; new localized content should reuse
+that glossary instead of inventing translated or duplicated variants.
+
 ## Production observability
 
 Vercel Analytics and Speed Insights are mounted in the root layout. A small
