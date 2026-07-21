@@ -27,6 +27,8 @@
     "@mui/material": "^7.3.11",
     "@mui/material-nextjs": "^7.3.7",
     "@reduxjs/toolkit": "^2.11.2",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.13.2",
     "jose": "^6.2.3",
     "next": "^16.2.7",
