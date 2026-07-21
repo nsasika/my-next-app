@@ -8,13 +8,12 @@ import { useState } from 'react';
 import { PublicPageShell } from '@/components/public/CompactPublicLayout';
 import CompactPublicSlider from '@/components/public/CompactPublicSlider';
 import {
-  deliveryFlow,
   deploymentLanes,
-  engineeringHeroContent,
   pipelineChecks,
   qualitySignals,
   technologyStack,
 } from './content';
+import type { AppCopy } from '@/i18n/app/types';
 
 const flowIcons = [
   <BuildCircleIcon key="build" fontSize="small" />,
@@ -23,12 +22,17 @@ const flowIcons = [
   <CloudDoneIcon key="deploy" fontSize="small" />,
 ] as const;
 
-export default function BuildLabClient() {
+export default function BuildLabClient({
+  copy,
+}: {
+  copy: AppCopy['buildLab'];
+}) {
   const [activeStep, setActiveStep] = useState(0);
-  const activeFlow = deliveryFlow[activeStep];
+  const activeFlow = copy.flow[activeStep];
+  const translate = (value: string) => copy.labels[value] ?? value;
   const stackPanels = [
     ...technologyStack.map((stack) => ({
-      body: `${stack.category} used inside the academy build.`,
+      body: `${translate(stack.category)} — ${copy.stackUsageBody}`,
       icon:
         stack.category === 'AI-assisted engineering'
           ? ('ai' as const)
@@ -38,8 +42,8 @@ export default function BuildLabClient() {
               ? ('tools' as const)
               : ('code' as const),
       id: stack.category,
-      items: stack.items,
-      label: stack.category,
+      items: stack.items.map(translate),
+      label: translate(stack.category),
       tone:
         stack.category === 'Delivery platform'
           ? ('vercel' as const)
@@ -48,10 +52,10 @@ export default function BuildLabClient() {
             : stack.category === 'Backend layer'
               ? ('emerald' as const)
               : ('typescript' as const),
-      title: stack.category,
+      title: translate(stack.category),
     })),
     ...qualitySignals.map((signal) => ({
-      body: signal.status,
+      body: translate(signal.status),
       icon:
         signal.icon === 'vercel'
           ? ('cloud' as const)
@@ -63,7 +67,7 @@ export default function BuildLabClient() {
                 ? ('rule' as const)
                 : ('code' as const),
       id: signal.label,
-      label: signal.metric,
+      label: translate(signal.metric),
       metric: signal.metric,
       tone:
         signal.icon === 'vercel'
@@ -75,12 +79,12 @@ export default function BuildLabClient() {
               : signal.icon === 'eslint'
                 ? ('purple' as const)
                 : ('typescript' as const),
-      title: signal.label,
+      title: translate(signal.label),
     })),
   ];
   const releasePanels = [
     ...pipelineChecks.map((check) => ({
-      body: check.detail,
+      body: translate(check.detail),
       icon:
         check.icon === 'vercel'
           ? ('cloud' as const)
@@ -94,7 +98,7 @@ export default function BuildLabClient() {
                   ? ('rule' as const)
                   : ('code' as const),
       id: check.title,
-      label: check.title,
+      label: translate(check.title),
       tone:
         check.icon === 'vercel'
           ? ('vercel' as const)
@@ -107,17 +111,17 @@ export default function BuildLabClient() {
                 : check.icon === 'eslint'
                   ? ('purple' as const)
                   : ('typescript' as const),
-      title: check.title,
+      title: translate(check.title),
     })),
     ...deploymentLanes.map((lane) => ({
-      body: lane.detail,
+      body: translate(lane.detail),
       icon:
         lane.name === 'Production' ? ('rocket' as const) : ('cloud' as const),
       id: lane.name,
-      label: lane.name,
-      metric: lane.branch,
+      label: translate(lane.name),
+      metric: translate(lane.branch),
       tone: lane.name === 'Production' ? ('red' as const) : ('vercel' as const),
-      title: lane.branch,
+      title: translate(lane.branch),
     })),
   ];
 
@@ -126,14 +130,14 @@ export default function BuildLabClient() {
       <section className="mb-5 grid min-w-0 gap-3 border-b border-slate-200 pb-5 lg:grid-cols-[minmax(0,0.45fr)_minmax(0,1fr)] lg:items-end">
         <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-            {engineeringHeroContent.eyebrow}
+            {copy.eyebrow}
           </p>
           <h1 className="mt-2 text-3xl font-black leading-tight tracking-tight text-slate-950">
-            {engineeringHeroContent.heading}
+            {copy.heading}
           </h1>
         </div>
         <p className="max-w-3xl text-sm leading-6 text-slate-600 lg:justify-self-end">
-          {engineeringHeroContent.body}
+          {copy.heroBody}
         </p>
       </section>
 
@@ -142,7 +146,7 @@ export default function BuildLabClient() {
           <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
-                Delivery model
+                {copy.deliveryModelLabel}
               </p>
               <h2 className="mt-1 text-lg font-black text-slate-950">
                 {activeFlow.title}
@@ -153,7 +157,7 @@ export default function BuildLabClient() {
             </span>
           </div>
           <div className="mt-3 grid gap-2">
-            {deliveryFlow.map((item, index) => {
+            {copy.flow.map((item, index) => {
               const active = activeStep === index;
 
               return (
@@ -190,14 +194,14 @@ export default function BuildLabClient() {
         </section>
 
         <CompactPublicSlider
-          eyebrow="System snapshot"
+          eyebrow={copy.stackEyebrow}
           panels={stackPanels}
-          title="Stack and quality signals"
+          title={copy.stackTitle}
         />
         <CompactPublicSlider
-          eyebrow="Release flow"
+          eyebrow={copy.releaseEyebrow}
           panels={releasePanels}
-          title="Checks and deployment lanes"
+          title={copy.releaseTitle}
         />
       </div>
     </PublicPageShell>

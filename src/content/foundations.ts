@@ -4,6 +4,89 @@ import { APP_PATHS } from '@/config/routes';
 import type { ConceptLessonContent } from '@/components/learning/ConceptLessonPage';
 
 export const foundationLessons = {
+  frontendTesting: {
+    header: {
+      description:
+        'A practical testing strategy for frontend applications, from isolated functions to complete browser journeys.',
+      eyebrow: 'Foundations / Testing',
+      tags: ['Unit testing', 'Integration testing', 'E2E', 'Accessibility'],
+      title: 'Frontend Application Testing',
+    },
+    theory: {
+      title: 'Use the smallest test that gives useful confidence',
+      summary:
+        'A healthy frontend test suite combines fast unit tests, realistic component and integration tests, a small number of end-to-end journeys, and automated accessibility and visual checks. Test observable behavior rather than component internals.',
+      points: [
+        'Unit tests isolate pure functions, reducers, hooks, formatters, and focused component behavior.',
+        'Integration tests render connected parts together, such as a form, validation, router, store, and mocked API boundary.',
+        'End-to-end tests run critical user journeys in a real browser against a deployed or production-like system.',
+        'Contract tests verify that frontend API assumptions match backend schemas.',
+        'Accessibility, visual regression, performance, and security checks cover risks that functional assertions miss.',
+        'Coverage is a guardrail, not proof of quality: assert meaningful outcomes and failure paths.',
+      ],
+      code: `Testing pyramid for a frontend
+
+many: unit tests
+some: component + integration tests
+few: end-to-end tests
+continuous: accessibility, visual, performance, security`,
+      whatToTry: [
+        'Write a unit test for a validation function, then an integration test that submits the form.',
+        'Choose only the highest-value login, search, checkout, or payment paths for end-to-end coverage.',
+      ],
+    },
+    flow: {
+      title: 'Frontend quality workflow',
+      steps: [
+        {
+          label: 'Define risk',
+          description:
+            'Identify business-critical behavior, edge cases, browsers, devices, and accessibility needs.',
+        },
+        {
+          label: 'Test close to the code',
+          description:
+            'Cover logic and component behavior quickly with deterministic unit and integration tests.',
+        },
+        {
+          label: 'Verify boundaries',
+          description:
+            'Mock at the network boundary and add contract tests for API request and response shapes.',
+        },
+        {
+          label: 'Prove key journeys',
+          description:
+            'Run a small end-to-end suite and quality checks in CI and production-like environments.',
+        },
+      ],
+    },
+    codeExamples: [
+      {
+        title: 'Component integration test with Testing Library',
+        filePath: 'src/features/login/LoginForm.test.tsx',
+        language: 'tsx',
+        code: `render(<LoginForm />);
+
+await user.type(screen.getByLabelText(/email/i), 'nalin@example.com');
+await user.type(screen.getByLabelText(/password/i), 'secret');
+await user.click(screen.getByRole('button', { name: /login/i }));
+
+expect(await screen.findByText(/welcome/i)).toBeInTheDocument();`,
+      },
+      {
+        title: 'Critical browser journey with Playwright',
+        filePath: 'e2e/login.spec.ts',
+        language: 'ts',
+        code: `test('authenticated learner opens a lesson', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('nalin@example.com');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page.getByText('Learning workspace')).toBeVisible();
+});`,
+      },
+    ],
+  },
   currentAuthenticationFlow: {
     header: {
       description:

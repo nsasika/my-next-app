@@ -5,23 +5,40 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import { Button, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, type MouseEvent } from 'react';
-import {
-  getLocaleFromPathname,
-  localizePath,
-  type Locale,
-} from '@/i18n/config';
+import { localizePath, resolveLocale, type Locale } from '@/i18n/config';
+import { API_ROUTES } from '@/config/api';
 import { LOCALE_OPTIONS, LOCALIZED_UI } from '@/i18n/ui';
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({
+  persistedLocale = 'en',
+}: {
+  persistedLocale?: Locale;
+}) {
   const pathname = usePathname();
   const router = useRouter();
-  const locale = getLocaleFromPathname(pathname);
+  const locale = resolveLocale(pathname, persistedLocale);
   const copy = LOCALIZED_UI[locale].language;
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
 
-  const selectLanguage = (nextLocale: Locale) => {
+  const selectLanguage = async (nextLocale: Locale) => {
     setAnchorElement(null);
-    if (nextLocale !== locale) router.push(localizePath(nextLocale, pathname));
+
+    await fetch(API_ROUTES.locale, {
+      body: JSON.stringify({ locale: nextLocale }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+
+    if (nextLocale === locale) return;
+
+    const nextPath = localizePath(nextLocale, pathname);
+
+    if (nextPath === `/${nextLocale}` && pathname !== '/') {
+      router.refresh();
+      return;
+    }
+
+    router.push(nextPath);
   };
 
   return (

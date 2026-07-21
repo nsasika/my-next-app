@@ -37,6 +37,7 @@ export const APP_PATHS = {
   javaChapter2: '/java/chapter-2',
   interviewPractice: '/interview-practice',
   bankOfSingaporeInterview: '/interview-practice/bank-of-singapore',
+  dbsNcsReactLeadInterview: '/interview-practice/dbs-ncs-react-lead',
   virtusaSingaporeInterview: '/interview-practice/virtusa-singapore',
   authStrategy: '/authentication-strategy',
   currentAuthenticationFlow: '/authentication/current-flow',
@@ -66,6 +67,8 @@ export const APP_PATHS = {
   reactMemo: '/react-memo',
   ssr: '/ssr',
   csr: '/csr',
+  frontendTesting: '/foundations/frontend-testing',
+  javaBackendTesting: '/java/backend-testing',
 } as const;
 
 export type AppPath = (typeof APP_PATHS)[keyof typeof APP_PATHS];
@@ -96,6 +99,6 @@ export type SidebarTechnology = {
 };
 
 export type SidebarNavGroup = {
-  label: 'Foundations' | 'Interviews' | 'Technologies';
+  label: string;
   technologies: SidebarTechnology[];
 };

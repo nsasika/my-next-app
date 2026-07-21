@@ -2,9 +2,7 @@
 
 import {
   APP_PATHS,
-  LESSON_NAV_ITEMS,
-  SIDEBAR_NAV_GROUPS,
-  SIDEBAR_TRACKS,
+  getLocalizedLearningNavigation,
   type SidebarNavGroup,
   type SidebarSection,
   type SidebarTechnology,
@@ -32,6 +30,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import BrandMark from './BrandMark';
 import LessonSearch from '@/components/learning/LessonSearch';
 import LessonPager from '@/components/learning/LessonPager';
+import LanguageSwitcher from './LanguageSwitcher';
+import { APP_COPY } from '@/i18n/app';
+import type { Locale } from '@/i18n/config';
 
 const technologyIcons = {
   angular: DataObjectIcon,
@@ -66,7 +67,9 @@ const getActiveGroupLabel = (
     group.technologies.some((technology) =>
       technologyHasActiveRoute(pathname, technology),
     ),
-  )?.label ?? 'Foundations';
+  )?.label ??
+  groups[0]?.label ??
+  '';
 
 function SidebarSectionList({
   expanded,
@@ -251,13 +254,19 @@ function ProfileAvatar({ selected = false }: { selected?: boolean }) {
   );
 }
 
-function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
+function HeaderProfileMenu({
+  copy,
+  onLogout,
+}: {
+  copy: (typeof APP_COPY)[Locale]['shell'];
+  onLogout: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const profileActions = [
-    { icon: EditIcon, label: 'Edit profile' },
-    { icon: WorkspacePremiumIcon, label: 'Subscribe services' },
-    { icon: DeleteOutlineIcon, label: 'Delete account' },
+    { icon: EditIcon, label: copy.editProfile },
+    { icon: WorkspacePremiumIcon, label: copy.subscribeServices },
+    { icon: DeleteOutlineIcon, label: copy.deleteAccount },
   ] as const;
 
   useEffect(() => {
@@ -285,7 +294,7 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
     <div className="relative" ref={menuRef}>
       <button
         aria-expanded={open}
-        aria-label="Open user profile"
+        aria-label={copy.openUserProfile}
         className="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm transition hover:border-sky-300"
         onClick={() => setOpen((current) => !current)}
         type="button"
@@ -302,7 +311,7 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
                 Nalin Padmasiri
               </p>
               <p className="truncate text-xs font-semibold text-slate-500">
-                Learning account
+                {copy.learningAccount}
               </p>
             </div>
           </div>
@@ -328,7 +337,7 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
               type="button"
             >
               <LogoutIcon fontSize="small" />
-              Logout
+              {copy.logout}
             </button>
           </div>
         </div>
@@ -337,13 +346,24 @@ function HeaderProfileMenu({ onLogout }: { onLogout: () => void }) {
   );
 }
 
-export default function LearningShell({ children }: { children: ReactNode }) {
+export default function LearningShell({
+  children,
+  locale,
+}: {
+  children: ReactNode;
+  locale: Locale;
+}) {
   const pathname = usePathname();
   const router = useRouter();
+  const copy = APP_COPY[locale].shell;
+  const navigation = useMemo(
+    () => getLocalizedLearningNavigation(locale),
+    [locale],
+  );
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const activeGroupLabel = useMemo(
-    () => getActiveGroupLabel(pathname, SIDEBAR_NAV_GROUPS),
-    [pathname],
+    () => getActiveGroupLabel(pathname, navigation.groups),
+    [navigation.groups, pathname],
   );
   const [manuallyOpenGroup, setManuallyOpenGroup] = useState<{
     label: SidebarNavGroup['label'];
@@ -356,11 +376,11 @@ export default function LearningShell({ children }: { children: ReactNode }) {
 
   const activeTechnology = useMemo(() => {
     return (
-      SIDEBAR_TRACKS.find((technology) =>
+      navigation.tracks.find((technology) =>
         technologyHasActiveRoute(pathname, technology),
-      ) ?? SIDEBAR_TRACKS[0]
+      ) ?? navigation.tracks[0]
     );
-  }, [pathname]);
+  }, [navigation.tracks, pathname]);
 
   const activeSectionTitle = useMemo(() => {
     const found = activeTechnology.sections.find((section) =>
@@ -395,7 +415,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
           <BrandMark />
           {showCloseButton ? (
             <button
-              aria-label="Close navigation"
+              aria-label={copy.closeNavigation}
               className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
               onClick={onNavigate}
               type="button"
@@ -405,7 +425,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
           ) : null}
         </div>
         <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-          Learning workspace
+          {copy.learningWorkspace}
         </p>
       </div>
 
@@ -413,16 +433,15 @@ export default function LearningShell({ children }: { children: ReactNode }) {
         <div className="mb-5 rounded-lg border border-sky-100 bg-sky-50 p-3">
           <div className="flex items-center gap-2 text-sm font-bold text-sky-900">
             <AutoAwesomeIcon fontSize="small" />
-            Learning map
+            {copy.learningMap}
           </div>
           <p className="mt-2 text-xs leading-5 text-slate-600">
-            Start with foundations, review real interviews, then move through
-            technology tracks in order.
+            {copy.learningMapBody}
           </p>
         </div>
 
         <div className="mb-6 space-y-3">
-          {SIDEBAR_NAV_GROUPS.map((group) => {
+          {navigation.groups.map((group) => {
             const expanded = openGroupLabel === group.label;
 
             return (
@@ -435,7 +454,9 @@ export default function LearningShell({ children }: { children: ReactNode }) {
                   className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[11px] font-black uppercase tracking-[0.16em] text-slate-600 transition hover:bg-white hover:text-slate-950"
                   onClick={() =>
                     setManuallyOpenGroup({
-                      label: expanded ? 'Foundations' : group.label,
+                      label: expanded
+                        ? navigation.groups[0].label
+                        : group.label,
                       pathname,
                     })
                   }
@@ -482,7 +503,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
                                 </span>
                                 {isPlanned ? (
                                   <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-slate-600">
-                                    Soon
+                                    {copy.soon}
                                   </span>
                                 ) : null}
                               </span>
@@ -559,7 +580,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-4 py-4 backdrop-blur sm:px-5">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 lg:gap-4">
             <button
-              aria-label="Open navigation"
+              aria-label={copy.openNavigation}
               className="shrink-0 rounded-lg border border-slate-200 bg-white p-2 text-slate-700 lg:hidden"
               onClick={() => setMobileNavOpen(true)}
               type="button"
@@ -572,7 +593,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
                 {activeTechnology.label} / {activeSectionTitle}
               </p>
               <p className="truncate text-xs font-semibold text-slate-950 sm:text-sm">
-                Theory, code example, and demo for every lesson.
+                {copy.lessonPromise}
               </p>
             </div>
 
@@ -580,7 +601,8 @@ export default function LearningShell({ children }: { children: ReactNode }) {
               <LessonSearch />
             </div>
 
-            <HeaderProfileMenu key={pathname} onLogout={logout} />
+            <LanguageSwitcher persistedLocale={locale} />
+            <HeaderProfileMenu key={pathname} copy={copy} onLogout={logout} />
 
             <div className="w-full md:hidden">
               <LessonSearch />
@@ -590,7 +612,7 @@ export default function LearningShell({ children }: { children: ReactNode }) {
 
         <main className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 sm:px-5 lg:px-8">
           {children}
-          <LessonPager currentPath={pathname} items={LESSON_NAV_ITEMS} />
+          <LessonPager currentPath={pathname} items={navigation.lessonItems} />
         </main>
       </div>
     </div>

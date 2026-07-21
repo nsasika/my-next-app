@@ -291,7 +291,205 @@ console.log(onlyTwo); // [2]`,
   },
 ] as const satisfies readonly ReadingListItem[];
 
+export const dbsReactLeadQuestions = [
+  {
+    answer:
+      'Give a 60-to-90-second role-focused introduction: who you are, your frontend depth, banking experience, leadership scope, and one measurable result. Example: I am a senior frontend engineer specializing in React, TypeScript, and micro frontends. At DBS I contributed to a platform with more than 100 micro frontends, working with domain teams and shared engineering standards for independent delivery. I focus on scalable architecture, performance, testability, and helping teams make sound technical decisions. I am now looking for a React Lead role where I can combine hands-on delivery with technical leadership.',
+    eyebrow: 'Opening',
+    points: [
+      'State your current professional identity and strongest technologies.',
+      'Connect your DBS banking and large-scale micro frontend experience to the role.',
+      'Use only results and responsibilities that you can explain confidently in follow-up questions.',
+    ],
+    question: 'Introduce yourself for this React Lead role.',
+  },
+  {
+    answer:
+      'Start by naming the actual DBS micro frontends you worked on and the business capability each owned; do not imply ownership of all 100-plus applications. Then explain the platform: a host or shell owned authentication, global layout, top-level navigation, error boundaries, telemetry, and remote discovery. Domain teams owned independently built and deployed remotes. Webpack Module Federation exposed each remote entry at runtime, while shared React, React DOM, the design system, and approved platform libraries were configured as compatible singletons. Contracts covered routes, events, permissions, and shared UI APIs. CI/CD published versioned artifacts, ran contract and integration tests, and supported gradual rollout and rollback.',
+    eyebrow: 'Micro frontend architecture',
+    points: [
+      'Be exact about which micro frontends you personally changed, reviewed, or supported.',
+      'Explain team ownership, repository and deployment boundaries, not only webpack configuration.',
+      'Mention failure isolation: remote load timeout, fallback UI, logging, and independent rollback.',
+      'Avoid a global shared store across all remotes; prefer URL state, typed events, or narrow platform APIs.',
+    ],
+    question:
+      'Which DBS micro frontends did you work on, and how did you implement the architecture across a 100-plus-MFE engineering platform?',
+  },
+  {
+    answer:
+      'Treat performance as a measured workflow. First establish business targets such as Core Web Vitals, interaction latency, and route load time. Reproduce on realistic devices and networks, then use Lighthouse, Chrome Performance, React Profiler, bundle analysis, and production telemetry to locate the bottleneck. Reduce JavaScript with route/component splitting, tree shaking, smaller dependencies, and lazy loading. Reduce React work by keeping state local, removing unnecessary effects, stabilizing props only where profiling proves value, virtualizing long lists, and debouncing expensive input. Optimize images, fonts, CSS, API waterfalls, caching, prefetching, and server rendering where appropriate. Finish by re-measuring, adding performance budgets to CI, and monitoring regressions in production.',
+    eyebrow: 'React performance',
+    points: [
+      'Network: compress responses, cache immutable assets, avoid request waterfalls, paginate data, and cancel stale requests.',
+      'Rendering: inspect re-renders, normalize expensive computations, virtualize large collections, and schedule non-urgent updates.',
+      'Loading: split by route or feature, preload only critical assets, reserve layout space, and use optimized images and fonts.',
+      'Governance: define budgets for bundle size and Web Vitals, compare before and after, and prevent regressions in CI.',
+    ],
+    question:
+      'How would you improve performance in a React application from investigation through production monitoring?',
+  },
+  {
+    answer:
+      'With react-router-dom, BrowserRouter uses the browser History API: pushState creates a new URL/history entry, replaceState replaces the current entry, and popstate lets the router respond to Back and Forward. The server must return the SPA entry file for unknown application routes, otherwise refreshing /orders/42 gives a 404. MemoryRouter stores entries in memory, does not change the address bar, and is useful for tests, Storybook, native shells, or an embedded micro frontend that must not own the browser URL. In a micro frontend, normally one shell owns BrowserRouter and passes route context or a basename to remotes; nested routers should not compete for global history.',
+    code: `import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
+
+// Web application: URL and Back/Forward buttons are synchronized.
+<BrowserRouter>
+  <Routes>
+    <Route path="/customers/:id" element={<CustomerPage />} />
+  </Routes>
+</BrowserRouter>
+
+// Test, native container, or isolated embedded flow: no address-bar change.
+<MemoryRouter initialEntries={['/customers/42']}>
+  <Routes>
+    <Route path="/customers/:id" element={<CustomerPage />} />
+  </Routes>
+</MemoryRouter>`,
+    eyebrow: 'React Router',
+    points: [
+      'BrowserRouter creates shareable, refreshable URLs and uses the browser history stack.',
+      'MemoryRouter accepts initialEntries and initialIndex, making navigation deterministic in tests.',
+      'HashRouter is another option when the server cannot be configured for SPA fallback, but the URL contains #.',
+    ],
+    question:
+      'How did you handle routing, and what is the difference between browser history and memory history in React Router?',
+  },
+  {
+    answer:
+      'Module Federation 1 is the original webpack runtime model built around host/remote containers, remoteEntry.js, exposes, remotes, and shared dependency negotiation. Module Federation 2 is the newer enhanced ecosystem: it keeps the same core federation concept but adds a bundler-neutral runtime and tooling, manifest-based remote metadata, runtime plugins, stronger type-generation and type-consumption support, improved debugging, and support across webpack-compatible and other modern build integrations. The practical comparison depends on the exact plugin and bundler versions, so explain the capabilities your project actually used rather than presenting v2 as a completely different architecture.',
+    eyebrow: 'Module Federation',
+    points: [
+      'Both versions support independently deployed hosts and remotes with runtime composition.',
+      'V1 commonly relies directly on webpack configuration and remoteEntry.js contracts.',
+      'V2 emphasizes enhanced tooling, manifests, runtime extensibility, type safety, and broader bundler integration.',
+      'Migration requires checking shared-dependency policy, remote compatibility, deployment URLs, and rollback behavior.',
+    ],
+    question: 'What is the difference between Module Federation v1 and v2?',
+  },
+  {
+    answer:
+      'Nginx can improve application delivery even without a CDN because it sits at the origin as a reverse proxy and static-file server. Enable Brotli or gzip for text assets, serve fingerprinted JavaScript and CSS with long immutable cache headers, keep HTML short-lived, use HTTP/2 or HTTP/3 where supported, reuse upstream connections with keep-alive, buffer or stream responses appropriately, and configure worker and file limits based on measured load. Proxy caching can reduce repeated upstream work for safe cacheable responses, and load balancing can distribute requests. Measure time to first byte, throughput, upstream latency, cache hit ratio, and compression savings before tuning.',
+    code: `server {
+  listen 443 ssl http2;
+
+  gzip on;
+  gzip_types text/css application/javascript application/json image/svg+xml;
+
+  location /_next/static/ {
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+  }
+
+  location /api/ {
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_pass http://application_upstream;
+  }
+}`,
+    eyebrow: 'Nginx performance',
+    points: [
+      'A CDN caches near users; Nginx optimizes origin serving and reverse-proxy behavior. They can complement each other.',
+      'Do not cache personalized or mutation responses without a deliberate cache key and privacy policy.',
+      'Avoid blindly enabling every optimization; validate resource usage and latency under load.',
+    ],
+    question:
+      'Have you used Apache or Nginx, and how can Nginx itself improve application performance?',
+  },
+  {
+    answer:
+      'A Promise represents the eventual fulfillment or rejection of one asynchronous operation. The JavaScript Promise behavior is the same in browsers and Node.js, but the host capabilities differ. Browsers provide DOM events, fetch, Web Workers, and Web APIs; Node provides filesystem, sockets, streams, process APIs, and a libuv-based event loop. Browser JavaScript normally runs on a page main thread, while Node can also use worker_threads and a libuv thread pool for selected native operations. In both environments, Promise callbacks run as microtasks after the current call stack, but Node also has process.nextTick, whose queue is processed with higher priority and can starve other work if abused.',
+    code: `console.log('start');
+
+setTimeout(() => console.log('timer'), 0);
+Promise.resolve().then(() => console.log('promise microtask'));
+
+console.log('end');
+// Browser output: start, end, promise microtask, timer
+
+// Node also has:
+process.nextTick(() => console.log('nextTick'));`,
+    eyebrow: 'Promises and runtimes',
+    points: [
+      'Promise construction is synchronous; then/catch/finally handlers are scheduled as microtasks.',
+      'fetch is available in modern Node versions, but DOM APIs such as document and window are browser-only.',
+      'Async work is performed by host APIs; a Promise is the interface for its eventual result, not a thread.',
+    ],
+    question:
+      'Explain Promises and the important differences between JavaScript running in Node.js and in a browser.',
+  },
+  {
+    answer:
+      'TypeScript is a statically checked superset of JavaScript that compiles to JavaScript. It adds type annotations and inference, interfaces and type aliases, generics, discriminated unions, utility types, and tooling that can understand contracts across the codebase. It catches many incorrect property accesses, argument types, and unhandled variants before runtime; makes refactoring and navigation safer; and documents component props, API models, and shared micro frontend contracts. It does not validate unknown runtime data or eliminate JavaScript runtime errors, so API responses still need schema validation and tests.',
+    eyebrow: 'TypeScript',
+    points: [
+      'Use strict mode and avoid replacing useful types with any.',
+      'Generate or share types only from stable contracts; do not tightly couple domains through internal models.',
+      'Pair compile-time types with runtime validation at network, storage, and user-input boundaries.',
+    ],
+    question:
+      'What is TypeScript, and what does it add to a JavaScript application?',
+  },
+  {
+    answer:
+      'The event loop coordinates synchronous JavaScript with asynchronous host work. First, the engine runs the current task and call stack to completion. When the stack becomes empty, it drains the microtask queue, including Promise reactions and queueMicrotask callbacks. The browser may then render before taking the next task, such as a timer, message, or user event. This repeats. A long task blocks input and rendering, while an endless microtask chain can delay timers and painting. Node uses event-loop phases for timers, pending callbacks, poll, check, and close callbacks, and processes its nextTick and Promise microtasks at defined checkpoints.',
+    code: `button.addEventListener('click', () => {
+  console.log('click task');
+  queueMicrotask(() => console.log('microtask'));
+  setTimeout(() => console.log('next timer task'), 0);
+  console.log('task end');
+});
+
+// click task -> task end -> microtask -> next timer task`,
+    eyebrow: 'Event loop',
+    points: [
+      'Call stack: currently executing synchronous frames.',
+      'Microtasks: Promise handlers, queueMicrotask, and MutationObserver in browsers; drained before the next task.',
+      'Tasks: timers, UI events, messages, and other host callbacks.',
+      'Rendering is a browser concern and generally happens between tasks, not halfway through synchronous code.',
+    ],
+    question:
+      'Explain the event loop correctly, including the call stack, task queue, and microtask queue.',
+  },
+  {
+    answer:
+      'Use a WebView as a clear trust boundary. The native app owns authentication, secure storage, device permissions, navigation policy, and WebView lifecycle; React owns the web UI and web state. Define a small versioned message protocol such as {id, version, type, payload}, validate every message at both ends, allow-list origins and message types, correlate request and response IDs, and return structured errors. React-to-native commonly uses window.ReactNativeWebView.postMessage in React Native or platform message handlers on iOS and Android. Native-to-React can inject JavaScript or dispatch a CustomEvent that a thin bridge adapter consumes. Never expose a general native method executor, secrets, or arbitrary URL loading.',
+    code: `// React -> native
+window.ReactNativeWebView?.postMessage(JSON.stringify({
+  id: crypto.randomUUID(),
+  version: 1,
+  type: 'OPEN_CAMERA',
+  payload: { purpose: 'profile-photo' },
+}));
+
+// Native -> React through a deliberately named browser event
+window.addEventListener('native-message', (event) => {
+  const message = validateNativeMessage(event.detail);
+  bridge.resolve(message.id, message);
+});`,
+    eyebrow: 'In-app WebView architecture',
+    points: [
+      'Security: HTTPS only, origin allow-list, schema validation, least-privilege commands, and no secrets in messages.',
+      'Reliability: handshake when ready, protocol versioning, request IDs, timeouts, retries only for idempotent commands, and lifecycle recovery.',
+      'User experience: coordinate Back behavior, loading and offline states, keyboard and safe areas, deep links, and accessibility.',
+      'Testing: contract tests for message schemas plus integration tests on both iOS and Android containers.',
+    ],
+    question:
+      'How would you architect an in-app WebView and two-way communication between native code and React?',
+  },
+] as const satisfies readonly ReadingListItem[];
+
 export const interviewExperiences = [
+  {
+    company: 'DBS via NCS',
+    description:
+      'React Lead interview experience covering large-scale micro frontends, performance, routing, platform delivery, JavaScript internals, TypeScript, and native WebView integration.',
+    items: dbsReactLeadQuestions,
+    slug: 'dbs-ncs-react-lead',
+    tags: ['DBS', 'NCS', 'React Lead', 'Micro frontend', 'Architecture'],
+    title: 'DBS via NCS React Lead Interview Experience',
+  },
   {
     company: 'Bank of Singapore',
     description:

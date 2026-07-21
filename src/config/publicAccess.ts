@@ -13,6 +13,7 @@ export const PUBLIC_ROUTE_PREFIXES = [
   APP_PATHS.login,
   APP_PATHS.nalin,
   API_ROUTES.auth.login,
+  API_ROUTES.locale,
   PUBLIC_ASSETS.logo,
   PUBLIC_ASSETS.profilePhoto,
   PUBLIC_ASSETS.resumeDirectory,

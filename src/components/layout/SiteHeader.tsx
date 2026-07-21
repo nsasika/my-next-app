@@ -4,22 +4,20 @@ import { APP_PATHS } from '@/config/routes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import {
-  getLocaleFromPathname,
-  isLocalizedPublicPath,
-  localizePath,
-} from '@/i18n/config';
+import { localizePath, resolveLocale, type Locale } from '@/i18n/config';
 import { LOCALIZED_UI } from '@/i18n/ui';
 import BrandMark from './BrandMark';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function SiteHeader({
   isAuthenticated,
+  persistedLocale,
 }: {
   isAuthenticated: boolean;
+  persistedLocale: Locale;
 }) {
   const pathname = usePathname();
-  const locale = getLocaleFromPathname(pathname);
+  const locale = resolveLocale(pathname, persistedLocale);
   const labels = LOCALIZED_UI[locale].nav;
 
   const navItems = useMemo(
@@ -65,7 +63,7 @@ export default function SiteHeader({
           })}
         </div>
         <div className="md:justify-self-end">
-          {isLocalizedPublicPath(pathname) ? <LanguageSwitcher /> : null}
+          <LanguageSwitcher persistedLocale={locale} />
         </div>
       </nav>
     </header>

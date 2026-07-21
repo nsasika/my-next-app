@@ -6,6 +6,8 @@ import {
   type SidebarSection,
   type SidebarTechnology,
 } from './routes.type';
+import type { Locale } from '@/i18n/config';
+import { APP_COPY } from '@/i18n/app';
 
 export { APP_PATHS };
 export type {
@@ -113,6 +115,12 @@ const REACT_SECTIONS: SidebarSection[] = [
 
 const JAVA_SECTIONS: SidebarSection[] = [
   {
+    title: 'Backend quality',
+    links: [
+      { href: APP_PATHS.javaBackendTesting, label: 'Java backend testing' },
+    ],
+  },
+  {
     title: 'Java for the Impatient',
     links: [
       { href: APP_PATHS.javaBook, label: 'Book overview' },
@@ -124,8 +132,12 @@ const JAVA_SECTIONS: SidebarSection[] = [
 
 const INTERVIEW_SECTIONS: SidebarSection[] = [
   {
-    title: 'Real interviews',
+    title: 'Real interview experience',
     links: [
+      {
+        href: APP_PATHS.dbsNcsReactLeadInterview,
+        label: 'DBS via NCS — React Lead',
+      },
       {
         href: APP_PATHS.bankOfSingaporeInterview,
         label: 'Bank of Singapore',
@@ -168,6 +180,10 @@ const NEXTJS_SECTIONS: SidebarSection[] = [
 ];
 
 const FOUNDATIONS_SECTIONS: SidebarSection[] = [
+  {
+    title: 'Testing',
+    links: [{ href: APP_PATHS.frontendTesting, label: 'Frontend testing' }],
+  },
   {
     title: 'Authentication',
     links: [
@@ -303,3 +319,35 @@ export function createLessonNavigationItems(
 }
 
 export const LESSON_NAV_ITEMS = createLessonNavigationItems(SIDEBAR_NAV_GROUPS);
+
+export function getLocalizedLearningNavigation(locale: Locale) {
+  const labels = APP_COPY[locale].sidebarLabels;
+  const translate = (value: string) => labels[value] ?? value;
+  const groups = SIDEBAR_NAV_GROUPS.map((group) => ({
+    ...group,
+    label: translate(group.label),
+    technologies: group.technologies.map((technology) => ({
+      ...technology,
+      description: translate(technology.description),
+      label: translate(technology.label),
+      sections: technology.sections.map((section) => ({
+        ...section,
+        title: translate(section.title),
+        links: section.links.map((link) => ({
+          ...link,
+          label: translate(link.label),
+          children: link.children?.map((child) => ({
+            ...child,
+            label: translate(child.label),
+          })),
+        })),
+      })),
+    })),
+  }));
+
+  return {
+    groups,
+    lessonItems: createLessonNavigationItems(groups),
+    tracks: groups.flatMap((group) => group.technologies),
+  };
+}

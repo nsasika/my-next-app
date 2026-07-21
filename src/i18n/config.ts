@@ -1,5 +1,6 @@
 export const SUPPORTED_LOCALES = ['en', 'si', 'ta'] as const;
 export const DEFAULT_LOCALE = 'en';
+export const LOCALE_COOKIE_NAME = 'nalins-academy-locale';
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
@@ -13,6 +14,15 @@ export function getLocaleFromPathname(pathname: string): Locale {
   const locale = pathname.split('/')[1];
 
   return locale && isLocale(locale) ? locale : DEFAULT_LOCALE;
+}
+
+export function resolveLocale(
+  pathname: string,
+  persistedLocale: Locale = DEFAULT_LOCALE,
+): Locale {
+  const pathLocale = pathname.split('/')[1];
+
+  return pathLocale && isLocale(pathLocale) ? pathLocale : persistedLocale;
 }
 
 export function stripLocaleFromPathname(pathname: string): string {

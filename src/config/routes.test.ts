@@ -7,6 +7,7 @@ import {
   SIDEBAR_NAV_GROUPS,
   SIDEBAR_TECHNOLOGIES,
   createLessonNavigationItems,
+  getLocalizedLearningNavigation,
 } from './routes';
 
 describe('learning navigation config', () => {
@@ -60,5 +61,30 @@ describe('learning navigation config', () => {
       href: APP_PATHS.nextjsRouters,
       label: 'App Router vs Pages Router',
     });
+  });
+
+  it('shows DBS via NCS under the renamed interview experience section', () => {
+    const interviewTrack = SIDEBAR_NAV_GROUPS[1].technologies[0];
+    const realExperiences = interviewTrack.sections[0];
+
+    expect(realExperiences.title).toBe('Real interview experience');
+    expect(realExperiences.links[0]).toEqual({
+      href: APP_PATHS.dbsNcsReactLeadInterview,
+      label: 'DBS via NCS — React Lead',
+    });
+  });
+
+  it('localizes authenticated navigation and preserves lesson order', () => {
+    const sinhala = getLocalizedLearningNavigation('si');
+    const tamil = getLocalizedLearningNavigation('ta');
+
+    expect(sinhala.groups[1].label).toBe('සම්මුඛ පරීක්ෂණ');
+    expect(sinhala.groups[1].technologies[0].sections[0].title).toBe(
+      'සැබෑ සම්මුඛ පරීක්ෂණ අත්දැකීම්',
+    );
+    expect(tamil.groups[0].label).toBe('அடிப்படைகள்');
+    expect(tamil.lessonItems.map((item) => item.href)).toEqual(
+      sinhala.lessonItems.map((item) => item.href),
+    );
   });
 });

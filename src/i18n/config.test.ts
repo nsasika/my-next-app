@@ -4,6 +4,7 @@ import {
   isLocale,
   isLocalizedPublicPath,
   localizePath,
+  resolveLocale,
   stripLocaleFromPathname,
 } from './config';
 
@@ -19,6 +20,12 @@ describe('locale routing', () => {
     expect(getLocaleFromPathname('/si/academy')).toBe('si');
     expect(getLocaleFromPathname('/ta')).toBe('ta');
     expect(getLocaleFromPathname('/academy')).toBe('en');
+  });
+
+  it('uses the persisted locale on routes without a locale prefix', () => {
+    expect(resolveLocale('/build-lab', 'si')).toBe('si');
+    expect(resolveLocale('/login', 'ta')).toBe('ta');
+    expect(resolveLocale('/en/academy', 'si')).toBe('en');
   });
 
   it('removes locale prefixes without changing ordinary paths', () => {

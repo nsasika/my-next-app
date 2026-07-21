@@ -4,6 +4,7 @@ export const API_ROUTES = {
     login: '/api/auth/login',
     logout: '/api/auth/logout',
   },
+  locale: '/api/locale',
 } as const;
 
 export const EXTERNAL_API_BASE_URLS = {

@@ -1,9 +1,12 @@
 import LearningShell from '@/components/layout/LearningShell';
+import { getRequestLocale } from '@/i18n/server';
 
-export default function LearningLayout({
+export default async function LearningLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <LearningShell>{children}</LearningShell>;
+  const locale = await getRequestLocale();
+
+  return <LearningShell locale={locale}>{children}</LearningShell>;
 }
