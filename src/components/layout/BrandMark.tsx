@@ -11,7 +11,7 @@ type BrandMarkProps = {
 
 export default function BrandMark({
   compact = false,
-  locale = 'en',
+  locale = 'en-US',
 }: BrandMarkProps) {
   return (
     <Link

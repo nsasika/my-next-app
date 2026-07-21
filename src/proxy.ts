@@ -5,11 +5,12 @@ import { APP_PATHS } from '@/config/routes';
 import { verifyToken } from '@/server/auth/session';
 import {
   DEFAULT_LOCALE,
+  getLegacyPathLocale,
   getPathLocale,
-  isLocale,
   localizePath,
   LOCALE_COOKIE_NAME,
   LOCALE_REQUEST_HEADER,
+  normalizeLocale,
   stripLocaleFromPathname,
   type Locale,
 } from '@/i18n/config';
@@ -43,11 +44,21 @@ function persistResolvedLocale(
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const localeCookie = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
-  const preferredLocale =
-    localeCookie && isLocale(localeCookie) ? localeCookie : DEFAULT_LOCALE;
+  const preferredLocale = normalizeLocale(localeCookie) ?? DEFAULT_LOCALE;
   const pathLocale = getPathLocale(pathname);
+  const legacyPathLocale = getLegacyPathLocale(pathname);
   const locale = pathLocale ?? preferredLocale;
   const applicationPath = stripLocaleFromPathname(pathname);
+
+  // Preserve bookmarks using the former language-only URLs while making the
+  // language-region locale the single canonical URL and cookie representation.
+  if (legacyPathLocale) {
+    const canonicalUrl = request.nextUrl.clone();
+    canonicalUrl.pathname = localizePath(legacyPathLocale, applicationPath);
+    const response = NextResponse.redirect(canonicalUrl, 308);
+    persistResolvedLocale(response, legacyPathLocale, localeCookie);
+    return response;
+  }
 
   // Page URLs use the locale as their source of truth. Unprefixed legacy links
   // are redirected once; localized URLs are rewritten to the existing App

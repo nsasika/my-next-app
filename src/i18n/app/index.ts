@@ -5,7 +5,7 @@ import { taApp } from './ta';
 import type { AppCopy } from './types';
 
 export const APP_COPY: Record<Locale, AppCopy> = {
-  en: enApp,
-  si: siApp,
-  ta: taApp,
+  'en-US': enApp,
+  'si-LK': siApp,
+  'ta-LK': taApp,
 };

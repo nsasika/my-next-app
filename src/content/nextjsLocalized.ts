@@ -326,14 +326,14 @@ export const nextjsLessonsByLocale: Record<
   Locale,
   Record<NextjsLessonKey, ConceptLessonContent>
 > = {
-  en: nextjsLessons,
-  si: Object.fromEntries(
+  'en-US': nextjsLessons,
+  'si-LK': Object.fromEntries(
     Object.entries(si).map(([key, copy]) => [
       key,
       localizedLesson(key as NextjsLessonKey, 'si', copy),
     ]),
   ) as Record<NextjsLessonKey, ConceptLessonContent>,
-  ta: Object.fromEntries(
+  'ta-LK': Object.fromEntries(
     Object.entries(ta).map(([key, copy]) => [
       key,
       localizedLesson(key as NextjsLessonKey, 'ta', copy),

@@ -21,8 +21,8 @@ describe('localized dictionaries', () => {
 
   it('contains native Sinhala and Tamil navigation copy', async () => {
     const [sinhala, tamil] = await Promise.all([
-      getDictionary('si'),
-      getDictionary('ta'),
+      getDictionary('si-LK'),
+      getDictionary('ta-LK'),
     ]);
 
     expect(sinhala.nav.home).toBe('මුල් පිටුව');

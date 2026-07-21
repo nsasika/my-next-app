@@ -2,8 +2,8 @@ import type { Dictionary } from '../types';
 import { LOCALIZED_UI } from '../ui';
 
 export const si = {
-  locale: 'si',
-  ...LOCALIZED_UI.si,
+  locale: 'si-LK',
+  ...LOCALIZED_UI['si-LK'],
   home: {
     hero: {
       body: 'අපගේ අරමුණ සරලයි: රැකියා අපේක්ෂකයින්ට Java, React, frontend architecture සහ full-stack තාක්ෂණික තීරණ පැහැදිලි විස්තර, සම්මුඛ පරීක්ෂණයට ගැළපෙන උදාහරණ සහ මඟපෙන්වන අභ්‍යාස මඟින් ඉගෙන ගත හැකි ප්‍රායෝගික වේදිකාවක් ගොඩනැගීමයි.',

@@ -5,7 +5,7 @@ import { taLearning } from './ta';
 import type { LocalizedLearningContent } from './types';
 
 export const LEARNING_COPY: Record<Locale, LocalizedLearningContent> = {
-  en: enLearning,
-  si: siLearning,
-  ta: taLearning,
+  'en-US': enLearning,
+  'si-LK': siLearning,
+  'ta-LK': taLearning,
 };

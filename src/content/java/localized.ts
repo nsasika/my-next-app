@@ -268,13 +268,13 @@ const localizedTesting = (locale: 'si' | 'ta'): ConceptLessonContent => ({
 });
 
 export const javaContentByLocale = {
-  en: {
+  'en-US': {
     bookReference,
     chapterOne: chapterOneTopics,
     chapterTwo: chapterTwoTopics,
     backendTesting: javaBackendTesting,
   },
-  si: {
+  'si-LK': {
     bookReference: {
       ...bookReference,
       note: 'මේවා සම්මුඛ පරීක්ෂණ සූදානම සඳහා ලියූ කෙටි අධ්‍යයන සාරාංශ වන අතර පොතට ආදේශයක් නොවේ.',
@@ -283,7 +283,7 @@ export const javaContentByLocale = {
     chapterTwo: siChapterTwo,
     backendTesting: localizedTesting('si'),
   },
-  ta: {
+  'ta-LK': {
     bookReference: {
       ...bookReference,
       note: 'இவை நேர்காணல் தயாரிப்புக்கான சுருக்கமான கற்றல் குறிப்புகள்; புத்தகத்திற்கு மாற்றாக அல்ல.',
@@ -303,7 +303,7 @@ export const javaContentByLocale = {
 >;
 
 export const javaPageCopy = {
-  en: {
+  'en-US': {
     bookEyebrow: 'Java book option',
     bookDescription:
       'This guided study option is split by chapter so each section can grow independently.',
@@ -322,7 +322,7 @@ export const javaPageCopy = {
     chapterTwoDescription:
       'Move from simple statements into methods, objects, records, static members, and packages.',
   },
-  si: {
+  'si-LK': {
     bookEyebrow: 'Java පොත් අධ්‍යයන මාර්ගය',
     bookDescription:
       'සෑම කොටසක්ම වෙන වෙනම වර්ධනය කළ හැකි ලෙස මෙම guided study option එක chapters අනුව බෙදා ඇත.',
@@ -341,7 +341,7 @@ export const javaPageCopy = {
     chapterTwoDescription:
       'සරල statements සිට methods, objects, records, static members සහ packages වෙත යන්න.',
   },
-  ta: {
+  'ta-LK': {
     bookEyebrow: 'Java புத்தகக் கற்றல் பாதை',
     bookDescription:
       'ஒவ்வொரு பகுதியும் தனியாக வளரும்படி இந்த guided study option chapters அடிப்படையில் பிரிக்கப்பட்டுள்ளது.',

@@ -4,7 +4,7 @@ import { SUPPORTED_LOCALES } from '../config';
 
 describe('localized learning landings', () => {
   it('provides every technology landing and shared UI label per locale', () => {
-    const englishKeys = Object.keys(LEARNING_COPY.en.landings);
+    const englishKeys = Object.keys(LEARNING_COPY['en-US'].landings);
 
     for (const locale of SUPPORTED_LOCALES) {
       expect(Object.keys(LEARNING_COPY[locale].landings)).toEqual(englishKeys);
@@ -13,9 +13,15 @@ describe('localized learning landings', () => {
   });
 
   it('uses native language for the highlighted learning categories', () => {
-    expect(LEARNING_COPY.si.landings.foundations.title).toBe('මූලික කරුණු');
-    expect(LEARNING_COPY.ta.landings.interviews.title).toBe('நேர்காணல்கள்');
-    expect(LEARNING_COPY.si.labels.commonUsages).toBe('සාමාන්‍ය භාවිතයන්');
-    expect(LEARNING_COPY.ta.labels.evolution).toBe('பரிணாமம்');
+    expect(LEARNING_COPY['si-LK'].landings.foundations.title).toBe(
+      'මූලික කරුණු',
+    );
+    expect(LEARNING_COPY['ta-LK'].landings.interviews.title).toBe(
+      'நேர்காணல்கள்',
+    );
+    expect(LEARNING_COPY['si-LK'].labels.commonUsages).toBe(
+      'සාමාන්‍ය භාවිතයන්',
+    );
+    expect(LEARNING_COPY['ta-LK'].labels.evolution).toBe('பரிணாமம்');
   });
 });

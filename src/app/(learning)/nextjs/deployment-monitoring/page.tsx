@@ -5,9 +5,9 @@ export default function NextjsDeploymentMonitoringPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.deploymentMonitoring,
-        si: nextjsLessonsByLocale.si.deploymentMonitoring,
-        ta: nextjsLessonsByLocale.ta.deploymentMonitoring,
+        en: nextjsLessonsByLocale['en-US'].deploymentMonitoring,
+        si: nextjsLessonsByLocale['si-LK'].deploymentMonitoring,
+        ta: nextjsLessonsByLocale['ta-LK'].deploymentMonitoring,
       }}
     />
   );

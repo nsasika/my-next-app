@@ -5,9 +5,9 @@ export default function NextjsCachingPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.caching,
-        si: nextjsLessonsByLocale.si.caching,
-        ta: nextjsLessonsByLocale.ta.caching,
+        en: nextjsLessonsByLocale['en-US'].caching,
+        si: nextjsLessonsByLocale['si-LK'].caching,
+        ta: nextjsLessonsByLocale['ta-LK'].caching,
       }}
     />
   );

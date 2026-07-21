@@ -1,33 +1,52 @@
-export const SUPPORTED_LOCALES = ['en', 'si', 'ta'] as const;
-export const DEFAULT_LOCALE = 'en';
+export const DEFAULT_LOCALE = 'en-US';
+export const FALLBACK_LOCALE = 'en-US';
+export const SUPPORTED_LOCALES = ['en-US', 'si-LK', 'ta-LK'] as const;
 export const LOCALE_COOKIE_NAME = 'nalins-academy-locale';
 export const LOCALE_REQUEST_HEADER = 'x-nalins-academy-locale';
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
+export type Language = 'en' | 'si' | 'ta';
+
+const LEGACY_LOCALE_MAPPINGS: Readonly<Record<Language, Locale>> = {
+  en: 'en-US',
+  si: 'si-LK',
+  ta: 'ta-LK',
+};
 
 export function isLocale(value: string): value is Locale {
   return SUPPORTED_LOCALES.includes(value as Locale);
 }
 
-export function getLocaleFromPathname(pathname: string): Locale {
-  const locale = pathname.split('/')[1];
+export function normalizeLocale(
+  value: string | null | undefined,
+): Locale | null {
+  if (!value) return null;
+  if (isLocale(value)) return value;
 
-  return locale && isLocale(locale) ? locale : DEFAULT_LOCALE;
+  return LEGACY_LOCALE_MAPPINGS[value as Language] ?? null;
+}
+
+export function getLanguageForLocale(locale: Locale): Language {
+  return locale.split('-')[0] as Language;
+}
+
+function getLocaleSegment(pathname: string): string | undefined {
+  return pathname.split('/')[1];
 }
 
 export function resolveLocale(
   pathname: string,
   initialLocale: Locale = DEFAULT_LOCALE,
 ): Locale {
-  const pathLocale = pathname.split('/')[1];
+  const pathLocale = normalizeLocale(getLocaleSegment(pathname));
 
-  return pathLocale && isLocale(pathLocale) ? pathLocale : initialLocale;
+  return pathLocale ?? initialLocale;
 }
 
 export function stripLocaleFromPathname(pathname: string): string {
   const segments = pathname.split('/').filter(Boolean);
 
-  if (segments[0] && isLocale(segments[0])) {
+  if (segments[0] && normalizeLocale(segments[0])) {
     const pathWithoutLocale = `/${segments.slice(1).join('/')}`;
     return pathWithoutLocale === '/'
       ? '/'
@@ -37,14 +56,16 @@ export function stripLocaleFromPathname(pathname: string): string {
   return pathname || '/';
 }
 
-export function isLocalizedPublicPath(pathname: string): boolean {
-  return getPathLocale(pathname) !== null;
-}
-
 export function getPathLocale(pathname: string): Locale | null {
-  const locale = pathname.split('/')[1];
+  const locale = getLocaleSegment(pathname);
 
   return locale && isLocale(locale) ? locale : null;
+}
+
+export function getLegacyPathLocale(pathname: string): Locale | null {
+  const locale = getLocaleSegment(pathname);
+
+  return locale && !isLocale(locale) ? normalizeLocale(locale) : null;
 }
 
 export function localizePath(locale: Locale, pathname: string): string {

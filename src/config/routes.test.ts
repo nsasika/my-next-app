@@ -76,16 +76,16 @@ describe('learning navigation config', () => {
   });
 
   it('localizes authenticated navigation and preserves lesson order', () => {
-    const sinhala = getLocalizedLearningNavigation('si');
-    const tamil = getLocalizedLearningNavigation('ta');
+    const sinhala = getLocalizedLearningNavigation('si-LK');
+    const tamil = getLocalizedLearningNavigation('ta-LK');
 
     expect(sinhala.groups[1].label).toBe('සම්මුඛ පරීක්ෂණ');
     expect(sinhala.groups[1].technologies[0].sections[0].title).toBe(
       'සැබෑ සම්මුඛ පරීක්ෂණ අත්දැකීම්',
     );
     expect(tamil.groups[0].label).toBe('அடிப்படைகள்');
-    expect(tamil.lessonItems[0].href).toBe('/ta/foundations');
-    expect(sinhala.lessonItems[0].href).toBe('/si/foundations');
+    expect(tamil.lessonItems[0].href).toBe('/ta-LK/foundations');
+    expect(sinhala.lessonItems[0].href).toBe('/si-LK/foundations');
     expect(
       tamil.lessonItems.map((item) => stripLocaleFromPathname(item.href)),
     ).toEqual(

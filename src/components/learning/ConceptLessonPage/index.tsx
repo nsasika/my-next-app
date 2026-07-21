@@ -40,7 +40,7 @@ export type ConceptLessonContent = {
 
 export default function ConceptLessonPage({
   content,
-  labels = LEARNING_UI.en,
+  labels = LEARNING_UI['en-US'],
 }: {
   content: ConceptLessonContent;
   labels?: LearningUiCopy;

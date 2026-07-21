@@ -2,8 +2,8 @@ import type { Dictionary } from '../types';
 import { LOCALIZED_UI } from '../ui';
 
 export const ta = {
-  locale: 'ta',
-  ...LOCALIZED_UI.ta,
+  locale: 'ta-LK',
+  ...LOCALIZED_UI['ta-LK'],
   home: {
     hero: {
       body: 'எங்கள் நோக்கம் எளிமையானது: வேலை தேடுபவர்கள் Java, React, frontend architecture மற்றும் full-stack தொழில்நுட்பத் தேர்வுகளை தெளிவான விளக்கங்கள், நேர்முகத் தேர்வுக்கான எடுத்துக்காட்டுகள் மற்றும் வழிகாட்டப்பட்ட பயிற்சிகள் மூலம் கற்கக்கூடிய நடைமுறை தளத்தை உருவாக்குவது.',

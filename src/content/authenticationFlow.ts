@@ -136,7 +136,7 @@ const tamilAuthenticationFlow = {
 } as const satisfies ConceptLessonContent;
 
 export const authenticationFlowByLocale = {
-  en: foundationLessons.currentAuthenticationFlow,
-  si: sinhalaAuthenticationFlow,
-  ta: tamilAuthenticationFlow,
+  'en-US': foundationLessons.currentAuthenticationFlow,
+  'si-LK': sinhalaAuthenticationFlow,
+  'ta-LK': tamilAuthenticationFlow,
 } as const satisfies Record<Locale, ConceptLessonContent>;

@@ -5,9 +5,9 @@ export default function NextjsMiddlewarePage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.middleware,
-        si: nextjsLessonsByLocale.si.middleware,
-        ta: nextjsLessonsByLocale.ta.middleware,
+        en: nextjsLessonsByLocale['en-US'].middleware,
+        si: nextjsLessonsByLocale['si-LK'].middleware,
+        ta: nextjsLessonsByLocale['ta-LK'].middleware,
       }}
     />
   );

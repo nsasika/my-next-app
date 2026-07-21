@@ -8,9 +8,9 @@ const localizedExperiences: Record<
   Locale,
   Readonly<Record<string, InterviewExperience>>
 > = {
-  en: enInterviewExperiences,
-  si: siInterviewExperiences,
-  ta: taInterviewExperiences,
+  'en-US': enInterviewExperiences,
+  'si-LK': siInterviewExperiences,
+  'ta-LK': taInterviewExperiences,
 };
 
 export function getLocalizedInterviewExperience(

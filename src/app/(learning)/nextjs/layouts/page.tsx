@@ -5,9 +5,9 @@ export default function NextjsLayoutsPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.layouts,
-        si: nextjsLessonsByLocale.si.layouts,
-        ta: nextjsLessonsByLocale.ta.layouts,
+        en: nextjsLessonsByLocale['en-US'].layouts,
+        si: nextjsLessonsByLocale['si-LK'].layouts,
+        ta: nextjsLessonsByLocale['ta-LK'].layouts,
       }}
     />
   );

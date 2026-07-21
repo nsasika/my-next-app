@@ -5,9 +5,9 @@ export default function NextjsRenderingPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.rendering,
-        si: nextjsLessonsByLocale.si.rendering,
-        ta: nextjsLessonsByLocale.ta.rendering,
+        en: nextjsLessonsByLocale['en-US'].rendering,
+        si: nextjsLessonsByLocale['si-LK'].rendering,
+        ta: nextjsLessonsByLocale['ta-LK'].rendering,
       }}
     />
   );

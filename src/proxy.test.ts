@@ -24,30 +24,30 @@ describe('locale-aware proxy routing', () => {
 
   it('redirects an unprefixed page to the saved locale', async () => {
     const response = await proxy(
-      request('/login', { 'nalins-academy-locale': 'si' }),
+      request('/login', { 'nalins-academy-locale': 'si-LK' }),
     );
 
     expect(response.headers.get('location')).toBe(
-      'https://academy.test/si/login',
+      'https://academy.test/si-LK/login',
     );
   });
 
   it('rewrites a canonical localized page to its route file', async () => {
-    const response = await proxy(request('/ta/build-lab'));
+    const response = await proxy(request('/ta-LK/build-lab'));
 
     expect(response.headers.get('x-middleware-rewrite')).toBe(
       'https://academy.test/build-lab',
     );
-    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('ta');
+    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('ta-LK');
   });
 
   it('keeps locale when redirecting a guest to login', async () => {
-    const response = await proxy(request('/si/foundations?tab=testing'));
+    const response = await proxy(request('/si-LK/foundations?tab=testing'));
     const location = new URL(response.headers.get('location')!);
 
-    expect(location.pathname).toBe('/si/login');
+    expect(location.pathname).toBe('/si-LK/login');
     expect(location.searchParams.get('next')).toBe(
-      '/si/foundations?tab=testing',
+      '/si-LK/foundations?tab=testing',
     );
   });
 
@@ -59,12 +59,37 @@ describe('locale-aware proxy routing', () => {
     });
 
     const response = await proxy(
-      request('/si/login', { access_token: 'valid-token' }),
+      request('/si-LK/login', { access_token: 'valid-token' }),
     );
 
     expect(response.headers.get('location')).toBeNull();
     expect(response.headers.get('x-middleware-rewrite')).toBe(
       'https://academy.test/login',
     );
+  });
+
+  it('permanently redirects legacy URLs and migrates the locale cookie', async () => {
+    const response = await proxy(
+      request('/si/academy?source=bookmark', {
+        'nalins-academy-locale': 'si',
+      }),
+    );
+
+    expect(response.status).toBe(308);
+    expect(response.headers.get('location')).toBe(
+      'https://academy.test/si-LK/academy?source=bookmark',
+    );
+    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('si-LK');
+  });
+
+  it('migrates a legacy cookie on an unprefixed URL', async () => {
+    const response = await proxy(
+      request('/login', { 'nalins-academy-locale': 'ta' }),
+    );
+
+    expect(response.headers.get('location')).toBe(
+      'https://academy.test/ta-LK/login',
+    );
+    expect(response.cookies.get('nalins-academy-locale')?.value).toBe('ta-LK');
   });
 });

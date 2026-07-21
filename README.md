@@ -2,12 +2,18 @@
 
 ## Locale-aware routing
 
-Every page has a canonical locale-prefixed URL, including `/si`,
-`/ta/build-lab`, `/si/login`, and `/en/foundations`. The URL is the source of
-truth for the current request, making localized pages shareable and preserving
-language through login, logout, browser history, protected-route redirects,
-and lesson paging. Legacy unprefixed page URLs redirect to the locale stored in
-the preference cookie, with English as the final fallback.
+Every page has a canonical language-region locale URL, including `/si-LK`,
+`/ta-LK/build-lab`, `/si-LK/login`, and `/en-US/foundations`. US English
+(`en-US`) is the default and fallback locale. The URL is the source of truth for
+the current request, making localized pages shareable and preserving language
+through login, logout, browser history, protected-route redirects, and lesson
+paging.
+
+Legacy `/en`, `/si`, and `/ta` bookmarks permanently redirect to their
+canonical equivalents while preserving the remaining path and query string.
+Legacy cookie values are migrated to `en-US`, `si-LK`, or `ta-LK` during the
+same request. Unprefixed page URLs redirect to the locale stored in the
+preference cookie, with US English as the final fallback.
 
 The language menu links to `/api/locale?locale=...&redirect=...`. That route
 validates the locale and same-origin redirect, sets the cookie, and redirects

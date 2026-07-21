@@ -5,9 +5,9 @@ export default function ServerClientComponentsPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.components,
-        si: nextjsLessonsByLocale.si.components,
-        ta: nextjsLessonsByLocale.ta.components,
+        en: nextjsLessonsByLocale['en-US'].components,
+        si: nextjsLessonsByLocale['si-LK'].components,
+        ta: nextjsLessonsByLocale['ta-LK'].components,
       }}
     />
   );

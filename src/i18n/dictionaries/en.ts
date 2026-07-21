@@ -2,8 +2,8 @@ import type { Dictionary } from '../types';
 import { LOCALIZED_UI } from '../ui';
 
 export const en = {
-  locale: 'en',
-  ...LOCALIZED_UI.en,
+  locale: 'en-US',
+  ...LOCALIZED_UI['en-US'],
   home: {
     hero: {
       body: 'The ambition is simple: build a practical interview-preparation platform where job seekers can learn Java, React, frontend architecture, and full-stack trade-offs through clear explanations, recruiter-ready examples, and guided practice.',

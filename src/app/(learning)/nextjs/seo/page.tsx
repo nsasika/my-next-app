@@ -5,9 +5,9 @@ export default function NextjsSeoPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.seo,
-        si: nextjsLessonsByLocale.si.seo,
-        ta: nextjsLessonsByLocale.ta.seo,
+        en: nextjsLessonsByLocale['en-US'].seo,
+        si: nextjsLessonsByLocale['si-LK'].seo,
+        ta: nextjsLessonsByLocale['ta-LK'].seo,
       }}
     />
   );

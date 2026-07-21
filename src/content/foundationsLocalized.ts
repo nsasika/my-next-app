@@ -217,13 +217,13 @@ const taOauth = {
 } as const satisfies ConceptLessonContent;
 
 export const frontendTestingByLocale = {
-  en: foundationLessons.frontendTesting,
-  si: siFrontendTesting,
-  ta: taFrontendTesting,
+  'en-US': foundationLessons.frontendTesting,
+  'si-LK': siFrontendTesting,
+  'ta-LK': taFrontendTesting,
 } as const satisfies Record<Locale, ConceptLessonContent>;
 
 export const oauthLessonByLocale = {
-  en: foundationLessons.oauth2Authorization,
-  si: siOauth,
-  ta: taOauth,
+  'en-US': foundationLessons.oauth2Authorization,
+  'si-LK': siOauth,
+  'ta-LK': taOauth,
 } as const satisfies Record<Locale, ConceptLessonContent>;

@@ -21,7 +21,7 @@ export type LearningUiCopy = {
 };
 
 export const LEARNING_UI: Record<Locale, LearningUiCopy> = {
-  en: {
+  'en-US': {
     lessonNavigation: 'Lesson navigation',
     lessonResults: 'Lesson results',
     loadingResults: 'Loading lesson results...',
@@ -42,7 +42,7 @@ export const LEARNING_UI: Record<Locale, LearningUiCopy> = {
     theoryFirst: 'Theory first',
     tryThis: 'Try this in the example',
   },
-  si: {
+  'si-LK': {
     lessonNavigation: 'පාඩම් සංචාලනය',
     lessonResults: 'පාඩම් ප්‍රතිඵල',
     loadingResults: 'පාඩම් ප්‍රතිඵල පූරණය කරමින්...',
@@ -63,7 +63,7 @@ export const LEARNING_UI: Record<Locale, LearningUiCopy> = {
     theoryFirst: 'පළමුව න්‍යාය',
     tryThis: 'උදාහරණයේ මෙය අත්හදා බලන්න',
   },
-  ta: {
+  'ta-LK': {
     lessonNavigation: 'பாட வழிசெலுத்தல்',
     lessonResults: 'பாட முடிவுகள்',
     loadingResults: 'பாட முடிவுகள் ஏற்றப்படுகின்றன...',

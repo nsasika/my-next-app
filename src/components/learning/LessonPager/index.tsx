@@ -76,7 +76,7 @@ export function getLessonPagerState(
 export default function LessonPager({
   currentPath,
   items,
-  labels = LEARNING_UI.en,
+  labels = LEARNING_UI['en-US'],
 }: LessonPagerProps) {
   const { next, previous } = getAdjacentLessons(currentPath, items);
 

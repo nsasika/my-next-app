@@ -26,7 +26,7 @@ type ReadingListProps = {
 export default function ReadingList({
   codeLanguage,
   items,
-  labels = LEARNING_UI.en,
+  labels = LEARNING_UI['en-US'],
 }: ReadingListProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 

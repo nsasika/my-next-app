@@ -17,7 +17,7 @@ export default function TheoryPanel({
   summary,
   title,
   whatToTry = [],
-  labels = LEARNING_UI.en,
+  labels = LEARNING_UI['en-US'],
 }: TheoryPanelProps) {
   return (
     <ContentCard className="mb-6">

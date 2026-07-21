@@ -16,11 +16,11 @@ vi.mock('./LanguageSwitcher', () => ({
 
 describe('SiteHeader', () => {
   it('keeps the localized login entry point visible in the public navigation', () => {
-    render(<SiteHeader initialLocale="si" />);
+    render(<SiteHeader initialLocale="si-LK" />);
 
     expect(screen.getByRole('link', { name: 'පිවිසෙන්න' })).toHaveAttribute(
       'href',
-      '/si/login',
+      '/si-LK/login',
     );
   });
 });

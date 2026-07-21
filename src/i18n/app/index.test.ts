@@ -14,9 +14,11 @@ describe('application localization copy', () => {
   });
 
   it('uses native Sinhala and Tamil copy rather than English fallbacks', () => {
-    expect(APP_COPY.si.auth.loginButtonLabel).toBe('පිවිසෙන්න');
-    expect(APP_COPY.ta.buildLab.deliveryModelLabel).toBe('வழங்கல் மாதிரி');
-    expect(APP_COPY.si.shell.logout).toBe('ඉවත් වන්න');
-    expect(APP_COPY.ta.shell.logout).toBe('வெளியேறு');
+    expect(APP_COPY['si-LK'].auth.loginButtonLabel).toBe('පිවිසෙන්න');
+    expect(APP_COPY['ta-LK'].buildLab.deliveryModelLabel).toBe(
+      'வழங்கல் மாதிரி',
+    );
+    expect(APP_COPY['si-LK'].shell.logout).toBe('ඉවත් වන්න');
+    expect(APP_COPY['ta-LK'].shell.logout).toBe('வெளியேறு');
   });
 });

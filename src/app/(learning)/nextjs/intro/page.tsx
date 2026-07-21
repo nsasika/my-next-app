@@ -5,9 +5,9 @@ export default function IntroToNextjsPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.intro,
-        si: nextjsLessonsByLocale.si.intro,
-        ta: nextjsLessonsByLocale.ta.intro,
+        en: nextjsLessonsByLocale['en-US'].intro,
+        si: nextjsLessonsByLocale['si-LK'].intro,
+        ta: nextjsLessonsByLocale['ta-LK'].intro,
       }}
     />
   );

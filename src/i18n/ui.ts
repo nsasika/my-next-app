@@ -1,9 +1,9 @@
 import type { Locale } from './config';
 
 export const LOCALE_OPTIONS = [
-  { flag: '🇬🇧', label: 'English', locale: 'en' },
-  { flag: '🇱🇰', label: 'සිංහල', locale: 'si' },
-  { flag: '🇱🇰', label: 'தமிழ்', locale: 'ta' },
+  { flag: '🇺🇸', label: 'English (US)', locale: 'en-US' },
+  { flag: '🇱🇰', label: 'සිංහල', locale: 'si-LK' },
+  { flag: '🇱🇰', label: 'தமிழ்', locale: 'ta-LK' },
 ] as const;
 
 export const LOCALIZED_UI: Record<
@@ -19,7 +19,7 @@ export const LOCALIZED_UI: Record<
     };
   }
 > = {
-  en: {
+  'en-US': {
     language: { changeLanguage: 'Change language', currentLanguage: 'English' },
     nav: {
       academy: 'Academy',
@@ -29,7 +29,7 @@ export const LOCALIZED_UI: Record<
       portfolio: 'Portfolio',
     },
   },
-  si: {
+  'si-LK': {
     language: { changeLanguage: 'භාෂාව වෙනස් කරන්න', currentLanguage: 'සිංහල' },
     nav: {
       academy: 'ඇකඩමිය',
@@ -39,7 +39,7 @@ export const LOCALIZED_UI: Record<
       portfolio: 'වෘත්තීය ගොනුව',
     },
   },
-  ta: {
+  'ta-LK': {
     language: { changeLanguage: 'மொழியை மாற்றவும்', currentLanguage: 'தமிழ்' },
     nav: {
       academy: 'அகாடமி',

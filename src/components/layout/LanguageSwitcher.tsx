@@ -13,7 +13,7 @@ import {
 import { LOCALE_OPTIONS, LOCALIZED_UI } from '@/i18n/ui';
 
 export default function LanguageSwitcher({
-  initialLocale = 'en',
+  initialLocale = 'en-US',
 }: {
   initialLocale?: Locale;
 }) {
@@ -50,25 +50,78 @@ export default function LanguageSwitcher({
         id="language-menu"
         onClose={() => setAnchorElement(null)}
         open={Boolean(anchorElement)}
+        slotProps={{
+          list: { sx: { padding: 0.75 } },
+          paper: {
+            sx: {
+              border: 1,
+              borderColor: 'divider',
+              borderRadius: 2,
+              boxShadow: 6,
+              minWidth: 220,
+            },
+          },
+        }}
       >
-        {LOCALE_OPTIONS.map((option) => (
-          <MenuItem
-            key={option.locale}
-            // Locale switching changes an HTTP-only cookie in a Route Handler.
-            // A native navigation guarantees the redirected document and all
-            // Server Components are rendered from the new locale on one click.
-            component="a"
-            href={createLocaleSwitchPath(option.locale, pathname)}
-            onClick={() => setAnchorElement(null)}
-            selected={option.locale === locale}
-          >
-            <ListItemIcon sx={{ minWidth: 34 }}>{option.flag}</ListItemIcon>
-            <span className="min-w-20 font-bold">{option.label}</span>
-            {option.locale === locale ? (
-              <CheckRoundedIcon color="primary" fontSize="small" />
-            ) : null}
-          </MenuItem>
-        ))}
+        {LOCALE_OPTIONS.map((option) => {
+          const isSelectedLocale = option.locale === locale;
+
+          return (
+            <MenuItem
+              key={option.locale}
+              // Locale switching changes an HTTP-only cookie in a Route Handler.
+              // A native navigation guarantees the redirected document and all
+              // Server Components are rendered from the new locale on one click.
+              aria-current={isSelectedLocale ? 'true' : undefined}
+              component="a"
+              data-language-state={isSelectedLocale ? 'selected' : 'muted'}
+              href={createLocaleSwitchPath(option.locale, pathname)}
+              onClick={() => setAnchorElement(null)}
+              selected={isSelectedLocale}
+              sx={{
+                borderRadius: 1.5,
+                color: isSelectedLocale
+                  ? 'primary.contrastText'
+                  : 'text.secondary',
+                filter: isSelectedLocale ? 'none' : 'grayscale(1)',
+                fontWeight: isSelectedLocale ? 900 : 700,
+                gap: 1,
+                marginY: 0.5,
+                opacity: isSelectedLocale ? 1 : 0.5,
+                transition:
+                  'background-color 160ms ease, color 160ms ease, filter 160ms ease, opacity 160ms ease',
+                '&.Mui-selected': {
+                  backgroundColor: 'primary.main',
+                  boxShadow: 2,
+                },
+                '&.Mui-selected:hover': {
+                  backgroundColor: 'primary.dark',
+                },
+                '&:not(.Mui-selected):hover, &:not(.Mui-selected):focus-visible':
+                  {
+                    backgroundColor: 'grey.100',
+                    color: 'text.primary',
+                    filter: 'none',
+                    opacity: 0.85,
+                  },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  color: 'inherit',
+                  minWidth: 34,
+                  opacity: isSelectedLocale ? 1 : 0.7,
+                }}
+              >
+                {option.flag}
+              </ListItemIcon>
+              <span className="min-w-20 flex-1">{option.label}</span>
+              {isSelectedLocale ? (
+                <CheckRoundedIcon fontSize="small" sx={{ color: 'inherit' }} />
+              ) : null}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </>
   );

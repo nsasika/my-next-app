@@ -3,13 +3,13 @@ import { authenticationFlowByLocale } from './authenticationFlow';
 
 describe('localized authentication flow', () => {
   it('provides native titles and complete lesson sections for every locale', () => {
-    expect(authenticationFlowByLocale.en.header.title).toBe(
+    expect(authenticationFlowByLocale['en-US'].header.title).toBe(
       'Current Authentication Flow',
     );
-    expect(authenticationFlowByLocale.si.header.title).toBe(
+    expect(authenticationFlowByLocale['si-LK'].header.title).toBe(
       'වත්මන් සත්‍යාපන ප්‍රවාහය',
     );
-    expect(authenticationFlowByLocale.ta.header.title).toBe(
+    expect(authenticationFlowByLocale['ta-LK'].header.title).toBe(
       'தற்போதைய அங்கீகார ஓட்டம்',
     );
 

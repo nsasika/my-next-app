@@ -5,9 +5,9 @@ export default function AppRouterVsPagesRouterPage() {
   return (
     <LocalizedConceptLessonPage
       content={{
-        en: nextjsLessonsByLocale.en.routers,
-        si: nextjsLessonsByLocale.si.routers,
-        ta: nextjsLessonsByLocale.ta.routers,
+        en: nextjsLessonsByLocale['en-US'].routers,
+        si: nextjsLessonsByLocale['si-LK'].routers,
+        ta: nextjsLessonsByLocale['ta-LK'].routers,
       }}
     />
   );
